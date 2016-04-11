@@ -1,0 +1,76 @@
+\hypertarget{main_8cpp}{\section{main.\-cpp File Reference}
+\label{main_8cpp}\index{main.\-cpp@{main.\-cpp}}
+}
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$avr/io.\-h$>$}\\*
+{\ttfamily \#include $<$avr/wdt.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}Free\-R\-T\-O\-S.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}task.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}queue.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}croutine.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}rs232int.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}time\-\_\-stamp.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}taskbase.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}textqueue.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}taskqueue.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}taskshare.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}shares.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}task\-\_\-brightness.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}task\-\_\-user.\-h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8cpp_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Text\-Queue $\ast$ \hyperlink{main_8cpp_acd99bf5d187d4809af2f460a5415e904}{p\-\_\-print\-\_\-ser\-\_\-queue}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the \hyperlink{main_8cpp_a840291bc02cba5474a4cb46a9b9566fe}{main()} code for a program which runs the M\-E405 board for M\-E405 lab 1. This program currently uses an A/\-D converter to convert an analog signal into an L\-E\-D brightness via pulse width modulation.
+
+Revisions\-: \begin{DoxyItemize}
+\item 09-\/30-\/2012 J\-R\-R Original file was a one-\/file demonstration with two tasks \item 10-\/05-\/2012 J\-R\-R Split into multiple files, one for each task plus a main one \item 10-\/30-\/2012 J\-R\-R A hopefully somewhat stable version with global queue pointers and the new operator used for most memory allocation \item 11-\/04-\/2012 J\-R\-R Free\-R\-T\-O\-S Swoop demo program changed to a sweet test suite \item 01-\/05-\/2012 J\-R\-R Program reconfigured as M\-E405 Lab 1 starting point \item 03-\/28-\/2014 J\-R\-R Pointers to shared variables and queues changed to references \item 01-\/04-\/2015 J\-R\-R Names of share \& queue classes changed; allocated with new now\end{DoxyItemize}
+License\-: This file is copyright 2015 by J\-R Ridgely and released under the Lesser G\-N\-U Public License, version 2. It intended for educational use only, but its use is not limited thereto. 
+
+Definition in file \hyperlink{main_8cpp_source}{main.\-cpp}.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{main_8cpp_a840291bc02cba5474a4cb46a9b9566fe}{\index{main.\-cpp@{main.\-cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{main_8cpp_a840291bc02cba5474a4cb46a9b9566fe}
+The main function sets up the R\-T\-O\-S. Some test tasks are created. Then the scheduler is started up; the scheduler runs until power is turned off or there's a reset. \begin{DoxyReturn}{Returns}
+This is a real-\/time microcontroller program which doesn't return. Ever. 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file main.\-cpp.
+
+
+
+References p\-\_\-print\-\_\-ser\-\_\-queue.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{main_8cpp_acd99bf5d187d4809af2f460a5415e904}{\index{main.\-cpp@{main.\-cpp}!p\-\_\-print\-\_\-ser\-\_\-queue@{p\-\_\-print\-\_\-ser\-\_\-queue}}
+\index{p\-\_\-print\-\_\-ser\-\_\-queue@{p\-\_\-print\-\_\-ser\-\_\-queue}!main.cpp@{main.\-cpp}}
+\subsubsection[{p\-\_\-print\-\_\-ser\-\_\-queue}]{\setlength{\rightskip}{0pt plus 5cm}Text\-Queue$\ast$ p\-\_\-print\-\_\-ser\-\_\-queue}}\label{main_8cpp_acd99bf5d187d4809af2f460a5415e904}
+This is a print queue, descended from {\ttfamily emstream} so that things can be printed into the queue using the \char`\"{}$<$$<$\char`\"{} operator and they'll come out the other end as a stream of characters. It's used by tasks that send things to the user interface task to be printed. 
+
+Definition at line 67 of file main.\-cpp.
+
+
+
+Referenced by main(), and task\-\_\-user\-::run().
+
