@@ -1,14 +1,6 @@
 //======================================================================================
-/** @file motor_drv.h
- *    TODO: This file contains a very simple A/D converter driver. The driver is hopefully
- *    thread safe in FreeRTOS due to the use of a mutex to prevent its use by multiple
- *    tasks at the same time. There is no protection from priority inversion, however,
- *    except for the priority elevation in the mutex.
- *
- *  Revisions:
- *    @li 01-15-2008 JRR Original (somewhat useful) file
- *    @li 10-11-2012 JRR Less original, more useful file with FreeRTOS mutex added
- *    @li 10-12-2012 JRR There was a bug in the mutex code, and it has been fixed
+/** @file task_motor.h
+ *    TODO: This file contains a 
  *
  *  License:
  *    This file is copyright 2012 by JR Ridgely and released under the Lesser GNU 
@@ -27,45 +19,39 @@
 //======================================================================================
 
 // This define prevents this .H file from being included multiple times in a .CPP file
-#ifndef _AVR_MOTOR_H_
-#define _AVR_MOTOR_H_
+#ifndef _Task_MOTOR_H_
+#define _Task_MOTOR_H_
+
+#include <stdlib.h>                         // Prototype declarations for I/O functions
+#include <avr/io.h>                         // Header for special function registers
 
 #include "emstream.h"                       // Header for serial ports and devices
 #include "FreeRTOS.h"                       // Header for the FreeRTOS RTOS
+#include "taskbase.h"                       // ME405/507 base task class
 #include "task.h"                           // Header for FreeRTOS task functions
 #include "queue.h"                          // Header for FreeRTOS queues
 #include "semphr.h"                         // Header for FreeRTOS semaphores
+#include "motor_drv.h"                      // Include header for the motor class
+
+class task_motor : public TaskBase
+{
+public:
+	// This constructor creates a generic task of which many copies can be made
+	task_motor (const char*, unsigned portBASE_TYPE, size_t, emstream*);
+ 
+	// This method is called by the RTOS once to run the task loop for ever and ever.
+	void run (void);
+};
+
+#endif // _Task_MOTOR_H__
 
 
 //-------------------------------------------------------------------------------------
 /** @brief   TODO: This class ...
- *  @details TODO: This class contains a pointer to the serial port, the constructor declaration
- *  for the A/D, a method that reads one sample of a A/D channel, and a method that reads 
- *  a defined number of samples of a A/D channel. 
+ *  @details TODO: This class contains a 
+ * 
+ * 
+ * 
+ * 
+ * stuff?
  */
-
-class motor_drv
-{
-	protected:
-	// TODO: The ADC class uses this pointer to the serial port to say hello
-	emstream* ptr_to_serial;
-
-	public:
-	// TODO: The constructor sets up the A/D converter for use. The "= NULL" part is a
-	// default parameter, meaning that if that parameter isn't given on the line
-	// where this constructor is called, the compiler will just fill in "NULL".
-	// In this case that has the effect of turning off diagnostic printouts
-	motor_drv (emstream* = NULL, uint8_t = 0);
-
-	// TODO
-	uint16_t set_power(int16_t power, uint8_t select) ;
-	
-	// TODO
-        void brake_full();
-	
-	// TODO
-	void brake(uint8_t strength);
-
-}; // end of class motor_drv
-
-#endif // _AVR_MOTOR_H_

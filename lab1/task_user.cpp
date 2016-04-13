@@ -49,11 +49,7 @@ const TickType_t ticks_to_delay = ((configTICK_RATE_HZ / 1000) * 5);
  *                   be used by this task to communicate (default: NULL)
  */
 
-task_user::task_user (const char* a_name, 
-					  unsigned portBASE_TYPE a_priority, 
-					  size_t a_stack_size,
-					  emstream* p_ser_dev
-					 )
+task_user::task_user (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, emstream* p_ser_dev)
 	: TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. All the work is done in the

@@ -147,7 +147,7 @@ void motor_drv::brake_full()
  *  @return  None
  */
 
-void motor_drv::brake(uint16_t strength)
+void motor_drv::brake(uint8_t strength)
 {
     // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
     PINC &= ~(1<<PINC0) | ~(1<<PINC1);

@@ -86,16 +86,6 @@ void task_brightness::run (void)
 	// timer at F_CPU / 64
 	TCCR3B = (1 << WGM32) | (1 << CS31)  | (1 << CS30);
 	
-	
-	motor_drv* p_motor_1 = new motor_drv (p_serial,1);
-	motor_drv* p_motor_2 = new motor_drv (p_serial,2);
-	
-	uint16_t motor1_reading = p_motor_1->set_power(255,1);
-	uint16_t motor2_reading = p_motor_2->set_power(-255,2);
-	
-	OCR1B = motor1_reading;
-	OCR1A = motor2_reading;
-
 	// This is the task loop for the brightness control task. This loop runs until the
 	// power is turned off or something equally dramatic occurs
 	for (;;)
@@ -111,12 +101,6 @@ void task_brightness::run (void)
 		// put a new value into the duty cycle control register, which on an AVR is 
 		// the output compare register for a given timer/counter
 		OCR3B = duty_cycle;
-		*p_serial << "duty_cycle: " << duty_cycle << endl;
-		*p_serial << "OCR3B: " << OCR3B << endl;
-		*p_serial << "motor1: " << motor1_reading << endl;
-		*p_serial << "OCR1B: " << OCR1B << endl;
-		*p_serial << "motor2: " << motor2_reading << endl;
-		*p_serial << "OCR1A " << OCR1A << endl;
 
 		// Increment the run counter. This counter belongs to the parent class and can
 		// be printed out for debugging purposes
@@ -127,4 +111,3 @@ void task_brightness::run (void)
 		delay_from_for_ms (previousTicks, 100);
 	}
 }
-

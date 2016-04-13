@@ -51,6 +51,7 @@
 #include "task_brightness.h"                // Header for the data acquisition task
 #include "task_user.h"                      // Header for user interface task
 #include "motor_drv.h"                      // Include header for the motor class
+#include "task_motor.h"                     // Include header for motor task
 
 
 // Declare the queues which are used by tasks to communicate with each other here. 
@@ -83,9 +84,9 @@ int main (void)
 	wdt_disable ();
 
 	// Configure a serial port which can be used by a task to print debugging infor-
-	// mation, or to allow user interaction, or for whatever use is appropriate.  The
-	// serial port will be used by the user interface task after setup is complete and
-	// the task scheduler has been started by the function vTaskStartScheduler()
+	// mation, or to allow user interaction. The serial port will be used by the user
+	// interface task after setup is complete and the task scheduler has been started
+	// by the function vTaskStartScheduler()
 	rs232* p_ser_port = new rs232 (9600, 1);
 	*p_ser_port << clrscr << PMS ("ME405 Lab 1 Starting Program") << endl;
 
@@ -98,9 +99,28 @@ int main (void)
 
 	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
 	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
+	
+	// Creating a task that operates the motor
+	new task_motor ("Motor", task_priority (2), 280, p_ser_port);
 
 	// Here's where the RTOS scheduler is started up. It should never exit as long as
 	// power is on and the microcontroller isn't rebooted
 	vTaskStartScheduler ();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
