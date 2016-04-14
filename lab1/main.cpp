@@ -101,7 +101,7 @@ int main (void)
 	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
 	
 	// Creating a task that operates the motor
-	new task_motor ("Motor", task_priority (2), 280, p_ser_port);
+	new task_motor ("Motor", task_priority (3), 280, p_ser_port);
 
 	// Here's where the RTOS scheduler is started up. It should never exit as long as
 	// power is on and the microcontroller isn't rebooted

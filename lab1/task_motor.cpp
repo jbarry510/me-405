@@ -40,32 +40,17 @@ void task_motor::run (void)
 	motor_drv* p_motor_1 = new motor_drv (p_serial, 1);
 	motor_drv* p_motor_2 = new motor_drv (p_serial, 2);
 	
-	uint16_t motor1_reading = p_motor_1 -> set_power(255, 1);
-	uint16_t motor2_reading = p_motor_2 -> set_power(-255, 2);
-	
-	OCR1B = motor1_reading;
-	OCR1A = motor2_reading;
-// *p_serial << "duty_cycle: " << duty_cycle << endl;
-// *p_serial << "OCR3B: " << OCR3B << endl;
-// *p_serial << "motor1: " << motor1_reading << endl;
-// *p_serial << "OCR1B: " << OCR1B << endl;
-// *p_serial << "motor2: " << motor2_reading << endl;
-// *p_serial << "OCR1A " << OCR1A << endl;
+	p_motor_1 -> set_power(200);
+	p_motor_2 -> set_power(-200);
 	
 	for(;;)
 	{
-	      
-	      delay_ms(1000);
+	      delay_ms(2000);
+	      *p_serial << "Braking" << endl;
 	      p_motor_1 -> brake_full();
-// 	      delay_ms(1000);
-	      motor1_reading = p_motor_1 -> set_power(50,1);
-	      OCR1B = motor1_reading;
-	      delay_ms(1000);
-	      p_motor_1 -> brake(1);
-	      
-// 	      *p_serial << "Braking" << endl;
-	      //*p_serial << "Running" << endl;
-	      //delay_ms(1000);
+	      delay_ms(2000);
+	      *p_serial << "Running" << endl;
+	      p_motor_1 -> set_power(100);
 	}
 }
 

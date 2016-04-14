@@ -37,14 +37,17 @@
  *  @param select Selects desired motor driver chip 
  */
 
-motor_drv::motor_drv(emstream* p_serial_port, uint8_t select)
+motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 {
 	// Defines pointer for serial to inputted parameter
 	ptr_to_serial = p_serial_port;
+	select = motor_select;
 	
 	// Timing channel 1 setup (Fast PWM) 
-	TCCR1A |= (1 << WGM10) | (1 << COM1B1) & ~(1 << COM1B0) | (1 << COM1A1) & ~(1 << COM1A0);
-	TCCR1B |= (1 << WGM12) & ~(1 << CS12) | (1 << CS11)  & ~(1 << CS10);
+	TCCR1A |= (1 << WGM10) | (1 << COM1B1) | (1 << COM1A1);
+	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0);
+	TCCR1B |= (1 << WGM12) | (1 << CS11);
+	TCCR1B &= ~(1 << CS12) | ~(1 << CS10);
 	
 	if(select == 1)
 	{
@@ -59,8 +62,6 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t select)
 	
 	  // Prints a message if motor 1 construction was sucessful
 	  DBG(ptr_to_serial, "motor 1 constructor OK" << endl);
-	  DBG(ptr_to_serial, "DDRC: " << bin <<DDRC << endl);
-	  DBG(ptr_to_serial, "DDRB: " << DDRB << endl);
 	}
 	
 	else if(select == 2)
@@ -76,8 +77,6 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t select)
 	
 	  // Prints a message if motor 2 construction was sucessful
 	  DBG(ptr_to_serial, "motor 2 constructor OK" << endl);
-	  DBG(ptr_to_serial, "DDRD: " << bin << DDRD << endl);
-	  DBG(ptr_to_serial, "DDRB: " << DDRB << endl);
 	}
 	
 	else
@@ -97,35 +96,31 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t select)
  *  @return  None
  */
 
-uint16_t motor_drv::set_power(int16_t power, uint8_t select) 
+void motor_drv::set_power(int16_t power) 
 {
       if(select == 1)
       {
 	  if(power < 0)
 	  {
-	    PINC |= (1<<PINC0) & ~(1<<PINC1);
 	    power = power*-1;
 	  }
-	  else
-	  {
-	    PINC |= (1<<PINC1) & ~(1<<PINC0);
-	  }
+	  PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
+	  PORTC |= (1<<PORTC0);
+	  PORTC &= ~(1<<PORTC1);
+	  OCR1B = power;
       }
      
       if(select == 2)
       {
 	  if(power < 0)
 	  {
-	    PIND |= (1<<PIND5) & ~(1<<PIND6);
 	    power = power*-1;
 	  }
-	  else
-	  {
-	    PIND |= (1<<PIND6) & ~(1<<PIND5);
-	  }
+	  PORTC &= ~(1<<PORTD5) | ~(1<<PORTD6);
+	  PORTD |= (1<<PORTD5);
+	  PORTD &= ~(1<<PORTD6);
+	  OCR1A = power;
       }
-      
-      return power;
 }
 
 
@@ -137,8 +132,8 @@ uint16_t motor_drv::set_power(int16_t power, uint8_t select)
 
 void motor_drv::brake_full()
 {
-    PINC |= (1<<PINC0) | (1<<PINC1);
-    PIND |= (1<<PIND5) | (1<<PIND6);
+    PORTC |= (1<<PORTC0) | (1<<PORTC1);
+    PORTD |= (1<<PORTD5) | (1<<PORTD6);
 }
 //-------------------------------------------------------------------------------------
 /** @brief   TODO This method
@@ -150,10 +145,10 @@ void motor_drv::brake_full()
 void motor_drv::brake(uint8_t strength)
 {
     // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
-    PINC &= ~(1<<PINC0) | ~(1<<PINC1);
+    PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
     OCR1B = strength;
     
     // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
-    PIND &= ~(1<<PIND5) | ~(1<<PIND6);
+    PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
     OCR1A = strength;
 }

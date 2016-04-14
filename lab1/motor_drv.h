@@ -49,6 +49,7 @@ class motor_drv
 	protected:
 	// TODO: The ADC class uses this pointer to the serial port to say hello
 	emstream* ptr_to_serial;
+	uint8_t select;
 
 	public:
 	// TODO: The constructor sets up the A/D converter for use. The "= NULL" part is a
@@ -58,7 +59,7 @@ class motor_drv
 	motor_drv (emstream* = NULL, uint8_t = 0);
 
 	// TODO
-	uint16_t set_power(int16_t power, uint8_t select) ;
+	void set_power(int16_t power) ;
 	
 	// TODO
         void brake_full();
