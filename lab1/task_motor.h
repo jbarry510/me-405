@@ -1,21 +1,13 @@
 //======================================================================================
 /** @file task_motor.h
- *    TODO: This file contains a 
+ *  This file contains the header for a task class that sets the power of the two motors 
+ *  and lets them run for two seconds then brakes them, waits for two seconds, and then 
+ *  runs them again in the opposite direction.
  *
- *  License:
- *    This file is copyright 2012 by JR Ridgely and released under the Lesser GNU 
- *    Public License, version 2. It intended for educational use only, but its use
- *    is not limited thereto. */
-/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- *    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- *    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- *    ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- *    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUEN-
- *    TIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS 
- *    OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- *    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- *    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
- *    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
+ *  Revisions:
+ *    @li 04-13-2016 ME405 Group 3 original file
+ *
+ */
 //======================================================================================
 
 // This define prevents this .H file from being included multiple times in a .CPP file
@@ -35,8 +27,14 @@
 
 class task_motor : public TaskBase
 {
+private:
+	// No private variables or methods for this class
+
+protected:
+	// No protected variables or methods for this class
+  
 public:
-	// This constructor creates a generic task of which many copies can be made
+	// This constructor creates a generic motor task of which many copies can be made.
 	task_motor (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	// This method is called by the RTOS once to run the task loop for ever and ever.
@@ -44,14 +42,3 @@ public:
 };
 
 #endif // _Task_MOTOR_H__
-
-
-//-------------------------------------------------------------------------------------
-/** @brief   TODO: This class ...
- *  @details TODO: This class contains a 
- * 
- * 
- * 
- * 
- * stuff?
- */

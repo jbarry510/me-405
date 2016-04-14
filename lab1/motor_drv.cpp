@@ -1,26 +1,11 @@
 //*************************************************************************************
 /** @file motor_drv.cpp
- *    This file contains a motor control driver.   
+ *    This file contains the motor driver the two H-bridge chips on the ME 405 board.
  *
  *  Revisions:
- *    @li 01-15-2008 JRR Original (somewhat useful) file
- *    @li 10-11-2012 JRR Less original, more useful file with FreeRTOS mutex added
- *    @li 10-12-2012 JRR There was a bug in the mutex code, and it has been fixed
+ *    @li 04-13-2016 ME405 Group 3 original file
  *
- *  License:
- *    This file is copyright 2015 by JR Ridgely and released under the Lesser GNU 
- *    Public License, version 2. It intended for educational use only, but its use
- *    is not limited thereto. */
-/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- *    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- *    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- *    ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- *    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUEN-
- *    TIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS 
- *    OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- *    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- *    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
- *    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
+ */
 //*************************************************************************************
 
 #include <stdlib.h>                         // Include standard library header files
@@ -29,12 +14,15 @@
 #include "rs232int.h"                       // Include header for serial port class
 #include "motor_drv.h"                      // Include header for the motor class
 
-
 //-------------------------------------------------------------------------------------
-/** \brief TODO This constructor... @b Make @b generic
- *  \details TODO
+/** \brief This constructor sets up the motor object.
+ *  \details The timer for the PWM signal is set up in fast PWM 8-bit mode with a clock 
+ *           prescaler of 8 which gives an operating frequency of approximately 8kHz. The 
+ *           data direction registers and output enables are set for the appropriate
+ *           motor based on the select variable. A debug message is printed stating if
+ *           the motor constructor was sucessful or not.
  *  @param p_serial_port A pointer to the serial port which writes debugging info.
- *  @param select Selects desired motor driver chip 
+ *  @param motor_select Selects desired motor driver chip.
  */
 
 motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
@@ -43,12 +31,13 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	ptr_to_serial = p_serial_port;
 	select = motor_select;
 	
-	// Timing channel 1 setup (Fast PWM) 
+	// Timing channel 1 setup (Fast PWM, Clock prescaler of 8) 
 	TCCR1A |= (1 << WGM10) | (1 << COM1B1) | (1 << COM1A1);
 	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0);
 	TCCR1B |= (1 << WGM12) | (1 << CS11);
 	TCCR1B &= ~(1 << CS12) | ~(1 << CS10);
 	
+	// If object is motor 1 then this block is used
 	if(select == 1)
 	{
 	  // Sets direction of port C pins 0-2 to output (Direction control)
@@ -64,6 +53,7 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	  DBG(ptr_to_serial, "motor 1 constructor OK" << endl);
 	}
 	
+	// If object is motor 2 then this block is used
 	else if(select == 2)
 	{
 	  // Sets direction of port D pins 5-7 to output (Direction control)
@@ -79,6 +69,7 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	  DBG(ptr_to_serial, "motor 2 constructor OK" << endl);
 	}
 	
+	// If object is not motor 1 or 2 then this block is used
 	else
 	{
 	  // Prints an error message if select is not a 1 or 2
@@ -88,67 +79,115 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 
 
 //-------------------------------------------------------------------------------------
-/** @brief   This method takes an integer and sets the motor torque and direction. TODO @b Make @b generic 
+/** @brief   This method takes an integer and sets the motor torque and direction.
  *  \details The value of the integer corresponds to the amount of torque applied by
  *  the motor. The sign of the integer corresponds to the direction the motor turns.
- *  Negative values turn the motor @b clockwise and positive values turn the motor @b counterclockwise .
- *  @param   power 
+ *  Negative values turn the motor @b clockwise and positive values turn the motor 
+ *  @b counterclockwise.
+ *  @param   power Variable that sets power output to motor (must be between -255 and 255).
  *  @return  None
  */
 
 void motor_drv::set_power(int16_t power) 
 {
+      // If object is motor 1 then this block is used
       if(select == 1)
       {
+	  // Sets motor to turn clockwise and multiples power by -1 to get magnitude
 	  if(power < 0)
 	  {
-	    power = power*-1;
+	    PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);	// Clears INA and INB of motor 1
+	    PORTC |= (1<<PORTC1);			// Sets INB of motor 1
+	    PORTC &= ~(1<<PORTC0); 			// Clears INA of motor 1
+	    power = power * -1;
 	  }
-	  PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
-	  PORTC |= (1<<PORTC0);
-	  PORTC &= ~(1<<PORTC1);
+	  
+	  // Sets motor to turn counterclockwise
+	  else
+	  {
+	    PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);	// Clears INA and INB of motor 1
+	    PORTC &= ~(1<<PORTC1);			// Clears INB of motor 1
+	    PORTC |= (1<<PORTC0); 			// Sets INA of motor 1
+	  }
+	  
+	  // Sets output compare register for motor 1 PWM equal to the power
 	  OCR1B = power;
       }
      
+      // If object is motor 2 then this block is used
       if(select == 2)
       {
+	  // Sets motor to turn clockwise and multiples power by -1 to get magnitude
 	  if(power < 0)
 	  {
+	    PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);	// Clears INA and INB of motor 2
+	    PORTD |= (1<<PORTD6);			// Sets INB of motor 2
+	    PORTD &= ~(1<<PORTD5); 			// Clears INA of motor 2
 	    power = power*-1;
 	  }
-	  PORTC &= ~(1<<PORTD5) | ~(1<<PORTD6);
-	  PORTD |= (1<<PORTD5);
-	  PORTD &= ~(1<<PORTD6);
+	  
+	  // Sets motor to turn counterclockwise
+	  else
+	  {
+	    PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);	// Clears INA and INB of motor 2
+	    PORTD &= ~(1<<PORTD6);			// Clears INB of motor 2
+	    PORTD |= (1<<PORTD5); 			// Sets INA of motor 2
+	  }
+	  
+	  // Sets output compare register for motor 2 PWM equal to the power
 	  OCR1A = power;
       }
 }
 
 
 //-------------------------------------------------------------------------------------
-/** @brief   TODO This method
- *  \details TODO
+/** @brief   This method causes the motor to brake fully.
+ *  \details The H-bridge chip for the corresponding motor is set to operating mode
+ *           brake to Vcc which effectively removes power from the motor causing it
+ *           to brake.
  *  @return  None
  */
 
 void motor_drv::brake_full()
 {
-    PORTC |= (1<<PORTC0) | (1<<PORTC1);
-    PORTD |= (1<<PORTD5) | (1<<PORTD6);
+    // If object is motor 1 then this block is used
+    if(select == 1)
+    {
+      // Sets INA and INB for motor 1 which puts the operating mode into brake to Vcc
+      PORTC |= (1<<PORTC0) | (1<<PORTC1);
+    }
+    
+    // If object is motor 2 then this block is used
+    if(select == 2)
+    {
+      // Sets INA and INB for motor 2 which puts the operating mode into brake to Vcc
+      PORTD |= (1<<PORTD5) | (1<<PORTD6);
+    }
 }
 //-------------------------------------------------------------------------------------
-/** @brief   TODO This method
- *  \details TODO
- *  @param strength 
+/** @brief   This method allows for the motor braking to be controlled.
+ *  \details The H-bridge chip for the corresponding motor is set to operating mode
+ *           brake to GND which allows for the use of the PWM signal to vary the braking
+ *           strength.
+ *  @param strength Variable that sets amount of motor braking (must be between -255 and 255).
  *  @return  None
  */
 
 void motor_drv::brake(uint8_t strength)
 {
-    // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
-    PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
-    OCR1B = strength;
+    // If object is motor 1 then this block is used
+    if(select == 1)
+    {
+      // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
+      PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
+      OCR1B = strength;
+    }
     
-    // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
-    PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
-    OCR1A = strength;
+    // If object is motor 2 then this block is used
+    if(select == 2)
+    {
+      // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
+      PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
+      OCR1A = strength;
+    }
 }

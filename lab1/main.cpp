@@ -1,8 +1,9 @@
 //*************************************************************************************
 /** \file main.cpp
  *    This file contains the main() code for a program which runs the ME405 board for
- *    ME405 lab 1. This program currently uses an A/D converter to convert an analog 
- *    signal into an LED brightness via pulse width modulation. 
+ *    ME405 lab 1. This program currently uses the H-bridge chips on the board to set 
+ *    the power of the two motors and let them run for two seconds then brakes them, 
+ *    waits for two seconds, and then runs them again in the opposite direction.
  *
  *  Revisions:
  *    \li 09-30-2012 JRR Original file was a one-file demonstration with two tasks
@@ -100,7 +101,7 @@ int main (void)
 	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
 	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
 	
-	// Creating a task that operates the motor
+	// Creating a task that operates the motor and runs a defined program
 	new task_motor ("Motor", task_priority (3), 280, p_ser_port);
 
 	// Here's where the RTOS scheduler is started up. It should never exit as long as
