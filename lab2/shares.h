@@ -37,6 +37,8 @@
 
 // This queue allows tasks to send characters to the user interface task for display.
 extern TextQueue* p_print_ser_queue;
+extern TaskShare<int16_t>* motor1_power;
+extern TaskShare<int16_t>* motor2_power;
 
 
 #endif // _SHARES_H_

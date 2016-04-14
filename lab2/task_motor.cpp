@@ -9,7 +9,6 @@
  *
  */
 //**************************************************************************************
-
 #include "textqueue.h"                      // Header for text queue class
 #include "task_motor.h"                     // Header for this task
 #include "shares.h"                         // Shared inter-task communications
@@ -49,6 +48,12 @@ void task_motor::run (void)
 	
 	for(;;)
 	{
+	  
+	      p_motor_1 ->set_power(motor1_power->get());
+	      p_motor_2 ->set_power(motor2_power->get());
+	      delay_ms(2000);
+	      
+	      /*
 	      // Sets both motor 1 and 2 to run clockwise for two seconds and prints a message
 	      p_motor_1 -> set_power(100);
 	      p_motor_2 -> set_power(220);
@@ -66,18 +71,6 @@ void task_motor::run (void)
 	      p_motor_2 -> set_power(-220);
 	      *p_serial << "Running backwards" << endl;
 	      delay_ms(2000);
+	      */
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

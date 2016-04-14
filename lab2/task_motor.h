@@ -21,9 +21,13 @@
 #include "FreeRTOS.h"                       // Header for the FreeRTOS RTOS
 #include "taskbase.h"                       // ME405/507 base task class
 #include "task.h"                           // Header for FreeRTOS task functions
+#include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
 #include "queue.h"                          // Header for FreeRTOS queues
 #include "semphr.h"                         // Header for FreeRTOS semaphores
 #include "motor_drv.h"                      // Include header for the motor class
+#include "taskshare.h"			    // Header for thread-safe shared data
+#include "shares.h"                         // Shared inter-task communications
+
 
 class task_motor : public TaskBase
 {

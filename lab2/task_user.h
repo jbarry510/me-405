@@ -42,9 +42,10 @@
 #include "taskbase.h"                       // Header for ME405/507 base task class
 #include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
 #include "textqueue.h"                      // Header for a "<<" queue class
-#include "taskshare.h"                      // Header for thread-safe shared data
+#include "taskshare.h"			    // Header for thread-safe shared data
 
-#include "shares.h"                         // Global ('extern') queue declarations
+#include "shares.h"                         // Shared inter-task communications
+
 
 
 /// This macro defines a string that identifies the name and version of this program. 

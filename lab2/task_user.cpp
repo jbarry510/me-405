@@ -68,6 +68,7 @@ void task_user::run (void)
 	char char_in;                           // Character read from serial device
 	time_stamp a_time;                      // Holds the time so it can be displayed
 	uint32_t number_entered = 0;            // Holds a number being entered by user
+	int16_t power_entered = 0;
 
 	// Tell the user how to get into command mode (state 1), where the user interface
 	// task does interesting things such as diagnostic printouts
@@ -86,12 +87,19 @@ void task_user::run (void)
 			case (0):
 				if (p_serial->check_for_char ())            // If the user typed a
 				{                                           // character, read
-					char_in = p_serial->getchar ();         // the character
+					char_in = p_serial -> getchar ();         // the character
 
 					// In this switch statement, we respond to different characters as
 					// commands typed in by the user
 					switch (char_in)
 					{
+						// The 'm' command selects the motor for power input
+						case ('m'):
+							*p_serial << PMS ("Enter 1 or 2 for motor selection: ") << endl;
+							//number_entered = 0;
+							transition_to(2);
+							break;
+							
 						// The 't' command asks what time it is right now
 						case ('t'):
 							*p_serial << (a_time.set_to_now ()) << endl;
@@ -147,7 +155,7 @@ void task_user::run (void)
 					// Respond to numeric characters, Enter or Esc only. Numbers are
 					// put into the numeric value we're building up
 					if (char_in >= '0' && char_in <= '9')
-					{
+					{ 
 						*p_serial << char_in;
 						number_entered *= 10;
 						number_entered += char_in - '0';
@@ -179,7 +187,46 @@ void task_user::run (void)
 				}
 
 				break; // End of state 1
+			
+			// In state 2, wait for user to input value of power to set
+			case (2):
+				if (p_serial->check_for_char ())            // If the user typed a
+				{                                           // character, read
+					char_in = p_serial->getchar ();         // the character
 
+					// Determines which motors power to change
+					if(char_in == '1')
+					{
+					    *p_serial << PMS ("Enter in Power for Motor_1: ") << endl;
+					  
+					    if (p_serial -> check_for_char() )
+					    {
+					       //Set thread-safe variables power to inputted value
+					       power_entered = p_serial->getchar();
+					       *p_serial << "power_entered: " << power_entered << endl;
+					       motor1_power -> put (power_entered);
+					       transition_to(0);
+					    }	
+					}
+					else if(char_in == '2')
+					{
+					    if (p_serial -> check_for_char() )
+					    {
+					       //Set thread-safe variables power to inputted value
+					       power_entered = p_serial -> getchar();
+					       motor2_power -> put (power_entered);
+					       transition_to(0);
+					    }
+					}
+					else
+					{
+						*p_serial << PMS ("<invalid char \"") << char_in 
+								  << PMS ("\">");
+					}
+				}
+				
+				break; // End of state 2
+				
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// We should never get to the default state. If we do, complain and restart
 			default:
@@ -198,7 +245,6 @@ void task_user::run (void)
 	}
 }
 
-
 //-------------------------------------------------------------------------------------
 /** This method prints a simple help message.
  */
@@ -210,8 +256,9 @@ void task_user::print_help_message (void)
 	*p_serial << PMS ("  s:     Version and setup information") << endl;
 	*p_serial << PMS ("  d:     Stack dump for tasks") << endl;
 	*p_serial << PMS ("  n:     Enter a number (demo)") << endl;
+	*p_serial << PMS ("  m:     Enter motor select and power value") << endl;
 	*p_serial << PMS ("  Ctl-C: Reset the AVR") << endl;
-	*p_serial << PMS ("  h:     HALP!") << endl;
+	*p_serial << PMS ("  h:     Help!") << endl;
 }
 
 
@@ -245,4 +292,3 @@ void task_user::show_status (void)
 	*p_serial << endl;
 	print_all_shares (p_serial);
 }
-
