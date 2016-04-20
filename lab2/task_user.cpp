@@ -25,11 +25,16 @@
  *    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
  *    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 //**************************************************************************************
-
+#include "task_user.h"                      // Header for this file
 #include <avr/io.h>                         // Port I/O for SFR's
 #include <avr/wdt.h>                        // Watchdog timer header
 
-#include "task_user.h"                      // Header for this file
+#include "textqueue.h"                      // Header for text queue class
+#include "taskshare.h"			    // Header for thread-safe shared data
+#include "shares.h"                         // Shared inter-task communications
+
+
+
 
 
 /** This constant sets how many RTOS ticks the task delays if the user's not talking.
@@ -67,8 +72,10 @@ void task_user::run (void)
 {
 	char char_in;                           // Character read from serial device
 	time_stamp a_time;                      // Holds the time so it can be displayed
-	uint32_t number_entered = 0;            // Holds a number being entered by user
-	int16_t power_entered = 0;
+	int16_t number_entered = 0;             // Holds a number being entered by user
+	sh_motor_select -> put(0);		// Holds the value of which motor is selected to input characteristic values
+	uint8_t number_state = 0;		// State of motor to switch between 
+	bool negative_number_entered = false;
 
 	// Tell the user how to get into command mode (state 1), where the user interface
 	// task does interesting things such as diagnostic printouts
@@ -93,13 +100,6 @@ void task_user::run (void)
 					// commands typed in by the user
 					switch (char_in)
 					{
-						// The 'm' command selects the motor for power input
-						case ('m'):
-							*p_serial << PMS ("Enter 1 or 2 for motor selection: ") << endl;
-							//number_entered = 0;
-							transition_to(2);
-							break;
-							
 						// The 't' command asks what time it is right now
 						case ('t'):
 							*p_serial << (a_time.set_to_now ()) << endl;
@@ -121,11 +121,12 @@ void task_user::run (void)
 							print_help_message ();
 							break;
 
-						// The 'n' command runs a test of entering a number
-						case ('n'):
-							*p_serial << PMS ("Enter decimal numeric digits, "
-							             "then RETURN or ESC") << endl;
+						// The 'm' command selects the motor for power input
+						case ('m'):
+							*p_serial << PMS ("Enter number for motor selection: ") << endl;
 							number_entered = 0;
+							sh_motor_select -> put(0);
+							number_state = 0;
 							transition_to (1);
 							break;
 
@@ -146,36 +147,79 @@ void task_user::run (void)
 				break; // End of state 0
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// In state 1, wait for user to enter digits and build 'em into a number
+			// In state 1, wait for user to enter digits and build into a number
 			case (1):
-				if (p_serial->check_for_char ())        // If the user typed a
-				{                                       // character, read
-					char_in = p_serial->getchar ();     // the character
+				if (p_serial->check_for_char ())        // If the user typed a character, read the character
+				{
+					char_in = p_serial -> getchar ();
 
-					// Respond to numeric characters, Enter or Esc only. Numbers are
-					// put into the numeric value we're building up
+					// Respond to numeric characters, Enter, or Esc (only). Numbers are
+					// put into the numeric value that is being built up
 					if (char_in >= '0' && char_in <= '9')
 					{ 
 						*p_serial << char_in;
 						number_entered *= 10;
 						number_entered += char_in - '0';
 					}
+					
+					else if (char_in == 45)
+					{
+					  negative_number_entered = true;
+					}
+					
 					// Carriage return is ignored; the newline character ends the entry
 					else if (char_in == 10)
 					{
 						*p_serial << "\r";
 					}
 					// Carriage return or Escape ends numeric entry
+					// 13 = Carraige Retrun, 27 = Escape
 					else if (char_in == 13 || char_in == 27)
 					{
-						*p_serial << endl << PMS ("Number entered: ") 
-								  << number_entered << endl;
-						transition_to (0);
+						*p_serial << endl << PMS ("Number entered: ") << number_entered << endl;
+						if (number_state == 0)
+						{
+						    if (number_entered == 1 || number_entered == 2)
+						    {
+							  sh_motor_select -> put(number_entered);
+							  print_help_motor();
+							  number_entered = 0;
+							  transition_to (2);
+						    }
+						    else
+						    {
+						      *p_serial << PMS ("Please enter a 1 or 2 for motor select.") << endl;
+						      number_entered = 0;
+						      
+						    }
+						}
+						else if (number_state == 1)
+						{
+						    if (number_entered >= 0 && number_entered <= 255)
+						    {
+							  if(negative_number_entered == true)
+							  {
+							    number_entered *= -1;
+							  }
+
+							  sh_power_entry -> put(number_entered);
+							  number_entered = 0;
+							  number_state = 0;
+							  transition_to (0);
+						    }
+						    else
+						    {
+						      *p_serial << PMS ("Please enter a number between -255 to 255.") << endl;
+						      number_entered = 0;
+						      
+						    }
+						    
+						}
 					}
 					else
 					{
-						*p_serial << PMS ("<invalid char \"") << char_in 
-								  << PMS ("\">");
+						*p_serial << PMS ("<invalid char \"") << char_in << PMS ("\">");
+						number_entered = 0;
 					}
 				}
 
@@ -187,44 +231,62 @@ void task_user::run (void)
 				}
 
 				break; // End of state 1
-			
-			// In state 2, wait for user to input value of power to set
-			case (2):
-				if (p_serial->check_for_char ())            // If the user typed a
-				{                                           // character, read
-					char_in = p_serial->getchar ();         // the character
 
-					// Determines which motors power to change
-					if(char_in == '1')
-					{
-					    *p_serial << PMS ("Enter in Power for Motor_1: ") << endl;
-					  
-					    if (p_serial -> check_for_char() )
-					    {
-					       //Set thread-safe variables power to inputted value
-					       power_entered = p_serial->getchar();
-					       *p_serial << "power_entered: " << power_entered << endl;
-					       motor1_power -> put (power_entered);
-					       transition_to(0);
-					    }	
-					}
-					else if(char_in == '2')
-					{
-					    if (p_serial -> check_for_char() )
-					    {
-					       //Set thread-safe variables power to inputted value
-					       power_entered = p_serial -> getchar();
-					       motor2_power -> put (power_entered);
-					       transition_to(0);
-					    }
-					}
-					else
-					{
-						*p_serial << PMS ("<invalid char \"") << char_in 
-								  << PMS ("\">");
-					}
-				}
+			//Motor control case
+			case (2):
 				
+				
+				if (p_serial->check_for_char ())            // If the user typed a character, read the character
+				{    
+					char_in = p_serial -> getchar ();  
+
+					// Switch statement to respond to commands typed in by user
+					switch (char_in)
+					{
+						// The 'p' command allows for the motor power number to be inputted
+						case ('p'):
+							*p_serial << PMS ("Enter number for motor power: ") << endl;
+							number_state = 1;
+							transition_to (1);
+							break;
+
+						// The 'b' command asks for version and status information
+						case ('b'):
+							show_status ();
+							transition_to (1);
+							break;
+
+						// The 's' command stops the motor (enables full brake)
+						case ('s'):
+							print_task_stacks (p_serial);
+							break;
+
+						// The 'h' command is a plea for help; '?' works also
+						case ('h'):
+							break;
+							
+						case ('?'):
+							print_help_motor();
+							break;
+							
+						case ('r'):
+						      transition_to (0);
+						      break;
+
+						// A control-C character causes the CPU to restart
+						case (3):
+							*p_serial << PMS ("Resetting AVR") << endl;
+							wdt_enable (WDTO_120MS);
+							for (;;);
+							break;
+
+						// If character isn't recognized, ask What's That Function?
+						default:
+							*p_serial << '"' << char_in << PMS ("\": WTF?") << endl;
+							break;
+					}; // End switch for characters
+				} // End if a character was received
+
 				break; // End of state 2
 				
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -255,10 +317,23 @@ void task_user::print_help_message (void)
 	*p_serial << PMS ("  t:     Show the time right now") << endl;
 	*p_serial << PMS ("  s:     Version and setup information") << endl;
 	*p_serial << PMS ("  d:     Stack dump for tasks") << endl;
-	*p_serial << PMS ("  n:     Enter a number (demo)") << endl;
 	*p_serial << PMS ("  m:     Enter motor select and power value") << endl;
 	*p_serial << PMS ("  Ctl-C: Reset the AVR") << endl;
-	*p_serial << PMS ("  h:     Help!") << endl;
+	*p_serial << PMS ("  h:     Halp!") << endl;
+}
+
+//-------------------------------------------------------------------------------------
+/** This method prints a simple help message.
+ */
+void task_user::print_help_motor (void)
+{
+	*p_serial << PROGRAM_VERSION << PMS (" help") << endl;
+	*p_serial << PMS ("  p:     Change the motor power [-255, 255]") << endl;
+	*p_serial << PMS ("  b:     Brake with PWM [-255, 255]") << endl;
+	*p_serial << PMS ("  s:     Full brake") << endl;
+	*p_serial << PMS ("  Ctl-C: Reset the AVR") << endl;
+	*p_serial << PMS ("  h:     Halp!") << endl;
+	*p_serial << PMS ("  r:     Return to Main Menu") << endl;
 }
 
 

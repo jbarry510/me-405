@@ -70,8 +70,9 @@
 TextQueue* p_print_ser_queue;
 
 // Shared variables to hold power values
-TaskShare<int16_t>* motor1_power;
-TaskShare<int16_t>* motor2_power;
+
+TaskShare<int8_t>* sh_motor_select;
+TaskShare<int8_t>* sh_power_entry;
 
 //=====================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the 
@@ -97,8 +98,8 @@ int main (void)
 	// Create the queues and other shared data items here
 	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 10);
 	
-	motor1_power = new TaskShare<int16_t> ("Motor1_Power");
-	motor2_power = new TaskShare<int16_t> ("Motor2_Power");
+	sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
+	sh_power_entry = new TaskShare<int8_t> ("sh_power_entry");
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program

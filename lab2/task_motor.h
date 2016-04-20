@@ -26,6 +26,7 @@
 #include "semphr.h"                         // Header for FreeRTOS semaphores
 #include "motor_drv.h"                      // Include header for the motor class
 #include "taskshare.h"			    // Header for thread-safe shared data
+#include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
 

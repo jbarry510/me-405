@@ -9,8 +9,9 @@
  *
  */
 //**************************************************************************************
-#include "textqueue.h"                      // Header for text queue class
 #include "task_motor.h"                     // Header for this task
+#include "textqueue.h"                      // Header for text queue class
+#include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
 
 //-------------------------------------------------------------------------------------
@@ -48,9 +49,15 @@ void task_motor::run (void)
 	
 	for(;;)
 	{
-	  
-	      p_motor_1 ->set_power(motor1_power->get());
-	      p_motor_2 ->set_power(motor2_power->get());
+	  // if motor power has been set from user interface, bring in power variable and set power
+	      if(sh_motor_select->get() == 1)
+	      {
+		p_motor_1 -> set_power(sh_power_entry->get());
+	      }
+	      else if(sh_motor_select->get() == 2)
+	      {
+		p_motor_2 -> set_power(sh_power_entry->get());
+	      }
 	      delay_ms(2000);
 	      
 	      /*

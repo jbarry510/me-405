@@ -49,7 +49,7 @@
 
 
 /// This macro defines a string that identifies the name and version of this program. 
-#define PROGRAM_VERSION		PMS ("ME405 Lab 1 Unmodified Program V0.01 ")
+#define PROGRAM_VERSION		PMS ("ME405 Lab 2 Modified Program")
 
 
 //-------------------------------------------------------------------------------------
@@ -67,6 +67,8 @@ protected:
 	// This method displays a simple help message telling the user what to do. It's
 	// protected so that only methods of this class or possibly descendents can use it
 	void print_help_message (void);
+	
+	void print_help_motor(void);
 
 	// This method displays information about the status of the system
 	void show_status (void);
