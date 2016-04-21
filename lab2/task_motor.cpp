@@ -46,19 +46,27 @@ void task_motor::run (void)
 	// so the motors cannot be used from any other function or method.
 	motor_drv* p_motor_1 = new motor_drv (p_serial, 1);
 	motor_drv* p_motor_2 = new motor_drv (p_serial, 2);
+	sh_power_set_flag-> put(0);		// Flag used to only set power when it has changed
 	
 	for(;;)
 	{
-	  // if motor power has been set from user interface, bring in power variable and set power
+	  // Check if power variable has changed, power flag = high, if not skip
+	  if (sh_power_set_flag->get() == 1)
+	  {
 	      if(sh_motor_select->get() == 1)
 	      {
-		p_motor_1 -> set_power(sh_power_entry->get());
+		    p_motor_1 -> set_power(sh_power_entry->get());	// Set power for motor 1
 	      }
 	      else if(sh_motor_select->get() == 2)
 	      {
-		p_motor_2 -> set_power(sh_power_entry->get());
+		    p_motor_2 -> set_power(sh_power_entry->get());	// Set power for motor 2
 	      }
-	      delay_ms(2000);
+	      
+	      sh_power_set_flag-> put(0);		// Make power_set_flag low when succesful power set
+
+	  }
+	  delay_ms(100);				// Delay for lower priority tasks
+	      
 	      
 	      /*
 	      // Sets both motor 1 and 2 to run clockwise for two seconds and prints a message

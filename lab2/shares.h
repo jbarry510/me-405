@@ -39,7 +39,7 @@
 extern TextQueue* p_print_ser_queue;
 extern TaskShare<int16_t>* sh_motor_power;
 extern TaskShare<int8_t>* sh_motor_select;
-extern TaskShare<int8_t>* sh_power_entry;
-
+extern TaskShare<int16_t>* sh_power_entry;
+extern TaskShare<int8_t>* sh_power_set_flag;
 
 #endif // _SHARES_H_

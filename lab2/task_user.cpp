@@ -34,6 +34,13 @@
 #include "shares.h"                         // Shared inter-task communications
 
 
+// Precompiler Directive
+#define ASCII_BACKSPACE 0x7F
+#define ASCII_RETURN 13
+#define ASCII_SPACE 32
+#define ASCII_DASH 45
+#define ASCII_NEWLINE 10
+#define ASCII_ESCAPE 27
 
 
 
@@ -152,6 +159,7 @@ void task_user::run (void)
 				if (p_serial->check_for_char ())        // If the user typed a character, read the character
 				{
 					char_in = p_serial -> getchar ();
+					//*p_serial << hex << (uint8_t)char_in;
 
 					// Respond to numeric characters, Enter, or Esc (only). Numbers are
 					// put into the numeric value that is being built up
@@ -162,34 +170,45 @@ void task_user::run (void)
 						number_entered += char_in - '0';
 					}
 					
-					else if (char_in == 45)
+					// Dash, indicating a negative number 
+					else if (char_in == ASCII_DASH)
 					{
-					  negative_number_entered = true;
+						negative_number_entered = true;
+						*p_serial << char_in;
 					}
 					
-					// Carriage return is ignored; the newline character ends the entry
-					else if (char_in == 10)
+					// Backspace
+					//TODO: Fix backspace to count characters in to move the correct number
+					else if (char_in == ASCII_BACKSPACE)
+					{
+						*p_serial << char_in;		// Print Backspace
+						*p_serial << (char)ASCII_SPACE;	// Print Space
+						*p_serial << char_in;		// Print Backspace
+					}
+					
+					// Line Feed, Carriage return is ignored; the newline character ends the entry
+					else if (char_in == ASCII_NEWLINE)
 					{
 						*p_serial << "\r";
 					}
 					// Carriage return or Escape ends numeric entry
-					// 13 = Carraige Retrun, 27 = Escape
-					else if (char_in == 13 || char_in == 27)
+					// Carraige Return, Escape
+					else if (char_in == ASCII_RETURN || char_in == ASCII_ESCAPE)
 					{
 						*p_serial << endl << PMS ("Number entered: ") << number_entered << endl;
 						if (number_state == 0)
 						{
 						    if (number_entered == 1 || number_entered == 2)
 						    {
-							  sh_motor_select -> put(number_entered);
-							  print_help_motor();
-							  number_entered = 0;
-							  transition_to (2);
+							  sh_motor_select -> put(number_entered);		// Set shared value to motor selected
+							  print_help_motor();					// Print motor menu
+							  number_entered = 0;					// Clear number_entered
+							  transition_to (2);					// Transition to motor control case
 						    }
 						    else
 						    {
 						      *p_serial << PMS ("Please enter a 1 or 2 for motor select.") << endl;
-						      number_entered = 0;
+						      number_entered = 0;					// Clear number_entered
 						      
 						    }
 						}
@@ -200,12 +219,15 @@ void task_user::run (void)
 							  if(negative_number_entered == true)
 							  {
 							    number_entered *= -1;
+							    negative_number_entered = false;
 							  }
 
 							  sh_power_entry -> put(number_entered);
-							  number_entered = 0;
-							  number_state = 0;
-							  transition_to (0);
+							  sh_power_set_flag-> put(1);		// Make power_set_flag high to indicate a changed power value
+
+							  number_entered = 0;					// Clear number_entered
+							  number_state = 0;					// Clear number_state
+							  transition_to (0);					// Transition to main case
 						    }
 						    else
 						    {
