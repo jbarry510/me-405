@@ -25,21 +25,27 @@
  * 		OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 //*************************************************************************************
 
-// This define prevents this .h file from being included multiple times in a .cpp file
+/// This define prevents this .h file from being included multiple times in a .cpp file
 #ifndef _SHARES_H_
 #define _SHARES_H_
 
 //-------------------------------------------------------------------------------------
-// Externs:  In this section, we declare variables and functions that are used in all
-// (or at least two) of the files in the data acquisition project. Each of these items
-// will also be declared exactly once, without the keyword 'extern', in one .cpp file
-// as well as being declared extern here. 
+/// Externs:  In this section, we declare variables and functions that are used in all
+/// (or at least two) of the files in the data acquisition project. Each of these items
+/// will also be declared exactly once, without the keyword 'extern', in one .cpp file
+/// as well as being declared extern here. 
 
-// This queue allows tasks to send characters to the user interface task for display.
+/// This queue allows tasks to send characters to the user interface task for display.
 extern TextQueue* p_print_ser_queue;
-extern TaskShare<int16_t>* sh_motor_power;
-extern TaskShare<int8_t>* sh_motor_select;
-extern TaskShare<int16_t>* sh_power_entry;
-extern TaskShare<int8_t>* sh_power_set_flag;
 
-#endif // _SHARES_H_
+extern TaskShare<int8_t>* sh_motor_select;			/// Motor selection share
+
+extern TaskShare<int16_t>* sh_power_entry;			/// Power value share
+extern TaskShare<int8_t>* sh_power_set_flag;			/// Flag share indicating power value has changed
+
+extern TaskShare<int16_t>* sh_braking_entry;			/// Braking value share
+extern TaskShare<int8_t>* sh_braking_set_flag;			/// Flag share indicating braking value has changed
+
+extern TaskShare<int8_t>* sh_braking_full_flag;			/// Flag share indicating full braking requested
+
+#endif /// _SHARES_H_

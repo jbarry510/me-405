@@ -65,8 +65,43 @@ void task_motor::run (void)
 	      sh_power_set_flag-> put(0);		// Make power_set_flag low when succesful power set
 
 	  }
-	  delay_ms(100);				// Delay for lower priority tasks
+	  
+	  // Check if braking variable has changed, power flag = high, if not skip
+	  if (sh_braking_set_flag->get() == 1)
+	  {
+	      if(sh_motor_select->get() == 1)
+	      {
+		    p_motor_1 -> brake(sh_braking_entry->get());	// Set braking for motor 1
+	      }
+	      else if(sh_motor_select->get() == 2)
+	      {
+		    p_motor_2 -> brake(sh_braking_entry->get());	// Set braking for motor 2
+	      }
 	      
+	      sh_power_set_flag-> put(0);		// Make power_set_flag low when succesful power set
+	      sh_braking_set_flag-> put(0);		// Make braking_set_flag low when succesful braking set
+
+
+	  }
+	  // Check if braking full flag is high, if not skip
+	  if (sh_braking_full_flag->get() == 1)
+	  {
+	      if(sh_motor_select->get() == 1)
+	      {
+		    p_motor_1 -> brake_full();				// Stop motor 1
+	      }
+	      else if(sh_motor_select->get() == 2)
+	      {
+		    p_motor_2 -> brake_full();				// Stop motor 2
+	      }
+	      
+	      sh_power_set_flag-> put(0);		// Make power_set_flag low when successful power set
+	      sh_braking_set_flag-> put(0);		// Make braking_set_flag low when successful braking set
+	      sh_braking_full_flag-> put(0);		// Make braking_full_flag low when successful motor stop
+	  }
+	  
+	      delay_ms(100);				// Delay for lower priority tasks
+
 	      
 	      /*
 	      // Sets both motor 1 and 2 to run clockwise for two seconds and prints a message

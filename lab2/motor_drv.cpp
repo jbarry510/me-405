@@ -50,7 +50,7 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	  DDRB |= (1<<DDB6);
 	
 	  // Prints a message if motor 1 construction was sucessful
-	  DBG(ptr_to_serial, "motor 1 constructor OK" << endl);
+	  //DBG(ptr_to_serial, "motor 1 constructor OK" << endl);
 	}
 	
 	// If object is motor 2 then this block is used
@@ -66,7 +66,7 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	  DDRB |= (1<<DDB5);
 	
 	  // Prints a message if motor 2 construction was sucessful
-	  DBG(ptr_to_serial, "motor 2 constructor OK" << endl);
+	  //DBG(ptr_to_serial, "motor 2 constructor OK" << endl);
 	}
 	
 	// If object is not motor 1 or 2 then this block is used

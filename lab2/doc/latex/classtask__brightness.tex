@@ -20,9 +20,9 @@ Inheritance diagram for task\-\_\-brightness\-:\begin{figure}[H]
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classtask__brightness_a5802baf3a0c9fe53ccbce8966d1fad47}{task\-\_\-brightness} (const char $\ast$, unsigned port\-B\-A\-S\-E\-\_\-\-T\-Y\-P\-E, size\-\_\-t, emstream $\ast$)
-\item 
+\begin{DoxyCompactList}\small\item\em No private variables or methods for this class. \end{DoxyCompactList}\item 
 void \hyperlink{classtask__brightness_a615beac07a99f0856f048a46fd9a3898}{run} (void)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This method is called by the R\-T\-O\-S once to run the task loop for ever and ever. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -45,6 +45,12 @@ Definition at line 61 of file task\-\_\-brightness.\-h.
 \item[{emstream $\ast$}]{p\-\_\-ser\-\_\-dev}
 \end{DoxyParamCaption}
 )}}\label{classtask__brightness_a5802baf3a0c9fe53ccbce8966d1fad47}
+
+
+No private variables or methods for this class. 
+
+No protected variables or methods for this class This constructor creates a generic task of which many copies can be made
+
 This constructor creates a task which controls the brightness of an L\-E\-D using input from an A/\-D converter. The main job of this constructor is to call the constructor of parent class ({\ttfamily frt\-\_\-task} ); the parent's constructor the work. 
 \begin{DoxyParams}{Parameters}
 {\em a\-\_\-name} & A character string which will be the name of this task \\
@@ -70,6 +76,10 @@ Definition at line 49 of file task\-\_\-brightness.\-cpp.
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{classtask__brightness_a615beac07a99f0856f048a46fd9a3898}
+
+
+This method is called by the R\-T\-O\-S once to run the task loop for ever and ever. 
+
 This method is called once by the R\-T\-O\-S scheduler. Each time around the for (;;) loop, it reads the A/\-D converter and uses the result to control the brightness of an L\-E\-D. 
 
 Definition at line 64 of file task\-\_\-brightness.\-cpp.

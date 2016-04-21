@@ -69,11 +69,16 @@
  */
 TextQueue* p_print_ser_queue;
 
-// Shared variables to hold power values
+// Shared variables
+TaskShare<int8_t>* sh_motor_select;			// Motor selection share
 
-TaskShare<int8_t>* sh_motor_select;
-TaskShare<int16_t>* sh_power_entry;
-TaskShare<int8_t>* sh_power_set_flag;
+TaskShare<int16_t>* sh_power_entry;			// Power value share
+TaskShare<int8_t>* sh_power_set_flag;			// Flag share indicating power value has changed
+
+TaskShare<int16_t>* sh_braking_entry;			// Braking value share
+TaskShare<int8_t>* sh_braking_set_flag;			// Flag share indicating braking value has changed
+
+TaskShare<int8_t>* sh_braking_full_flag;		// Flag share indicating full braking requested
 
 //=====================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the 
@@ -100,8 +105,14 @@ int main (void)
 	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 10);
 	
 	sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
+	
 	sh_power_entry = new TaskShare<int16_t> ("sh_power_entry");
 	sh_power_set_flag = new TaskShare<int8_t> ("sh_power_set_flag");
+	
+	sh_braking_entry = new TaskShare<int16_t> ("sh_braking_entry");
+	sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
+	
+	sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program

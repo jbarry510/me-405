@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: motor_drv.h Source File</title>
+<title>Lab 2 - Task Motor: motor_drv.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -94,9 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">//======================================================================================</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// This define prevents this .H file from being included multiple times in a .CPP file</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifndef _AVR_MOTOR_H_</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">/// This define prevents this .H file from being included multiple times in a .CPP file</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"></span><span class="preprocessor">#ifndef _AVR_MOTOR_H_</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _AVR_MOTOR_H_</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;emstream.h&quot;</span>                       <span class="comment">// Header for serial ports and devices</span></div>
@@ -120,49 +120,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classmotor__drv.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmotor__drv.html">motor_drv</a></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// The motor class uses this pointer to print debug messages via the serial port</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    emstream* ptr_to_serial;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">// The motor class uses this variable to keep track of which registers to modify for the</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// two H-bridge chips on the ME405 board</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    uint8_t select;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">/* The constructor sets up the motor driver for use. The &quot;= NULL&quot; part is a</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">    * default parameter, meaning that if that parameter isn&#39;t given on the line</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">    * where this constructor is called, the compiler will just fill in &quot;NULL&quot;.</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">    * In this case that has the effect of turning off diagnostic printouts.</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">    * The &quot;uint8_t = 0&quot; fills in a zero for the motor select variable which will give an</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">    * error message when the constructor is done executing.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="classmotor__drv.html#a13875fc8133ee2c8af383c4316278d84">motor_drv</a> (emstream* = NULL, uint8_t = 0);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// The set_power method allows the user to set the power supplied to the motor on a </span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// scale of -255 to 255 where the positive values turn the motor clockwise and negative </span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// values turn the motor counterclockwise.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">set_power</a>(int16_t power) ;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// The brake_full method effectively stops power being supplied to the motor. It does this</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// by enabling the brake to Vcc operating mode of the H-bridge chip.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">brake_full</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// The brake method sets PWM controlled braking for motor. It does this by enabling the brake</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// to GND operating mode of the H-bridge chip.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">brake</a>(uint8_t strength);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}; <span class="comment">// end of class motor_drv</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // _AVR_MOTOR_H_</span></div>
-<div class="ttc" id="classmotor__drv_html"><div class="ttname"><a href="classmotor__drv.html">motor_drv</a></div><div class="ttdoc">This class will enable the H-bridge motor driver chips on the ME 405 board. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00035">motor_drv.h:35</a></div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">protected</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">    /// The motor class uses this pointer to print debug messages via the serial port</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">   39</a></span>&#160;<span class="comment"></span>    emstream* <a class="code" href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">ptr_to_serial</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">    /// The motor class uses this variable to keep track of which registers to modify for the two H-bridge chips on the ME405 board</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">   42</a></span>&#160;<span class="comment"></span>    uint8_t <a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">    /// The constructor sets up the motor driver for use. The &quot;= NULL&quot; part is a</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">    /// default parameter, meaning that if that parameter isn&#39;t given on the line</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">    /// where this constructor is called, the compiler will just fill in &quot;NULL&quot;.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">    /// In this case that has the effect of turning off diagnostic printouts.</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">    /// The &quot;uint8_t = 0&quot; fills in a zero for the motor select variable which will give an</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">    /// error message when the constructor is done executing.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span>    </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classmotor__drv.html#a13875fc8133ee2c8af383c4316278d84">motor_drv</a> (emstream* = NULL, uint8_t = 0);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">    /// The set_power method allows the user to set the power supplied to the motor on a </span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">    /// scale of -255 to 255 where the positive values turn the motor clockwise and negative </span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">    /// values turn the motor counterclockwise.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span>    <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">set_power</a>(int16_t power) ;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    /// The brake_full method effectively stops power being supplied to the motor. It does this</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">    /// by enabling the brake to Vcc operating mode of the H-bridge chip.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment"></span>        <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">brake_full</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">    /// The brake method sets PWM controlled braking for motor. It does this by enabling the brake</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">    /// to GND operating mode of the H-bridge chip.</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>    <span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">brake</a>(uint8_t strength);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}; <span class="comment">/// end of class motor_drv</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/// _AVR_MOTOR_H_</span></div>
+<div class="ttc" id="classmotor__drv_html"><div class="ttname"><a href="classmotor__drv.html">motor_drv</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00035">motor_drv.h:35</a></div></div>
+<div class="ttc" id="classmotor__drv_html_a9cd3052255589d1849217279b4b6e337"><div class="ttname"><a href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">motor_drv::ptr_to_serial</a></div><div class="ttdeci">emstream * ptr_to_serial</div><div class="ttdoc">The motor class uses this pointer to print debug messages via the serial port. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00039">motor_drv.h:39</a></div></div>
 <div class="ttc" id="classmotor__drv_html_a4b6d6fc9698bf76b9bf1bcbb660ad3b7"><div class="ttname"><a href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">motor_drv::set_power</a></div><div class="ttdeci">void set_power(int16_t power)</div><div class="ttdoc">This method takes an integer and sets the motor torque and direction. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00091">motor_drv.cpp:91</a></div></div>
+<div class="ttc" id="classmotor__drv_html_aca3c3dd889fd865607e312faf0e76c65"><div class="ttname"><a href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">motor_drv::select</a></div><div class="ttdeci">uint8_t select</div><div class="ttdoc">The motor class uses this variable to keep track of which registers to modify for the two H-bridge ch...</div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00042">motor_drv.h:42</a></div></div>
 <div class="ttc" id="classmotor__drv_html_abf63b3c932b836bc3f97ebda5fd7e762"><div class="ttname"><a href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">motor_drv::brake</a></div><div class="ttdeci">void brake(uint8_t strength)</div><div class="ttdoc">This method allows for the motor braking to be controlled. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00176">motor_drv.cpp:176</a></div></div>
 <div class="ttc" id="classmotor__drv_html_ab9d99a1b71f8515240ff7748a16c937b"><div class="ttname"><a href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">motor_drv::brake_full</a></div><div class="ttdeci">void brake_full()</div><div class="ttdoc">This method causes the motor to brake fully. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00151">motor_drv.cpp:151</a></div></div>
 <div class="ttc" id="classmotor__drv_html_a13875fc8133ee2c8af383c4316278d84"><div class="ttname"><a href="classmotor__drv.html#a13875fc8133ee2c8af383c4316278d84">motor_drv::motor_drv</a></div><div class="ttdeci">motor_drv(emstream *=NULL, uint8_t=0)</div><div class="ttdoc">This constructor sets up the motor object. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00028">motor_drv.cpp:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

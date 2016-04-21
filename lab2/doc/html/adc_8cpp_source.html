@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: adc.cpp Source File</title>
+<title>Lab 2 - Task Motor: adc.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -143,7 +143,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    ADMUX &amp;= ~(1&lt;&lt;REFS1);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// Print a handy debugging message</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    DBG (<a class="code" href="classadc.html#a14680b48b723bf1adddd2741ebb18a3e">ptr_to_serial</a>, <span class="stringliteral">&quot;A/D constructor OK&quot;</span> &lt;&lt; endl);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">//DBG (ptr_to_serial, &quot;A/D constructor OK&quot; &lt;&lt; endl);</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
@@ -247,11 +247,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classadc_html_a2190a59696a7093e1ea605e998ccf97e"><div class="ttname"><a href="classadc.html#a2190a59696a7093e1ea605e998ccf97e">adc::read_once</a></div><div class="ttdeci">uint16_t read_once(uint8_t)</div><div class="ttdoc">This method takes one A/D reading from the given channel and returns it. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00073">adc.cpp:73</a></div></div>
 <div class="ttc" id="classadc_html_a58f1030fe64d3dea4ccd8a2687dd6fce"><div class="ttname"><a href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">adc::read_oversampled</a></div><div class="ttdeci">uint16_t read_oversampled(uint8_t, uint8_t)</div><div class="ttdoc">This method takes a set number of A/D readings from a given channel and averages them. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00106">adc.cpp:106</a></div></div>
 <div class="ttc" id="classadc_html_a14680b48b723bf1adddd2741ebb18a3e"><div class="ttname"><a href="classadc.html#a14680b48b723bf1adddd2741ebb18a3e">adc::ptr_to_serial</a></div><div class="ttdeci">emstream * ptr_to_serial</div><div class="ttdoc">The ADC class uses this pointer to the serial port to say hello. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00051">adc.h:51</a></div></div>
-<div class="ttc" id="classadc_html"><div class="ttname"><a href="classadc.html">adc</a></div><div class="ttdoc">This class will run the A/D converter on an AVR processor. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00047">adc.h:47</a></div></div>
+<div class="ttc" id="classadc_html"><div class="ttname"><a href="classadc.html">adc</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00047">adc.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

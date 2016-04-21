@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: shares.h File Reference</title>
+<title>Lab 2 - Task Motor: shares.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -92,7 +92,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:acd99bf5d187d4809af2f460a5415e904"><td class="memItemLeft" align="right" valign="top">TextQueue *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#acd99bf5d187d4809af2f460a5415e904">p_print_ser_queue</a></td></tr>
+<tr class="memdesc:acd99bf5d187d4809af2f460a5415e904"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define prevents this .h file from being included multiple times in a .cpp file.  <a href="#acd99bf5d187d4809af2f460a5415e904">More...</a><br/></td></tr>
 <tr class="separator:acd99bf5d187d4809af2f460a5415e904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90445688792da1450704027ac2c4b6db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90445688792da1450704027ac2c4b6db"></a>
+TaskShare&lt; int8_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>sh_motor_select</b></td></tr>
+<tr class="separator:a90445688792da1450704027ac2c4b6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cd0e4789d62c739a93ead239c5c42d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5cd0e4789d62c739a93ead239c5c42d8"></a>
+TaskShare&lt; int16_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#a5cd0e4789d62c739a93ead239c5c42d8">sh_power_entry</a></td></tr>
+<tr class="memdesc:a5cd0e4789d62c739a93ead239c5c42d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor selection share. <br/></td></tr>
+<tr class="separator:a5cd0e4789d62c739a93ead239c5c42d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacc570f48cbc8d62d6b506da980e5b36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacc570f48cbc8d62d6b506da980e5b36"></a>
+TaskShare&lt; int8_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#aacc570f48cbc8d62d6b506da980e5b36">sh_power_set_flag</a></td></tr>
+<tr class="memdesc:aacc570f48cbc8d62d6b506da980e5b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power value share. <br/></td></tr>
+<tr class="separator:aacc570f48cbc8d62d6b506da980e5b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988f3cc5d8ffd96fed75760ef2b6cc12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a988f3cc5d8ffd96fed75760ef2b6cc12"></a>
+TaskShare&lt; int16_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#a988f3cc5d8ffd96fed75760ef2b6cc12">sh_braking_entry</a></td></tr>
+<tr class="memdesc:a988f3cc5d8ffd96fed75760ef2b6cc12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag share indicating power value has changed. <br/></td></tr>
+<tr class="separator:a988f3cc5d8ffd96fed75760ef2b6cc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23b68acc1e60935f6c5897a62b5b0221"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23b68acc1e60935f6c5897a62b5b0221"></a>
+TaskShare&lt; int8_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#a23b68acc1e60935f6c5897a62b5b0221">sh_braking_set_flag</a></td></tr>
+<tr class="memdesc:a23b68acc1e60935f6c5897a62b5b0221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Braking value share. <br/></td></tr>
+<tr class="separator:a23b68acc1e60935f6c5897a62b5b0221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aa2903e32574844afb823db851e91d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5aa2903e32574844afb823db851e91d8"></a>
+TaskShare&lt; int8_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shares_8h.html#a5aa2903e32574844afb823db851e91d8">sh_braking_full_flag</a></td></tr>
+<tr class="memdesc:a5aa2903e32574844afb823db851e91d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag share indicating braking value has changed. <br/></td></tr>
+<tr class="separator:a5aa2903e32574844afb823db851e91d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains extern declarations for queues and other inter-task data communication objects used in a ME405/507/FreeRTOS project.</p>
@@ -116,18 +140,21 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This define prevents this .h file from being included multiple times in a .cpp file. </p>
+<p>Externs: In this section, we declare variables and functions that are used in all (or at least two) of the files in the data acquisition project. Each of these items will also be declared exactly once, without the keyword 'extern', in one .cpp file as well as being declared extern here. This queue allows tasks to send characters to the user interface task for display.</p>
 <p>This is a print queue, descended from <code>emstream</code> so that things can be printed into the queue using the "&lt;&lt;" operator and they'll come out the other end as a stream of characters. It's used by tasks that send things to the user interface task to be printed. </p>
 
 <p>Definition at line <a class="el" href="main_8cpp_source.html#l00070">70</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="main_8cpp_source.html#l00080">main()</a>, and <a class="el" href="task__user_8cpp_source.html#l00066">task_user::run()</a>.</p>
+<p>Referenced by <a class="el" href="main_8cpp_source.html#l00090">main()</a>, and <a class="el" href="task__user_8cpp_source.html#l00080">task_user::run()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

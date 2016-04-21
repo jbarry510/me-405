@@ -9,7 +9,7 @@
  */
 //======================================================================================
 
-// This define prevents this .H file from being included multiple times in a .CPP file
+/// This define prevents this .H file from being included multiple times in a .CPP file
 #ifndef _AVR_MOTOR_H_
 #define _AVR_MOTOR_H_
 
@@ -35,36 +35,35 @@
 class motor_drv
 {
 	protected:
-	// The motor class uses this pointer to print debug messages via the serial port
+	/// The motor class uses this pointer to print debug messages via the serial port
 	emstream* ptr_to_serial;
 	
-	// The motor class uses this variable to keep track of which registers to modify for the
-	// two H-bridge chips on the ME405 board
+	/// The motor class uses this variable to keep track of which registers to modify for the two H-bridge chips on the ME405 board
 	uint8_t select;
 
 	public:
-	/* The constructor sets up the motor driver for use. The "= NULL" part is a
-	* default parameter, meaning that if that parameter isn't given on the line
-	* where this constructor is called, the compiler will just fill in "NULL".
-	* In this case that has the effect of turning off diagnostic printouts.
-	* The "uint8_t = 0" fills in a zero for the motor select variable which will give an
-	* error message when the constructor is done executing.
-	*/
+	/// The constructor sets up the motor driver for use. The "= NULL" part is a
+	/// default parameter, meaning that if that parameter isn't given on the line
+	/// where this constructor is called, the compiler will just fill in "NULL".
+	/// In this case that has the effect of turning off diagnostic printouts.
+	/// The "uint8_t = 0" fills in a zero for the motor select variable which will give an
+	/// error message when the constructor is done executing.
+	
 	motor_drv (emstream* = NULL, uint8_t = 0);
 
-	// The set_power method allows the user to set the power supplied to the motor on a 
-	// scale of -255 to 255 where the positive values turn the motor clockwise and negative 
-	// values turn the motor counterclockwise.
+	/// The set_power method allows the user to set the power supplied to the motor on a 
+	/// scale of -255 to 255 where the positive values turn the motor clockwise and negative 
+	/// values turn the motor counterclockwise.
 	void set_power(int16_t power) ;
 	
-	// The brake_full method effectively stops power being supplied to the motor. It does this
-	// by enabling the brake to Vcc operating mode of the H-bridge chip.
+	/// The brake_full method effectively stops power being supplied to the motor. It does this
+	/// by enabling the brake to Vcc operating mode of the H-bridge chip.
         void brake_full();
 	
-	// The brake method sets PWM controlled braking for motor. It does this by enabling the brake
-	// to GND operating mode of the H-bridge chip.
+	/// The brake method sets PWM controlled braking for motor. It does this by enabling the brake
+	/// to GND operating mode of the H-bridge chip.
 	void brake(uint8_t strength);
 
-}; // end of class motor_drv
+}; /// end of class motor_drv
 
-#endif // _AVR_MOTOR_H_
+#endif /// _AVR_MOTOR_H_

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: motor_drv.cpp Source File</title>
+<title>Lab 2 - Task Motor: motor_drv.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -114,8 +114,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classmotor__drv.html#a13875fc8133ee2c8af383c4316278d84">   28</a></span>&#160;<a class="code" href="classmotor__drv.html#a13875fc8133ee2c8af383c4316278d84">motor_drv::motor_drv</a>(emstream* p_serial_port, uint8_t motor_select)</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// Defines pointer for serial to inputted parameter</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    ptr_to_serial = p_serial_port;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    select = motor_select;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">ptr_to_serial</a> = p_serial_port;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> = motor_select;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Timing channel 1 setup (Fast PWM, Clock prescaler of 8) </span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    TCCR1A |= (1 &lt;&lt; WGM10) | (1 &lt;&lt; COM1B1) | (1 &lt;&lt; COM1A1);</div>
@@ -124,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    TCCR1B &amp;= ~(1 &lt;&lt; CS12) | ~(1 &lt;&lt; CS10);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// If object is motor 1 then this block is used</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span>(select == 1)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 1)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="comment">// Sets direction of port C pins 0-2 to output (Direction control)</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      DDRC |= (1&lt;&lt;DDC0)|(1&lt;&lt;DDC1)|(1&lt;&lt;DDC2);</div>
@@ -136,11 +136,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      DDRB |= (1&lt;&lt;DDB6);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="comment">// Prints a message if motor 1 construction was sucessful</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      DBG(ptr_to_serial, <span class="stringliteral">&quot;motor 1 constructor OK&quot;</span> &lt;&lt; endl);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="comment">//DBG(ptr_to_serial, &quot;motor 1 constructor OK&quot; &lt;&lt; endl);</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// If object is motor 2 then this block is used</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(select == 2)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 2)</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="comment">// Sets direction of port D pins 5-7 to output (Direction control)</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      DDRD |= (1&lt;&lt;DDD5)|(1&lt;&lt;DDD6)|(1&lt;&lt;DDD7);</div>
@@ -152,14 +152,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      DDRB |= (1&lt;&lt;DDB5);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="comment">// Prints a message if motor 2 construction was sucessful</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      DBG(ptr_to_serial, <span class="stringliteral">&quot;motor 2 constructor OK&quot;</span> &lt;&lt; endl);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="comment">//DBG(ptr_to_serial, &quot;motor 2 constructor OK&quot; &lt;&lt; endl);</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// If object is not motor 1 or 2 then this block is used</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="comment">// Prints an error message if select is not a 1 or 2</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      DBG(ptr_to_serial, <span class="stringliteral">&quot;motor constructor FAIL (select must be a 1 or 2)&quot;</span> &lt;&lt; endl);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      DBG(<a class="code" href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">ptr_to_serial</a>, <span class="stringliteral">&quot;motor constructor FAIL (select must be a 1 or 2)&quot;</span> &lt;&lt; endl);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
@@ -177,7 +177,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">   91</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">motor_drv::set_power</a>(int16_t power) </div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="comment">// If object is motor 1 then this block is used</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordflow">if</span>(select == 1)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 1)</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="comment">// Sets motor to turn clockwise and multiples power by -1 to get magnitude</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="keywordflow">if</span>(power &lt; 0)</div>
@@ -201,7 +201,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      }</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;     </div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="comment">// If object is motor 2 then this block is used</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordflow">if</span>(select == 2)</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 2)</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      {</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="comment">// Sets motor to turn clockwise and multiples power by -1 to get magnitude</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">if</span>(power &lt; 0)</div>
@@ -237,14 +237,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">  151</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">motor_drv::brake_full</a>()</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// If object is motor 1 then this block is used</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span>(select == 1)</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 1)</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    {</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <span class="comment">// Sets INA and INB for motor 1 which puts the operating mode into brake to Vcc</span></div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      PORTC |= (1&lt;&lt;PORTC0) | (1&lt;&lt;PORTC1);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    }</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// If object is motor 2 then this block is used</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">if</span>(select == 2)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 2)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    {</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="comment">// Sets INA and INB for motor 2 which puts the operating mode into brake to Vcc</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      PORTD |= (1&lt;&lt;PORTD5) | (1&lt;&lt;PORTD6);</div>
@@ -262,7 +262,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">  176</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">motor_drv::brake</a>(uint8_t strength)</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;{</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="comment">// If object is motor 1 then this block is used</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">if</span>(select == 1)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 1)</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    {</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      <span class="comment">// Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking</span></div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      PORTC &amp;= ~(1&lt;&lt;PORTC0) | ~(1&lt;&lt;PORTC1);</div>
@@ -270,14 +270,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    </div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">// If object is motor 2 then this block is used</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span>(select == 2)</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a> == 2)</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    {</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="comment">// Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      PORTD &amp;= ~(1&lt;&lt;PORTD5) | ~(1&lt;&lt;PORTD6);</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      OCR1A = strength;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    }</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;}</div>
+<div class="ttc" id="classmotor__drv_html_a9cd3052255589d1849217279b4b6e337"><div class="ttname"><a href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">motor_drv::ptr_to_serial</a></div><div class="ttdeci">emstream * ptr_to_serial</div><div class="ttdoc">The motor class uses this pointer to print debug messages via the serial port. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00039">motor_drv.h:39</a></div></div>
 <div class="ttc" id="classmotor__drv_html_a4b6d6fc9698bf76b9bf1bcbb660ad3b7"><div class="ttname"><a href="classmotor__drv.html#a4b6d6fc9698bf76b9bf1bcbb660ad3b7">motor_drv::set_power</a></div><div class="ttdeci">void set_power(int16_t power)</div><div class="ttdoc">This method takes an integer and sets the motor torque and direction. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00091">motor_drv.cpp:91</a></div></div>
+<div class="ttc" id="classmotor__drv_html_aca3c3dd889fd865607e312faf0e76c65"><div class="ttname"><a href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">motor_drv::select</a></div><div class="ttdeci">uint8_t select</div><div class="ttdoc">The motor class uses this variable to keep track of which registers to modify for the two H-bridge ch...</div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8h_source.html#l00042">motor_drv.h:42</a></div></div>
 <div class="ttc" id="motor__drv_8h_html"><div class="ttname"><a href="motor__drv_8h.html">motor_drv.h</a></div></div>
 <div class="ttc" id="classmotor__drv_html_abf63b3c932b836bc3f97ebda5fd7e762"><div class="ttname"><a href="classmotor__drv.html#abf63b3c932b836bc3f97ebda5fd7e762">motor_drv::brake</a></div><div class="ttdeci">void brake(uint8_t strength)</div><div class="ttdoc">This method allows for the motor braking to be controlled. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00176">motor_drv.cpp:176</a></div></div>
 <div class="ttc" id="classmotor__drv_html_ab9d99a1b71f8515240ff7748a16c937b"><div class="ttname"><a href="classmotor__drv.html#ab9d99a1b71f8515240ff7748a16c937b">motor_drv::brake_full</a></div><div class="ttdeci">void brake_full()</div><div class="ttdoc">This method causes the motor to brake fully. </div><div class="ttdef"><b>Definition:</b> <a href="motor__drv_8cpp_source.html#l00151">motor_drv.cpp:151</a></div></div>
@@ -285,7 +287,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

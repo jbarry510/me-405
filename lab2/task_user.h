@@ -26,37 +26,35 @@
  *    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 //**************************************************************************************
 
-// This define prevents this .h file from being included multiple times in a .cpp file
+/// This define prevents this .h file from being included multiple times in a .cpp file
 #ifndef _TASK_USER_H_
 #define _TASK_USER_H_
 
-#include <stdlib.h>                         // Prototype declarations for I/O functions
+#include <stdlib.h>                         /// Prototype declarations for I/O functions
 
-#include "FreeRTOS.h"                       // Primary header for FreeRTOS
-#include "task.h"                           // Header for FreeRTOS task functions
-#include "queue.h"                          // FreeRTOS inter-task communication queues
+#include "FreeRTOS.h"                       /// Primary header for FreeRTOS
+#include "task.h"                           /// Header for FreeRTOS task functions
+#include "queue.h"                          /// FreeRTOS inter-task communication queues
 
-#include "rs232int.h"                       // ME405/507 library for serial comm.
-#include "adc.h"                            // Header for A/D converter class driver
-#include "time_stamp.h"                     // Class to implement a microsecond timer
-#include "taskbase.h"                       // Header for ME405/507 base task class
-#include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
-#include "textqueue.h"                      // Header for a "<<" queue class
-#include "taskshare.h"			    // Header for thread-safe shared data
+#include "rs232int.h"                       /// ME405/507 library for serial comm.
+#include "adc.h"                            /// Header for A/D converter class driver
+#include "time_stamp.h"                     /// Class to implement a microsecond timer
+#include "taskbase.h"                       /// Header for ME405/507 base task class
+#include "taskqueue.h"                      /// Header of wrapper for FreeRTOS queues
+#include "textqueue.h"                      /// Header for a "<<" queue class
+#include "taskshare.h"			    /// Header for thread-safe shared data
 
-#include "shares.h"                         // Shared inter-task communications
-
-
+#include "shares.h"                         /// Shared inter-task communications
 
 /// This macro defines a string that identifies the name and version of this program. 
 #define PROGRAM_VERSION		PMS ("ME405 Lab 2 Modified Program")
 
 
 //-------------------------------------------------------------------------------------
-/** This task interacts with the user for force him/her to do what he/she is told. What
- *  a rude task this is. Then again, computers tend to be that way; if they're polite
- *  with you, they're probably spying on you. 
- */
+/// This task interacts with the user for force him/her to do what he/she is told. What
+///  a rude task this is. Then again, computers tend to be that way; if they're polite
+///  with you, they're probably spying on you. 
+///
 
 class task_user : public TaskBase
 {
@@ -64,22 +62,21 @@ private:
 	// No private variables or methods for this class
 
 protected:
-	// This method displays a simple help message telling the user what to do. It's
-	// protected so that only methods of this class or possibly descendents can use it
-	void print_help_message (void);
+	/// This method displays a simple help message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it
+	void print_help_message (void);	
 	
+	/// This method displays a simple help message for motor control. It's protected so that only methods of this class or possibly descendents can use it
 	void print_help_motor(void);
 
-	// This method displays information about the status of the system
+	/// This method displays information about the status of the system
 	void show_status (void);
 
 public:
-	// This constructor creates a user interface task object
+	/// This constructor creates a user interface task object
 	task_user (const char*, unsigned portBASE_TYPE, size_t, emstream*);
 
-	/** This method is called by the RTOS once to run the task loop for ever and ever.
-	 */
+	/// This method is called by the RTOS once to run the task loop for ever and ever.
 	void run (void);
 };
 
-#endif // _TASK_USER_H_
+#endif /// _TASK_USER_H_

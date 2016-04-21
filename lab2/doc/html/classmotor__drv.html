@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: motor_drv Class Reference</title>
+<title>Lab 2 - Task Motor: motor_drv Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -90,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>This class will enable the H-bridge motor driver chips on the ME 405 board.  
+<p>This define prevents this .H file from being included multiple times in a .CPP file.  
  <a href="classmotor__drv.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="motor__drv_8h_source.html">motor_drv.h</a>&gt;</code></p>
@@ -113,14 +113,17 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a9cd3052255589d1849217279b4b6e337"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9cd3052255589d1849217279b4b6e337"></a>
-emstream *&#160;</td><td class="memItemRight" valign="bottom"><b>ptr_to_serial</b></td></tr>
+emstream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmotor__drv.html#a9cd3052255589d1849217279b4b6e337">ptr_to_serial</a></td></tr>
+<tr class="memdesc:a9cd3052255589d1849217279b4b6e337"><td class="mdescLeft">&#160;</td><td class="mdescRight">The motor class uses this pointer to print debug messages via the serial port. <br/></td></tr>
 <tr class="separator:a9cd3052255589d1849217279b4b6e337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca3c3dd889fd865607e312faf0e76c65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca3c3dd889fd865607e312faf0e76c65"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmotor__drv.html#aca3c3dd889fd865607e312faf0e76c65">select</a></td></tr>
+<tr class="memdesc:aca3c3dd889fd865607e312faf0e76c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">The motor class uses this variable to keep track of which registers to modify for the two H-bridge chips on the ME405 board. <br/></td></tr>
 <tr class="separator:aca3c3dd889fd865607e312faf0e76c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class will enable the H-bridge motor driver chips on the ME 405 board. </p>
+<div class="textblock"><p>This define prevents this .H file from being included multiple times in a .CPP file. </p>
+<p>This class will enable the H-bridge motor driver chips on the ME 405 board.</p>
 <p>The class has two protected variables, one pointer that is used to print debug messages to the serial port and an select variable that is used to choose the appropriate registers for controlling the motor. The driver has three methods available to the user. The set_power method allows the user to set the power supplied to the motor on a scale of -255 to 255 where the positive values turn the motor <b>clockwise</b> and negative values turn the motor <b>counterclockwise</b>. The brake_full method effectively stops power being supplied to the motor. The brake method sets PWM controlled braking for motor. </p>
 
 <p>Definition at line <a class="el" href="motor__drv_8h_source.html#l00035">35</a> of file <a class="el" href="motor__drv_8h_source.html">motor_drv.h</a>.</p>
@@ -150,6 +153,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </div><div class="memdoc">
 
 <p>This constructor sets up the motor object. </p>
+<p>The constructor sets up the motor driver for use. The "= NULL" part is a default parameter, meaning that if that parameter isn't given on the line where this constructor is called, the compiler will just fill in "NULL". In this case that has the effect of turning off diagnostic printouts. The "uint8_t = 0" fills in a zero for the motor select variable which will give an error message when the constructor is done executing.</p>
 <p>The timer for the PWM signal is set up in fast PWM 8-bit mode with a clock prescaler of 8 which gives an operating frequency of approximately 8kHz. The data direction registers and output enables are set for the appropriate motor based on the select variable. A debug message is printed stating if the motor constructor was sucessful or not. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -160,6 +164,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </dl>
 
 <p>Definition at line <a class="el" href="motor__drv_8cpp_source.html#l00028">28</a> of file <a class="el" href="motor__drv_8cpp_source.html">motor_drv.cpp</a>.</p>
+
+<p>References <a class="el" href="motor__drv_8h_source.html#l00039">ptr_to_serial</a>, and <a class="el" href="motor__drv_8h_source.html#l00042">select</a>.</p>
 
 </div>
 </div>
@@ -179,6 +185,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </div><div class="memdoc">
 
 <p>This method allows for the motor braking to be controlled. </p>
+<p>The brake method sets PWM controlled braking for motor. It does this by enabling the brake to GND operating mode of the H-bridge chip.</p>
 <p>The H-bridge chip for the corresponding motor is set to operating mode brake to GND which allows for the use of the PWM signal to vary the braking strength. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -189,6 +196,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 <p>Definition at line <a class="el" href="motor__drv_8cpp_source.html#l00176">176</a> of file <a class="el" href="motor__drv_8cpp_source.html">motor_drv.cpp</a>.</p>
+
+<p>References <a class="el" href="motor__drv_8h_source.html#l00042">select</a>.</p>
 
 </div>
 </div>
@@ -206,10 +215,13 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </div><div class="memdoc">
 
 <p>This method causes the motor to brake fully. </p>
+<p>The brake_full method effectively stops power being supplied to the motor. It does this by enabling the brake to Vcc operating mode of the H-bridge chip.</p>
 <p>The H-bridge chip for the corresponding motor is set to operating mode brake to Vcc which effectively removes power from the motor causing it to brake. </p>
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 <p>Definition at line <a class="el" href="motor__drv_8cpp_source.html#l00151">151</a> of file <a class="el" href="motor__drv_8cpp_source.html">motor_drv.cpp</a>.</p>
+
+<p>References <a class="el" href="motor__drv_8h_source.html#l00042">select</a>.</p>
 
 </div>
 </div>
@@ -228,6 +240,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </div><div class="memdoc">
 
 <p>This method takes an integer and sets the motor torque and direction. </p>
+<p>The set_power method allows the user to set the power supplied to the motor on a scale of -255 to 255 where the positive values turn the motor clockwise and negative values turn the motor counterclockwise.</p>
 <p>The value of the integer corresponds to the amount of torque applied by the motor. The sign of the integer corresponds to the direction the motor turns. Negative values turn the motor <b>clockwise</b> and positive values turn the motor <b>counterclockwise</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -239,6 +252,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 
 <p>Definition at line <a class="el" href="motor__drv_8cpp_source.html#l00091">91</a> of file <a class="el" href="motor__drv_8cpp_source.html">motor_drv.cpp</a>.</p>
 
+<p>References <a class="el" href="motor__drv_8h_source.html#l00042">select</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -248,7 +263,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></t
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

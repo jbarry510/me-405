@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   1: "amt",
   2: "amst",
   3: "abmoprst",
-  4: "pt",
+  4: "pst",
   5: "p"
 };
 

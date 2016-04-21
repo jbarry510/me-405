@@ -5,7 +5,25 @@
 \begin{DoxyCompactItemize}
 \item 
 Text\-Queue $\ast$ \hyperlink{shares_8h_acd99bf5d187d4809af2f460a5415e904}{p\-\_\-print\-\_\-ser\-\_\-queue}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This define prevents this .h file from being included multiple times in a .cpp file. \end{DoxyCompactList}\item 
+\hypertarget{shares_8h_a90445688792da1450704027ac2c4b6db}{Task\-Share$<$ int8\-\_\-t $>$ $\ast$ {\bfseries sh\-\_\-motor\-\_\-select}}\label{shares_8h_a90445688792da1450704027ac2c4b6db}
+
+\item 
+\hypertarget{shares_8h_a5cd0e4789d62c739a93ead239c5c42d8}{Task\-Share$<$ int16\-\_\-t $>$ $\ast$ \hyperlink{shares_8h_a5cd0e4789d62c739a93ead239c5c42d8}{sh\-\_\-power\-\_\-entry}}\label{shares_8h_a5cd0e4789d62c739a93ead239c5c42d8}
+
+\begin{DoxyCompactList}\small\item\em Motor selection share. \end{DoxyCompactList}\item 
+\hypertarget{shares_8h_aacc570f48cbc8d62d6b506da980e5b36}{Task\-Share$<$ int8\-\_\-t $>$ $\ast$ \hyperlink{shares_8h_aacc570f48cbc8d62d6b506da980e5b36}{sh\-\_\-power\-\_\-set\-\_\-flag}}\label{shares_8h_aacc570f48cbc8d62d6b506da980e5b36}
+
+\begin{DoxyCompactList}\small\item\em Power value share. \end{DoxyCompactList}\item 
+\hypertarget{shares_8h_a988f3cc5d8ffd96fed75760ef2b6cc12}{Task\-Share$<$ int16\-\_\-t $>$ $\ast$ \hyperlink{shares_8h_a988f3cc5d8ffd96fed75760ef2b6cc12}{sh\-\_\-braking\-\_\-entry}}\label{shares_8h_a988f3cc5d8ffd96fed75760ef2b6cc12}
+
+\begin{DoxyCompactList}\small\item\em Flag share indicating power value has changed. \end{DoxyCompactList}\item 
+\hypertarget{shares_8h_a23b68acc1e60935f6c5897a62b5b0221}{Task\-Share$<$ int8\-\_\-t $>$ $\ast$ \hyperlink{shares_8h_a23b68acc1e60935f6c5897a62b5b0221}{sh\-\_\-braking\-\_\-set\-\_\-flag}}\label{shares_8h_a23b68acc1e60935f6c5897a62b5b0221}
+
+\begin{DoxyCompactList}\small\item\em Braking value share. \end{DoxyCompactList}\item 
+\hypertarget{shares_8h_a5aa2903e32574844afb823db851e91d8}{Task\-Share$<$ int8\-\_\-t $>$ $\ast$ \hyperlink{shares_8h_a5aa2903e32574844afb823db851e91d8}{sh\-\_\-braking\-\_\-full\-\_\-flag}}\label{shares_8h_a5aa2903e32574844afb823db851e91d8}
+
+\begin{DoxyCompactList}\small\item\em Flag share indicating braking value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -23,6 +41,12 @@ Definition in file \hyperlink{shares_8h_source}{shares.\-h}.
 \hypertarget{shares_8h_acd99bf5d187d4809af2f460a5415e904}{\index{shares.\-h@{shares.\-h}!p\-\_\-print\-\_\-ser\-\_\-queue@{p\-\_\-print\-\_\-ser\-\_\-queue}}
 \index{p\-\_\-print\-\_\-ser\-\_\-queue@{p\-\_\-print\-\_\-ser\-\_\-queue}!shares.h@{shares.\-h}}
 \subsubsection[{p\-\_\-print\-\_\-ser\-\_\-queue}]{\setlength{\rightskip}{0pt plus 5cm}Text\-Queue$\ast$ p\-\_\-print\-\_\-ser\-\_\-queue}}\label{shares_8h_acd99bf5d187d4809af2f460a5415e904}
+
+
+This define prevents this .h file from being included multiple times in a .cpp file. 
+
+Externs\-: In this section, we declare variables and functions that are used in all (or at least two) of the files in the data acquisition project. Each of these items will also be declared exactly once, without the keyword 'extern', in one .cpp file as well as being declared extern here. This queue allows tasks to send characters to the user interface task for display.
+
 This is a print queue, descended from {\ttfamily emstream} so that things can be printed into the queue using the \char`\"{}$<$$<$\char`\"{} operator and they'll come out the other end as a stream of characters. It's used by tasks that send things to the user interface task to be printed. 
 
 Definition at line 70 of file main.\-cpp.

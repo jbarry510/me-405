@@ -10,7 +10,7 @@
  */
 //======================================================================================
 
-// This define prevents this .H file from being included multiple times in a .CPP file
+/// This define prevents this .H file from being included multiple times in a .CPP file
 #ifndef _Task_MOTOR_H_
 #define _Task_MOTOR_H_
 
@@ -33,17 +33,17 @@
 class task_motor : public TaskBase
 {
 private:
-	// No private variables or methods for this class
+	/// No private variables or methods for this class
 
 protected:
-	// No protected variables or methods for this class
+	/// No protected variables or methods for this class
   
 public:
-	// This constructor creates a generic motor task of which many copies can be made.
+	/// This constructor creates a generic motor task of which many copies can be made.
 	task_motor (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
-	// This method is called by the RTOS once to run the task loop for ever and ever.
+	/// This method is called by the RTOS once to run the task loop for ever and ever.
 	void run (void);
 };
 
-#endif // _Task_MOTOR_H__
+#endif /// _Task_MOTOR_H__

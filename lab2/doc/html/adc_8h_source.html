@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Lab 1 - Motor Driver: adc.h Source File</title>
+<title>Lab 2 - Task Motor: adc.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Lab 1 - Motor Driver
+   <div id="projectname">Lab 2 - Task Motor
    &#160;<span id="projectnumber">0.001</span>
    </div>
   </td>
@@ -111,9 +111,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> *    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE </span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> *    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//======================================================================================</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// This define prevents this .H file from being included multiple times in a .CPP file</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifndef _AVR_ADC_H_</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">/// This define prevents this .H file from being included multiple times in a .CPP file</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment"></span><span class="preprocessor">#ifndef _AVR_ADC_H_</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _AVR_ADC_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;emstream.h&quot;</span>                       <span class="comment">// Header for serial ports and devices</span></div>
@@ -136,39 +136,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">        /// The ADC class uses this pointer to the serial port to say hello</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classadc.html#a14680b48b723bf1adddd2741ebb18a3e">   51</a></span>&#160;<span class="comment"></span>        emstream* <a class="code" href="classadc.html#a14680b48b723bf1adddd2741ebb18a3e">ptr_to_serial</a>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="comment">// The constructor sets up the A/D converter for use. The &quot;= NULL&quot; part is a</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="comment">// default parameter, meaning that if that parameter isn&#39;t given on the line</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">// where this constructor is called, the compiler will just fill in &quot;NULL&quot;.</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="comment">// In this case that has the effect of turning off diagnostic printouts</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="classadc.html#af3b8262c08f5fc5ae325a20622883424">adc</a> (emstream* = NULL);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="comment">// This function reads one channel once, returning the result as an unsigned </span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">// integer; it should be called from within a normal task, not an ISR</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        uint16_t <a class="code" href="classadc.html#a2190a59696a7093e1ea605e998ccf97e">read_once</a> (uint8_t);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">// This function reads the A/D lots of times and returns the average. Doing so</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// implements a crude sort of low-pass filtering that can help reduce noise</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    uint16_t <a class="code" href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">read_oversampled</a> (uint8_t, uint8_t);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">        /// The constructor sets up the A/D converter for use. The &quot;= NULL&quot; part is a</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">        /// default parameter, meaning that if that parameter isn&#39;t given on the line</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">        /// where this constructor is called, the compiler will just fill in &quot;NULL&quot;.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">        /// In this case that has the effect of turning off diagnostic printouts</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment"></span>        <a class="code" href="classadc.html#af3b8262c08f5fc5ae325a20622883424">adc</a> (emstream* = NULL);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">        /// This function reads one channel once, returning the result as an unsigned </span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        /// integer; it should be called from within a normal task, not an ISR</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        uint16_t <a class="code" href="classadc.html#a2190a59696a7093e1ea605e998ccf97e">read_once</a> (uint8_t);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        /// This function reads the A/D lots of times and returns the average. Doing so</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        /// implements a crude sort of low-pass filtering that can help reduce noise</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span>    uint16_t <a class="code" href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">read_oversampled</a> (uint8_t, uint8_t);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}; <span class="comment">// end of class adc</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// This operator prints the A/D converter (see file adc.cpp for details). It&#39;s not </span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// a part of class adc, but it operates on objects of class adc</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;emstream&amp; <a class="code" href="adc_8h.html#a6e6d1e227b216fe2a1fee9b0ea52180d">operator &lt;&lt; </a>(emstream&amp;, <a class="code" href="classadc.html">adc</a>&amp;);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}; <span class="comment">/// end of class adc</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">/// This operator prints the A/D converter (see file adc.cpp for details). It&#39;s not </span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">/// a part of class adc, but it operates on objects of class adc</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span>emstream&amp; <a class="code" href="adc_8h.html#a6e6d1e227b216fe2a1fee9b0ea52180d">operator &lt;&lt; </a>(emstream&amp;, <a class="code" href="classadc.html">adc</a>&amp;);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif // _AVR_ADC_H_</span></div>
-<div class="ttc" id="adc_8h_html_a6e6d1e227b216fe2a1fee9b0ea52180d"><div class="ttname"><a href="adc_8h.html#a6e6d1e227b216fe2a1fee9b0ea52180d">operator&lt;&lt;</a></div><div class="ttdeci">emstream &amp; operator&lt;&lt;(emstream &amp;, adc &amp;)</div><div class="ttdoc">This overloaded operator &quot;prints the A/D converter.&quot;. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00141">adc.cpp:141</a></div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/// _AVR_ADC_H_</span></div>
+<div class="ttc" id="adc_8h_html_a6e6d1e227b216fe2a1fee9b0ea52180d"><div class="ttname"><a href="adc_8h.html#a6e6d1e227b216fe2a1fee9b0ea52180d">operator&lt;&lt;</a></div><div class="ttdeci">emstream &amp; operator&lt;&lt;(emstream &amp;, adc &amp;)</div><div class="ttdoc">end of class adc </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00141">adc.cpp:141</a></div></div>
 <div class="ttc" id="classadc_html_af3b8262c08f5fc5ae325a20622883424"><div class="ttname"><a href="classadc.html#af3b8262c08f5fc5ae325a20622883424">adc::adc</a></div><div class="ttdeci">adc(emstream *=NULL)</div><div class="ttdoc">This constructor sets up an A/D converter. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00042">adc.cpp:42</a></div></div>
 <div class="ttc" id="classadc_html_a2190a59696a7093e1ea605e998ccf97e"><div class="ttname"><a href="classadc.html#a2190a59696a7093e1ea605e998ccf97e">adc::read_once</a></div><div class="ttdeci">uint16_t read_once(uint8_t)</div><div class="ttdoc">This method takes one A/D reading from the given channel and returns it. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00073">adc.cpp:73</a></div></div>
 <div class="ttc" id="classadc_html_a58f1030fe64d3dea4ccd8a2687dd6fce"><div class="ttname"><a href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">adc::read_oversampled</a></div><div class="ttdeci">uint16_t read_oversampled(uint8_t, uint8_t)</div><div class="ttdoc">This method takes a set number of A/D readings from a given channel and averages them. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00106">adc.cpp:106</a></div></div>
 <div class="ttc" id="classadc_html_a14680b48b723bf1adddd2741ebb18a3e"><div class="ttname"><a href="classadc.html#a14680b48b723bf1adddd2741ebb18a3e">adc::ptr_to_serial</a></div><div class="ttdeci">emstream * ptr_to_serial</div><div class="ttdoc">The ADC class uses this pointer to the serial port to say hello. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00051">adc.h:51</a></div></div>
-<div class="ttc" id="classadc_html"><div class="ttname"><a href="classadc.html">adc</a></div><div class="ttdoc">This class will run the A/D converter on an AVR processor. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00047">adc.h:47</a></div></div>
+<div class="ttc" id="classadc_html"><div class="ttname"><a href="classadc.html">adc</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00047">adc.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 13 2016 22:43:54 for Lab 1 - Motor Driver by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 21 2016 14:12:54 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
