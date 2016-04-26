@@ -53,7 +53,9 @@
 #include "task_user.h"                      // Header for user interface task
 #include "motor_drv.h"                      // Include header for the motor class
 #include "task_motor.h"                     // Include header for motor task
-
+#include "encoder_drv.h"
+#include "task_encoder.h"
+#include <stdio.h>
 
 // Declare the queues which are used by tasks to communicate with each other here. 
 // Each queue must also be declared 'extern' in a header file which will be read 
@@ -79,6 +81,8 @@ TaskShare<int16_t>* sh_braking_entry;			// Braking value share
 TaskShare<int8_t>* sh_braking_set_flag;			// Flag share indicating braking value has changed
 
 TaskShare<int8_t>* sh_braking_full_flag;		// Flag share indicating full braking requested
+
+TaskShare<volatile uint8_t>* sh_encoder_count_1;
 
 //=====================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the 
@@ -113,6 +117,8 @@ int main (void)
 	sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
 	
 	sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
+	
+	sh_encoder_count_1 = new TaskShare<volatile uint8_t> ("sh_encoder_count_1");
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program
@@ -123,6 +129,8 @@ int main (void)
 	
 	// Creating a task that operates the motor and runs a defined program
 	new task_motor ("Motor", task_priority (3), 280, p_ser_port);
+	
+	new task_encoder ("Encoder", task_priority (3), 280, p_ser_port);
 
 	// Here's where the RTOS scheduler is started up. It should never exit as long as
 	// power is on and the microcontroller isn't rebooted

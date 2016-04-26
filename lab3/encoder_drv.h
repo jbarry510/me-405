@@ -28,7 +28,7 @@
  *  @details TODO The class has ...
  */
 
-class motor_drv
+class encoder_drv
 {
 	protected:
 	/// The motor class uses this pointer to print debug messages via the serial port

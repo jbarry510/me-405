@@ -48,4 +48,6 @@ extern TaskShare<int8_t>* sh_braking_set_flag;			/// Flag share indicating braki
 
 extern TaskShare<int8_t>* sh_braking_full_flag;			/// Flag share indicating full braking requested
 
+extern TaskShare<volatile uint8_t>* sh_encoder_count_1;
+
 #endif /// _SHARES_H_

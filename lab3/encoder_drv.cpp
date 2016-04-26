@@ -10,6 +10,7 @@
 
 #include <stdlib.h>                         // Include standard library header files
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "rs232int.h"                       // Include header for serial port class
 
@@ -20,6 +21,7 @@
 #include "shares.h"                         // Shared inter-task communications
 
 
+
 //-------------------------------------------------------------------------------------
 /** \brief TODO This ...
  *  \details TODO The ...
@@ -28,7 +30,9 @@
 
 encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 {
-      SREG |= 1<<I;				// Sets 7th bit to 1 to enable global intterupts I=7?
+      ptr_to_serial = p_serial_port;
+      sh_encoder_count_1->put(0);
+      SREG |= 1<<7;				// Sets 7th bit to 1 to enable global interrupts
       
       // If external interrupt_channel is inbetween 4 and 7, set to "Any logical change on INTn generates
       // an interrupt request."
@@ -36,6 +40,8 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       {
 	    EICRB &= ~(1<<interrupt_ch);	// Sets the 'interrupt channel passed in' bit to zero
 	    EICRB |= 1<<(interrupt_ch - 1);	// Sets the 'interrupt channel' minus one bit to one
+	    EIMSK |= (1<<interrupt_ch);
+	    //DBG(ptr_to_serial, "Constructed " << endl);
       }
       
       // If external interrupt_channel is inbetween 0 and 3, set to "Any edge of INTn generates asynchronously
@@ -44,8 +50,14 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       {
 	    EICRA &= ~(1<<interrupt_ch);	// Sets the 'interrupt channel passed in' bit to zero
 	    EICRA |= 1<<(interrupt_ch - 1);	// Sets the 'interrupt channel' minus one bit to one
+	    EIMSK |= (1<<interrupt_ch);
       }
+      else
+      {
       
+	    DBG(ptr_to_serial, "encoder_drv failed" << endl);
+	
+      }
 
 }
 
@@ -55,10 +67,30 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
  */
 
 // TODO: should encoder_count be specified for each motor?
-ISR (isr_TRIGGER_FIND_ME)
+ISR (INT5_vect)
 {
-      sh_encoder_count->put() = sh_encoder_count->get() + 1;			// Increment encoder count
-  
-  
+      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
+      //sh_encoder_count_1->put(1);
+      
+      //DBG(ptr_to_serial, "Entered Interrupt!" << endl); // Cant use DBG or ptr_to_serial 
+   
+}
+/*
+ISR (INT5_vect)
+{
+      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
+
+}
+
+ISR (INT6_vect)
+{
+      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
+
+}
+
+ISR (INT7_vect)
+{
+      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
   
 }
+*/

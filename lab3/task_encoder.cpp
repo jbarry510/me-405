@@ -19,6 +19,7 @@
 
  */
 // TODO:...
+			
 task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
 			emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
@@ -35,8 +36,18 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 void task_encoder::run (void)
 {
       
-  
-  
+      encoder_drv* p_enc_1 = new encoder_drv(p_serial, 5);
+      
+      //EICRB &= ~(1<<ISC61);	// Set bit 4 high on EICRB
+      //EICRB |= 1<<(ISC60);	// set bit 5 low on EICRB
+      //EIMSK |= (1<<interrupt_ch);
+      
+      for(;;)
+      {
+	*p_serial << sh_encoder_count_1->get() << endl;
+	delay_ms(1000);
+	
+      }
       //sh_encoder_count
       
       
