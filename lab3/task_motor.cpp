@@ -10,6 +10,7 @@
  */
 //**************************************************************************************
 #include "task_motor.h"                     // Header for this task
+
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications

@@ -1,8 +1,6 @@
 //======================================================================================
-/** @file task_motor.h
- *  This file contains the header for a task class that sets the power of the two motors 
- *  and lets them run for two seconds then brakes them, waits for two seconds, and then 
- *  runs them again in the opposite direction.
+/** @file task_encoder.h
+ *  TODO This file contains the header for a task class that...
  *
  *  Revisions:
  *    @li 04-13-2016 ME405 Group 3 original file
@@ -11,8 +9,8 @@
 //======================================================================================
 
 /// This define prevents this .H file from being included multiple times in a .CPP file
-#ifndef _Task_MOTOR_H_
-#define _Task_MOTOR_H_
+#ifndef _TASK_ENCODER_H_
+#define _TASK_ENCODER_H_
 
 #include <stdlib.h>                         // Prototype declarations for I/O functions
 #include <avr/io.h>                         // Header for special function registers
@@ -26,14 +24,14 @@
 #include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
 #include "queue.h"                          // Header for FreeRTOS queues
 
-#include "motor_drv.h"                      // Include header for the motor class
+#include "encoder_drv.h"                    // Include header for the encoder class
 
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
 
-class task_motor : public TaskBase
+class task_encoder : public TaskBase
 {
 private:
 	/// No private variables or methods for this class
@@ -49,4 +47,4 @@ public:
 	void run (void);
 };
 
-#endif /// _Task_MOTOR_H__
+#endif /// _TASK_ENCODER_H__

@@ -154,4 +154,3 @@ emstream& operator << (emstream& serpt, adc& a2d)
 		  
 	return (serpt);
 }
-
