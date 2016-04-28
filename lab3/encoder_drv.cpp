@@ -41,56 +41,33 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 	    EICRB &= ~(1<<interrupt_ch);	// Sets the 'interrupt channel passed in' bit to zero
 	    EICRB |= 1<<(interrupt_ch - 1);	// Sets the 'interrupt channel' minus one bit to one
 	    EIMSK |= (1<<interrupt_ch);
-	    //DBG(ptr_to_serial, "Constructed " << endl);
       }
-      
-      // If external interrupt_channel is inbetween 0 and 3, set to "Any edge of INTn generates asynchronously
-      // an interrupt request."
-      else if(interrupt_ch >= 0 && interrupt_ch <= 3)
-      {
-	    EICRA &= ~(1<<interrupt_ch);	// Sets the 'interrupt channel passed in' bit to zero
-	    EICRA |= 1<<(interrupt_ch - 1);	// Sets the 'interrupt channel' minus one bit to one
-	    EIMSK |= (1<<interrupt_ch);
-      }
-      else
-      {
-      
-	    DBG(ptr_to_serial, "encoder_drv failed" << endl);
-	
-      }
-
 }
 
+//-------------------------------------------------------------------------------------
 /** \brief TODO This ...
  *  \details TODO The ...
- *  @param param description
+ *  @param INT4_vect Interrupt vector for pin E4 (External interrupt)
  */
 
-// TODO: should encoder_count be specified for each motor?
-ISR (INT5_vect)
+ISR (INT4_vect)
 {
-      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
-      //sh_encoder_count_1->put(1);
-      
-      //DBG(ptr_to_serial, "Entered Interrupt!" << endl); // Cant use DBG or ptr_to_serial 
-   
-}
-/*
-ISR (INT5_vect)
-{
-      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
-
-}
-
-ISR (INT6_vect)
-{
-      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
-
+    if(EIFR[INTF4] | EIFR[INTF5])				// Checks if pin E interrupt 4 or 5 was enabled
+    {  
+      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);	// Increment encoder count for motor 1
+      sh_encoder_old_state_1 -> put(sh_encoder_new_state_1);	// Saves old state of motor 1 (channels A and B)
+      sh_encoder_new_state_1 -> put((PINE[6] << 1) | PINE[7]);	// Stores new state of motor 1 (channels A and B)
+    }
+    else if (EIFR[INTF6] | EIFR[INTF7])				// Checks if pin E interrupt 6 or 7 was enabled
+    {
+      sh_encoder_count_2->put(sh_encoder_count_2->get() + 1);	// Increment encoder count for motor 2
+      sh_encoder_old_state_2 -> put(sh_encoder_new_state_1);	// Saves old state of motor 2 (channels A and B)
+      sh_encoder_new_state_2 -> put(PINE[4] >> 1 | PINE[5]);	// Stores new state of motor 2 (channels A and B)
+    }
+    else {}
 }
 
-ISR (INT7_vect)
-{
-      sh_encoder_count_1->put(sh_encoder_count_1->get() + 1);		// Increment encoder count
-  
-}
-*/
+// Aliases the other pin E interrupts to run the pin E4 interrupt service routine
+ISR_ALIAS(INT5_vect, INT4_vect);
+ISR_ALIAS(INT6_vect, INT4_vect);
+ISR_ALIAS(INT7_vect, INT4_vect);
