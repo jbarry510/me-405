@@ -35,22 +35,14 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 
 void task_encoder::run (void)
 {
-      
-      encoder_drv* p_enc_1 = new encoder_drv(p_serial, 5);
-      
-      //EICRB &= ~(1<<ISC61);	// Set bit 4 high on EICRB
-      //EICRB |= 1<<(ISC60);	// set bit 5 low on EICRB
-      //EIMSK |= (1<<interrupt_ch);
+      encoder_drv* p_enc_1 = new encoder_drv(p_serial, 7);
       
       for(;;)
       {
-	*p_serial << sh_encoder_count_1->get() << endl;
-	delay_ms(1000);
+	*p_serial << PMS("sh_encoder_count_2     = ") << sh_encoder_count_2->get() << endl;
+	*p_serial << PMS("sh_encoder_new_state_2 = ") << sh_encoder_new_state_2->get() << endl;
+	
+	delay_ms(100);
 	
       }
-      //sh_encoder_count
-      
-      
-      //sh_error_count
-  
 }

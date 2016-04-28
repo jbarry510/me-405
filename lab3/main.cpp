@@ -55,7 +55,6 @@
 #include "task_motor.h"                     // Include header for motor task
 #include "encoder_drv.h"
 #include "task_encoder.h"
-#include <stdio.h>
 
 // Declare the queues which are used by tasks to communicate with each other here. 
 // Each queue must also be declared 'extern' in a header file which will be read 
@@ -82,7 +81,17 @@ TaskShare<int8_t>* sh_braking_set_flag;			// Flag share indicating braking value
 
 TaskShare<int8_t>* sh_braking_full_flag;		// Flag share indicating full braking requested
 
-TaskShare<volatile uint8_t>* sh_encoder_count_1;
+TaskShare<volatile uint8_t>* sh_encoder_count_1;	// Motor 1 encoder count
+TaskShare<volatile uint8_t>* sh_encoder_count_2;	// Motor 1 encoder count
+
+TaskShare<volatile uint8_t>* sh_encoder_old_state_1;	// Motor 1 encoder previous state
+TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	// Motor 1 encoder next state
+
+TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	// Motor 2 encoder previous state
+TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	// Motor 2 encoder next state
+
+TaskShare<uint8_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
+TaskShare<uint8_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 
 //=====================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the 
@@ -103,34 +112,52 @@ int main (void)
 	// interface task after setup is complete and the task scheduler has been started
 	// by the function vTaskStartScheduler()
 	rs232* p_ser_port = new rs232 (9600, 1);
-	*p_ser_port << clrscr << PMS ("ME405 Lab 1 Starting Program") << endl;
+	*p_ser_port << clrscr << PMS ("ME405 Lab 3 Starting Program") << endl;
 
 	// Create the queues and other shared data items here
-	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 10);
+	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 30);
 	
+	// Create a motor select share
 	sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
 	
+	// Create a motor power variable share and flag to indicate a power value change
 	sh_power_entry = new TaskShare<int16_t> ("sh_power_entry");
 	sh_power_set_flag = new TaskShare<int8_t> ("sh_power_set_flag");
 	
+	// Create a motor braking variable share and flag to indicate a braking value change
 	sh_braking_entry = new TaskShare<int16_t> ("sh_braking_entry");
 	sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
 	
+	// Create a flag to indicate a full braking requested
 	sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
 	
-	sh_encoder_count_1 = new TaskShare<volatile uint8_t> ("sh_encoder_count_1");
+	// Create encoder counters for motor 1 and motor 2
+	sh_encoder_count_1 = new TaskShare<volatile uint8_t> ("sh_encoder_count_1");	// Motor 1 encoder count
+	sh_encoder_count_2 = new TaskShare<volatile uint8_t> ("sh_encoder_count_2");	// Motor 1 encoder count
+	
+	// Create motor 1 shares for previous and new states to determine direction and tick skips
+	sh_encoder_old_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_1") ;	// Motor 1 encoder previous state
+	sh_encoder_new_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_1");	// Motor 1 encoder next state
+
+	// Create motor 2 shares for previous and new states to determine direction and tick skips
+	sh_encoder_old_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_2");	// Motor 2 encoder previous state
+	sh_encoder_new_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_2");	// Motor 2 encoder next state
+	
+	// Create encoder tick jump error counts for motor 1 and motor 2
+	sh_encoder_error_count_1 = new TaskShare<uint8_t> ("sh_encoder_error_count_1");		// Motor 1 tick jump error count
+	sh_encoder_error_count_2 = new TaskShare<uint8_t> ("sh_encoder_error_count_2");		// Motor 2 tick jump error count
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program
 	new task_user ("UserInt", task_priority (1), 260, p_ser_port);
 
 	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
-	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
+// 	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
 	
 	// Creating a task that operates the motor and runs a defined program
 	new task_motor ("Motor", task_priority (3), 280, p_ser_port);
 	
-	new task_encoder ("Encoder", task_priority (3), 280, p_ser_port);
+	new task_encoder ("Encoder", task_priority (2), 280, p_ser_port);
 
 	// Here's where the RTOS scheduler is started up. It should never exit as long as
 	// power is on and the microcontroller isn't rebooted
