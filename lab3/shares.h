@@ -48,8 +48,8 @@ extern TaskShare<int8_t>* sh_braking_set_flag;			/// Flag share indicating braki
 
 extern TaskShare<int8_t>* sh_braking_full_flag;			/// Flag share indicating full braking requested
 
-extern TaskShare<volatile uint8_t>* sh_encoder_count_1;		/// Motor 1 encoder count
-extern TaskShare<volatile uint8_t>* sh_encoder_count_2;		/// Motor 1 encoder count
+extern TaskShare<volatile uint16_t>* sh_encoder_count_1;		/// Motor 1 encoder count
+extern TaskShare<volatile uint16_t>* sh_encoder_count_2;		/// Motor 1 encoder count
 
 extern TaskShare<volatile uint8_t>* sh_encoder_old_state_1;	/// Motor 1 encoder previous state
 extern TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	/// Motor 1 encoder next state
@@ -57,7 +57,7 @@ extern TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	/// Motor 1 encoder 
 extern TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	/// Motor 2 encoder previous state
 extern TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	/// Motor 2 encoder next state
 
-extern TaskShare<uint8_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
-extern TaskShare<uint8_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
+extern TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
+extern TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 
 #endif /// _SHARES_H_

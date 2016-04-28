@@ -81,8 +81,8 @@ TaskShare<int8_t>* sh_braking_set_flag;			// Flag share indicating braking value
 
 TaskShare<int8_t>* sh_braking_full_flag;		// Flag share indicating full braking requested
 
-TaskShare<volatile uint8_t>* sh_encoder_count_1;	// Motor 1 encoder count
-TaskShare<volatile uint8_t>* sh_encoder_count_2;	// Motor 1 encoder count
+TaskShare<volatile uint16_t>* sh_encoder_count_1;	// Motor 1 encoder count
+TaskShare<volatile uint16_t>* sh_encoder_count_2;	// Motor 1 encoder count
 
 TaskShare<volatile uint8_t>* sh_encoder_old_state_1;	// Motor 1 encoder previous state
 TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	// Motor 1 encoder next state
@@ -90,8 +90,8 @@ TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	// Motor 1 encoder next sta
 TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	// Motor 2 encoder previous state
 TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	// Motor 2 encoder next state
 
-TaskShare<uint8_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
-TaskShare<uint8_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
+TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
+TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 
 //=====================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the 
@@ -132,8 +132,8 @@ int main (void)
 	sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
 	
 	// Create encoder counters for motor 1 and motor 2
-	sh_encoder_count_1 = new TaskShare<volatile uint8_t> ("sh_encoder_count_1");	// Motor 1 encoder count
-	sh_encoder_count_2 = new TaskShare<volatile uint8_t> ("sh_encoder_count_2");	// Motor 1 encoder count
+	sh_encoder_count_1 = new TaskShare<volatile uint16_t> ("sh_encoder_count_1");		// Motor 1 encoder count
+	sh_encoder_count_2 = new TaskShare<volatile uint16_t> ("sh_encoder_count_2");		// Motor 1 encoder count
 	
 	// Create motor 1 shares for previous and new states to determine direction and tick skips
 	sh_encoder_old_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_1") ;	// Motor 1 encoder previous state
@@ -144,8 +144,8 @@ int main (void)
 	sh_encoder_new_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_2");	// Motor 2 encoder next state
 	
 	// Create encoder tick jump error counts for motor 1 and motor 2
-	sh_encoder_error_count_1 = new TaskShare<uint8_t> ("sh_encoder_error_count_1");		// Motor 1 tick jump error count
-	sh_encoder_error_count_2 = new TaskShare<uint8_t> ("sh_encoder_error_count_2");		// Motor 2 tick jump error count
+	sh_encoder_error_count_1 = new TaskShare<uint16_t> ("sh_encoder_error_count_1");		// Motor 1 tick jump error count
+	sh_encoder_error_count_2 = new TaskShare<uint16_t> ("sh_encoder_error_count_2");		// Motor 2 tick jump error count
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program

@@ -35,14 +35,17 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 
 void task_encoder::run (void)
 {
-      encoder_drv* p_enc_1 = new encoder_drv(p_serial, 7);
+      encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
       
       for(;;)
       {
-	*p_serial << PMS("sh_encoder_count_2     = ") << sh_encoder_count_2->get() << endl;
-	*p_serial << PMS("sh_encoder_new_state_2 = ") << sh_encoder_new_state_2->get() << endl;
+	*p_serial << PMS("Encoder count 2 = ") << dec << sh_encoder_count_2->get() << endl;
+	*p_serial << PMS("OLD state 2 = ") << bin << sh_encoder_old_state_2->get() << endl;
+	*p_serial << PMS("NEW state 2 = ") << bin << sh_encoder_new_state_2->get() << endl;
+	*p_serial << PMS("Error count 2 = ") << dec << sh_encoder_error_count_2->get() << endl;
+	*p_serial << endl;
 	
-	delay_ms(100);
+	delay_ms(500);
 	
       }
 }

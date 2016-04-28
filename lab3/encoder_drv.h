@@ -45,6 +45,8 @@ class encoder_drv
 
 	encoder_drv (emstream* = NULL, uint8_t = 0);
 
+	private:
+	  
 }; /// end of class encoder_drv
 
 #endif /// _ENCODER_DRV_H_

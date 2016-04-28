@@ -44,21 +44,24 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       sh_encoder_old_state_2->put(0);
       sh_encoder_new_state_2->put(0);
       
-      
       SREG |= 1<<7;				// Sets 7th bit to 1 to enable global interrupts
       
-      // If external interrupt_channel is inbetween 4 and 7, set to "Any logical change on INTn generates
-      // an interrupt request."
-//       if(interrupt_ch >= 4 && interrupt_ch <= 7)
-//       {
-	    EICRB &= ~(1<<interrupt_ch);	// Sets the 'interrupt channel passed in' bit to zero
-	    EICRB |= 1<<(interrupt_ch - 1);	// Sets the 'interrupt channel' minus one bit to one
-	    EIMSK |= (1<<interrupt_ch);
+// If external interrupt_channel is inbetween 4 and 7, set to "Any logical change on INTn generates
+// an interrupt request."
+
+// Interrupt 7
+      EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to zero
+      EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
+// Interrupt 6   
+      EICRB &= ~(1<<(interrupt_ch - 2));	// Sets the 'interrupt channel passed in' bit to zero
+      EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
+// Interrupt 7 & 6
+      EIMSK |= (1<<interrupt_ch);
+      EIMSK |= 1<<(interrupt_ch - 1);
 	    
-	  // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
-	  DDRE &= 0b00001111;
-	  PORTE |= 0b11110000;			// Activate pull up resistors for Port E
-//       }
+// Sets direction of port E bits 4 -> 7 to inputs (Direction control)
+      DDRE &= 0b00001111;
+      PORTE |= 0b11110000;			// Activate pull up resistors for Port E
 }
 
 
@@ -68,26 +71,110 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
  *  @param INT4_vect Interrupt vector for pin E4 (External interrupt)
  */
 
+ISR (INT4_vect)
+{
+      sh_encoder_old_state_1 -> put(sh_encoder_new_state_1->get());			// Saves old state of motor 1 (channels A and B)
+      sh_encoder_new_state_1 -> put(((PINE & _BV(PINE4)) | (PINE & _BV(PINE5))) >> 4);	// Stores new state of motor 1 (channels A and B)
+   
+// Compare motor 1 encoder state and determine direction, Yellow = A, 5, White = B, 4
+// CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
+// CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
+      switch(sh_encoder_old_state_1->ISR_get())
+      {
+	case(0b00):
+	  if(sh_encoder_new_state_1->ISR_get() == 0b10)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b01)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_1->ISR_put(sh_encoder_error_count_1->ISR_get() + 1);	// If neither, increment error count
+	  break;
+	  
+	case(0b10):
+	  if(sh_encoder_new_state_1->ISR_get() == 0b11)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b00)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_1->ISR_put(sh_encoder_error_count_1->ISR_get() + 1);	// If neither, increment error count
+	  break;
+
+	case(0b11):
+	  if(sh_encoder_new_state_1->ISR_get() == 0b01)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b10)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_1->ISR_put(sh_encoder_error_count_1->ISR_get() + 1);	// If neither, increment error count
+	  break;
+	  
+	case(0b01):
+	  if(sh_encoder_new_state_1->ISR_get() == 0b00)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b11)
+	      sh_encoder_count_1->ISR_put(sh_encoder_count_1->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_1->ISR_put(sh_encoder_error_count_1->ISR_get() + 1);	// If neither, increment error count
+	  break;
+      }
+}
+
+// Aliases the pin E5 interrupt to run the pin E4 interrupt service routine
+ISR_ALIAS(INT5_vect, INT4_vect);
+
+//-------------------------------------------------------------------------------------
+/** \brief TODO This ...
+ *  \details TODO The ...
+ *  @param INT6_vect Interrupt vector for pin E6 (External interrupt)
+ */
+
 ISR (INT6_vect)
 {
-      sh_encoder_count_2->put((sh_encoder_count_2->get()) + 1);				// Increment encoder count for motor 2
-      sh_encoder_old_state_2 -> put(sh_encoder_new_state_2->get());			// Saves old state of motor 2 (channels A and B)
-      sh_encoder_new_state_2 -> put((PINE & _BV(PINE6)) | (PINE & _BV(PINE7)));		// Stores new state of motor 1 (channels A and B)
-      sh_encoder_new_state_2 -> put((sh_encoder_new_state_2->get()) >> 6); 		// Shifts state bits to two right most bits of variable
+      sh_encoder_old_state_2->ISR_put(sh_encoder_new_state_2->ISR_get());			// Saves old state of motor 2 (channels A and B)
+      sh_encoder_new_state_2->ISR_put(((PINE & _BV(PINE6)) | (PINE & _BV(PINE7))) >> 6);	// Stores new state of motor 2 (channels A and B)
 
-// TODO Add in switch and if statements to increment or decrement encoder count, error else
-// TODO Add in task_encoder the old and new encoder_count to determine CW/CCW and value
+// Compare motor 2 encoder state and determine direction, Yellow = A, 7, White = B, 6
+// CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
+// CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
+      switch(sh_encoder_old_state_2->ISR_get())
+      {
+	case(0b00):
+	  if(sh_encoder_new_state_2->ISR_get() == 0b10)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b01)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	// If neither, increment error count
+	  break;
+	  
+	case(0b10):
+	  if(sh_encoder_new_state_2->ISR_get() == 0b11)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b00)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	// If neither, increment error count
+	  break;
+
+	case(0b11):
+	  if(sh_encoder_new_state_2->ISR_get() == 0b01)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b10)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	// If neither, increment error count
+	  break;
+	  
+	case(0b01):
+	  if(sh_encoder_new_state_2->ISR_get() == 0b00)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			// If next state increment
+	  else if(sh_encoder_new_state_1->ISR_get() == 0b11)
+	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			// If previous state decrement
+	  else
+	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	// If neither, increment error count
+	  break;
+      }
 }
 
-ISR (INT7_vect)
-{
-      sh_encoder_count_2->put((sh_encoder_count_2->get()) + 1);				// Increment encoder count for motor 2
-      sh_encoder_old_state_2 -> put(sh_encoder_new_state_2->get());			// Saves old state of motor 2 (channels A and B)
-      sh_encoder_new_state_2 -> put((PINE & _BV(PINE6)) | (PINE & _BV(PINE7)));		// Stores new state of motor 1 (channels A and B)
-      sh_encoder_new_state_2 -> put((sh_encoder_new_state_2->get()) >> 6); 		// Shifts state bits to two right most bits of variable
-}
-
-// Aliases the other pin E interrupts to run the pin E4 interrupt service routine
-// ISR_ALIAS(INT5_vect, INT4_vect);
-// ISR_ALIAS(INT6_vect, INT4_vect);
-// ISR_ALIAS(INT7_vect, INT4_vect);
+// Aliases the pin E7 interrupt to run the pin E6 interrupt service routine
+ISR_ALIAS(INT7_vect, INT6_vect);
