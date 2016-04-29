@@ -1,12 +1,13 @@
-//======================================================================================
+//===========================================================================================================
 /** @file task_encoder.h
- *  TODO This file contains the header for a task class that...
+ *  This file contains the header for a task class that instatiates the encoder object.
  *
  *  Revisions:
  *    @li 04-13-2016 ME405 Group 3 original file
+ *    @li April 28, 2016 -- BKK Cleaned up comments.
  *
  */
-//======================================================================================
+//===========================================================================================================
 
 /// This define prevents this .H file from being included multiple times in a .CPP file
 #ifndef _TASK_ENCODER_H_
@@ -24,12 +25,11 @@
 #include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
 #include "queue.h"                          // Header for FreeRTOS queues
 
-#include "encoder_drv.h"                    // Include header for the encoder class
-
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
+#include "encoder_drv.h"                    // Include header for the encoder class
 
 class task_encoder : public TaskBase
 {
@@ -40,10 +40,10 @@ protected:
 	/// No protected variables or methods for this class
   
 public:
-	/// This constructor creates a generic motor task of which many copies can be made.
+	/// This constructor creates a generic encoder task of which many copies can be made.
 	task_encoder (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
-	/// This method is called by the RTOS once to run the task loop for ever and ever.
+	/// This method is called by the RTOS once to run the task loop indefinetly.
 	void run (void);
 };
 

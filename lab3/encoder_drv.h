@@ -1,12 +1,14 @@
-//======================================================================================
+//===========================================================================================================
 /** @file encoder_drv.h
- *    TODO This file contains a...
+  *    This file contains interrupt service routines appropriate to a specific motor. Also shares pertinent
+ *    encoder data with task_encoder.cpp, including direction, encoder states, count, and error count.
  *
  *  Revisions:
  *    @li 04-13-2016 ME405 Group 3 original file
+ *    @li April 28, 2016 -- BKK Cleaned up comments
  *
  */
-//======================================================================================
+//===========================================================================================================
 
 /// This define prevents this .H file from being included multiple times in a .CPP file
 #ifndef _ENCODER_DRV_H_
@@ -22,10 +24,11 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
-//-------------------------------------------------------------------------------------
-/** @brief   TODO This class will ...
- *       
- *  @details TODO The class has ...
+//-----------------------------------------------------------------------------------------------------------
+/** @brief   This class will instantiate an encoder driver object so that external global interrupts and
+ * 	     encoder data may be extracted from pins E4 -> E7.
+ *  @details The class has a protected variable: a pointer that is used to print debug  messages to the
+ *	     serial port.
  */
 
 class encoder_drv
@@ -36,12 +39,11 @@ class encoder_drv
 	
 
 	public:
-	/// The constructor sets up the motor driver for use. The "= NULL" part is a
-	/// default parameter, meaning that if that parameter isn't given on the line
-	/// where this constructor is called, the compiler will just fill in "NULL".
-	/// In this case that has the effect of turning off diagnostic printouts.
-	/// The "uint8_t = 0" fills in a zero for the interrupt channel select if 
-	/// user does not define.
+	/// The constructor sets up the encoder driver for use. The "= NULL" part is a default parameter,
+	/// signifying that if that parameter isn't given on the line where this constructor is called, the
+	/// compiler will just fill in "NULL". In this case this has the effect of turning off diagnostic
+	/// printouts.
+	/// The "uint8_t = 0" fills in a zero for the interrupt channel select if user does not define.
 
 	encoder_drv (emstream* = NULL, uint8_t = 0);
 

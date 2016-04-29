@@ -23,7 +23,7 @@
 //-------------------------------------------------------------------------------------
 /** @brief   This class will enable the H-bridge motor driver chips on the ME 405 board.
  *       
- *  @details The class has two protected variables, one pointer that is used  to print debug 
+ *  @details The class has two protected variables, one pointer that is used to print debug 
  *    messages to the serial port and an select variable that is used to choose the appropriate 
  *    registers for controlling the motor. The driver has three methods available to the user. 
  *    The set_power method allows the user to set the power supplied to the motor on a scale of 
