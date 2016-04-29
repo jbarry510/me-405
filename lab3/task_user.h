@@ -43,8 +43,9 @@
 
 #include "shares.h"                         /// Shared inter-task communications
 
-/// This macro defines a string that identifies the name and version of this program. 
-#define PROGRAM_VERSION		PMS ("ME405 Lab 2 Modified Program")
+/// This macro defines a string.
+#define PROGRAM_VERSION		PMS ("________ ME405 Lab 3 Modified Program ________")
+#define UNKNOWN_CHAR		PMS ("<-- Unknown command. Type command from menu.")
 
 
 //-----------------------------------------------------------------------------------------------------------
@@ -59,11 +60,11 @@ private:
 	// No private variables or methods for this class
 
 protected:
-	/// This method displays a simple help message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it
-	void print_help_message (void);	
+	/// This method displays the Main Menu message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it
+	void print_main_menu (void);	
 	
-	/// This method displays a simple help message for motor control. It's protected so that only methods of this class or possibly descendents can use it
-	void print_help_motor(void);
+	/// This method displays the Motor Menu message for motor control. It's protected so that only methods of this class or possibly descendents can use it
+	void print_motor_menu (void);
 
 	/// This method displays information about the status of the system
 	void show_status (void);
