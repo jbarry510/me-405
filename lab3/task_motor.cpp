@@ -103,25 +103,5 @@ void task_motor::run (void)
 	  
 	      delay_ms(100);				// Delay for lower priority tasks
 
-	      
-	      /*
-	      // Sets both motor 1 and 2 to run clockwise for two seconds and prints a message
-	      p_motor_1 -> set_power(100);
-	      p_motor_2 -> set_power(220);
-	      *p_serial << "Running" << endl;
-	      delay_ms(2000);
-	      
-	      // Sets motor 1 to brake fully and motor 2 to brake with PWM control and prints a message
-	      p_motor_1 -> brake_full();
-	      p_motor_2 -> brake(50);
-	      *p_serial << "Braking" << endl;
-	      delay_ms(2000);
-	      
-	      // Sets both motor 1 and 2 to run counterclockwise for two seconds and prints a message
-	      p_motor_1 -> set_power(-100);
-	      p_motor_2 -> set_power(-220);
-	      *p_serial << "Running backwards" << endl;
-	      delay_ms(2000);
-	      */
 	}
 }

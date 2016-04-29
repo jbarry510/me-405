@@ -1,36 +1,41 @@
-//**************************************************************************************
+//***********************************************************************************************************
 /** @file task_encoder.cpp
- *  TODO This file contains the code for a task that...
+ *  This file contains the code for a task that instatiates the encoder object and
+ *  debugs encoder data.
  *
  *  Revisions:
- *    @li 04-13-2016 ME405 Group 3 original file
+ *    @li April 13, 2016 -- BKK ME405 Group 3 original file
+ *    @li April 28, 2016 -- BKK Added an encoder object debugs and object instatiation
  *
  */
-//**************************************************************************************
-#include "task_encoder.h"                   // Header for this task
-
+//***********************************************************************************************************
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
 
-//-------------------------------------------------------------------------------------
-/** TODO This constructor creates a task which controls the...
- *  @param param TODO Param desciption
+#include "task_encoder.h"                   // Header for this task
 
+//-----------------------------------------------------------------------------------------------------------
+/** This constructor creates a task which controls the ouput of two encoders. The main job of this
+ *  constructor is to call the constructor of parent class (\c frt_task ); the parent's constructor the work.
+ *  @param a_name A character string which will be the name of this task
+ *  @param a_priority The priority at which this task will initially run (default: 0)
+ *  @param a_stack_size The size of this task's stack in bytes (default: configMINIMAL_STACK_SIZE)
+ *  @param p_ser_dev Pointer to a serial device (port, radio, SD card, etc.) which can be used by this task
+ *		     to communicate (default: NULL)
  */
-// TODO:...
-			
+
 task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
 			emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
-	// Nothing is done in the body of this constructor. All the work is done in the
-	// call to the frt_task constructor on the line just above this one
+	// Nothing is done in the body of this constructor. 
+        // This new task just waits for encoder_drv to share encoder data: state, direction, etc...
 }
 
-//-------------------------------------------------------------------------------------
-/** TODO This method is called once by the RTOS scheduler. Each time around the for (;;)
- *  loop, it sets the power of the two motors and lets them run for two seconds then
- *  brakes them, waits for two seconds, and then runs them again in the opposite direction.
+//-----------------------------------------------------------------------------------------------------------
+/** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it instatiates a
+ *  new encoder object, giving the interrupt pin, 7, enabling external interrupt derived encoder data about
+ *  the motor rotation.
  */
 
 void task_encoder::run (void)
@@ -46,6 +51,5 @@ void task_encoder::run (void)
 	*p_serial << endl;
 	
 	delay_ms(500);
-	
       }
 }
