@@ -55,6 +55,8 @@
 #include "task_motor.h"                     // Include header for motor task
 #include "encoder_drv.h"		    // Include header for encoder driver
 #include "task_encoder.h"		    // Include header for encoder task
+#include "task_pid.h"
+#include "pid_drv.h"
 
 // Declare the queues which are used by tasks to communicate with each other here. Each queue must also be
 // declared 'extern' in a header file which will be read by every task that needs to use that queue. The
@@ -90,6 +92,9 @@ TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	// Motor 2 encoder next sta
 
 TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
 TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
+
+TaskShare<volatile uint16_t>* sh_motor_1_speed;		// Motor 1 speed
+TaskShare<volatile uint16_t>* sh_motor_2_speed;		// Motor 2 speed
 
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the
@@ -141,6 +146,10 @@ int main (void)
 	// Create encoder tick jump error counts for motor 1 and motor 2
 	sh_encoder_error_count_1 = new TaskShare<uint16_t> ("sh_encoder_error_count_1");
 	sh_encoder_error_count_2 = new TaskShare<uint16_t> ("sh_encoder_error_count_2");
+	
+	// Create motor 1 and 2 speed variables
+	sh_motor_1_speed = new TaskShare<volatile uint16_t> ("sh_motor_1_speed"); // Motor 1
+	sh_motor_2_speed = new TaskShare<volatile uint16_t> ("sh_motor_2_speed"); // Motor 2
 
 	// The user interface is at low priority; it could have been run in the idle task
 	// but it is desired to exercise the RTOS more thoroughly in this test program
@@ -150,10 +159,12 @@ int main (void)
 	//new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
 	
 	// Creating a task that operates the motor and runs a defined program
-	new task_motor ("    Motor    ", task_priority (3), 280, p_ser_port);
+	new task_motor ("    Motor    ", task_priority (2), 280, p_ser_port);
 	
 	// Creating a task that operates the encoder and runs a defined program
-	new task_encoder ("   Encoder   ", task_priority (2), 280, p_ser_port);
+	new task_encoder ("   Encoder   ", task_priority (4), 280, p_ser_port);
+	
+	new task_pid ("   Pid    ", task_priority(3), 280, p_ser_port);
 
 	// The RTOS scheduler, ran indefinetly:
 	vTaskStartScheduler ();

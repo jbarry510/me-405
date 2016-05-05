@@ -12,6 +12,7 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
+#include "encoder_drv.h"
 
 #include "task_encoder.h"                   // Header for this task
 
@@ -42,16 +43,45 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 // to a task_pid?
 void task_encoder::run (void)
 {
-      encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
+      // Construction of Encoder Drivers
+      //encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
+      encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
+      encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
+      
+      // maximum time for encoder to count 0 to 48 at max speed
+      uint16_t speed_period_ms = 5; 
+      
+      // Reminder: Make shared variables!!
+      // counts before/after used to determine speed
+      uint16_t encoder_count_new_motor_1 = 0;
+      uint16_t encoder_count_old_motor_1 = 0;
+      
+      uint16_t encoder_count_new_motor_2 = 0;
+      uint16_t encoder_count_old_motor_2 = 0;
       
       for(;;)
       {
+	// Sets the new/old variables so speed can be calculated
+	encoder_count_old_motor_1 = encoder_count_new_motor_1;
+	encoder_count_new_motor_1 = sh_encoder_count_1->get();
+	
+	encoder_count_old_motor_2 = encoder_count_new_motor_2;
+	encoder_count_new_motor_2 = sh_encoder_count_2->get();
+	
+	sh_motor_1_speed->put(encoder_driver_1->calc_motor_speed(encoder_count_new_motor_1, encoder_count_old_motor_1,
+			   speed_period_ms));
+	
+	sh_motor_2_speed->put(encoder_driver_2->calc_motor_speed(encoder_count_new_motor_2, encoder_count_old_motor_2,
+			   speed_period_ms));
+	
+ 	*p_serial << PMS("Motor Speed_1 (rpm) = ") << dec << sh_motor_1_speed->get() << endl;
+	*p_serial << PMS("Motor Speed_2 (rpm) = ") << dec << sh_motor_2_speed->get() << endl;
+	
 // 	*p_serial << PMS("Encoder count 2 = ") << dec << sh_encoder_count_2->get() << endl;
 // 	*p_serial << PMS("OLD state 2 = ") << bin << sh_encoder_old_state_2->get() << endl;
 // 	*p_serial << PMS("NEW state 2 = ") << bin << sh_encoder_new_state_2->get() << endl;
 // 	*p_serial << PMS("Error count 2 = ") << dec << sh_encoder_error_count_2->get() << endl;
 // 	*p_serial << endl;
-	
-	delay_ms(500);
+	delay_ms(speed_period_ms);
       }
 }

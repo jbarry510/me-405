@@ -20,6 +20,9 @@
 
 #include "encoder_drv.h"                    // Header for this task
 
+
+
+
 //-----------------------------------------------------------------------------------------------------------
 /** \brief This constructor enables global external interrupts on channels E4->E7 and masks them 
  * 	   appropriately to trigger an interrupt for any logical change.
@@ -58,6 +61,13 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
       DDRE &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
       PORTE |= 0b11110000;			// Activate pull up resistors for Port E
+}
+
+
+
+uint16_t encoder_drv::calc_motor_speed (uint16_t old_count, uint16_t new_count, uint16_t period_ms)
+{
+    return ((new_count - old_count)*60) / (979*(period_ms/1000));
 }
 
 

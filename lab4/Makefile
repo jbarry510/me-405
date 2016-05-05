@@ -30,7 +30,7 @@ PROJECT_NAME = lab4
 
 # A list of the source (.c, .cc, .cpp) files in the project. Files in library 
 # subdirectories do not go in this list; they're included automatically
-SOURCES = main.cpp task_user.cpp adc.cpp motor_drv.cpp task_motor.cpp task_encoder.cpp encoder_drv.cpp 
+SOURCES = main.cpp task_user.cpp adc.cpp motor_drv.cpp task_motor.cpp task_encoder.cpp encoder_drv.cpp pid.cpp satmath.cpp pid_drv.cpp task_pid.cpp 
 #//task_brightness.cpp
 
 # Clock frequency of the CPU, in Hz. This number should be an unsigned long integer.
@@ -226,7 +226,7 @@ BASE_FLAGS = -mmcu=$(MCU) -D GCC_MEGA_AVR -D F_CPU=$(F_CPU) -D _GNU_SOURCE \
 C_FLAGS = $(BASE_FLAGS) -fpack-struct -std=gnu99 $(C_WARNINGS)
 
 # All the options used when compiling C++ code
-CPP_FLAGS = $(BASE_FLAGS) $(CPP_WARNINGS)
+CPP_FLAGS = $(BASE_FLAGS) -std=gnu++11 $(CPP_WARNINGS)
 
 # Make a list of the object files which need to be compiled from the source files
 OBJECTS = $(addprefix $(BUILDDIR)/, $(addsuffix .o, $(basename $(SOURCES))))
