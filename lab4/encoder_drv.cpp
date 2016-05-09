@@ -64,10 +64,10 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 }
 
 
-
+// TODO Where 979 is due to wheel size?????????? Huh Zackaria???? What units?
 uint16_t encoder_drv::calc_motor_speed (uint16_t old_count, uint16_t new_count, uint16_t period_ms)
 {
-    return ((new_count - old_count)*60) / (979*(period_ms/1000));
+    return ((new_count - old_count) * 60) / (979 * (period_ms / 1000));
 }
 
 

@@ -39,58 +39,63 @@ task_motor::task_motor (const char* a_name, unsigned portBASE_TYPE a_priority, s
 
 void task_motor::run (void)
 {
-	// Create two motor driver object and a variable in which to store the output. 
-        // The variables p_motor_1 and p_motor_2 only exist within this run() method, so the motors cannot
-	// be used from any other function or method.
-	motor_drv* p_motor_1 = new motor_drv (p_serial, 1);
-	motor_drv* p_motor_2 = new motor_drv (p_serial, 2);
-	sh_power_set_flag->put(0);		// Flag used to only set power when it has changed
-	
-	for(;;)
-	{
-	  // Check if power variable has changed, power flag = high, if not skip
-	  if (sh_power_set_flag->get() == 1)
+     // Create two motor driver object and a variable in which to store the output. 
+     // The variables p_motor_1 and p_motor_2 only exist within this run() method, so the motors cannot
+     // be used from any other function or method.
+     motor_drv* p_motor_1 = new motor_drv (p_serial, 1);
+     motor_drv* p_motor_2 = new motor_drv (p_serial, 2);
+     sh_power_set_flag->put(0);		// Flag used to only set power when it has changed
+     
+     for(;;)
+     {
+	  if (sh_PID_control->get() == 1)
 	  {
-	      if(sh_motor_select->get() == 1)
-		    p_motor_1 -> set_power(sh_power_entry->get());	// Set power for motor 1
-
-	      else if(sh_motor_select->get() == 2)
-		    p_motor_2 -> set_power(sh_power_entry->get());	// Set power for motor 2
-	      
-	      sh_power_set_flag->put(0);		// Make power_set_flag low when succesful power set
+	       p_motor_1->set_power(sh_PID_1_power->get());	// Set power for motor 1
+	       p_motor_2->set_power(sh_PID_2_power->get());	// Set power for motor 2
 
 	  }
-	  
-	  // Check if braking variable has changed, power flag = high, if not skip
-	  if (sh_braking_set_flag->get() == 1)
+	  else if (sh_PID_control->get() == 0)
 	  {
-	      if(sh_motor_select->get() == 1)
-		    p_motor_1 -> brake(sh_braking_entry->get());	// Set braking for motor 1
+	       // Check if power variable has changed, power flag = high, if not skip
+	       if (sh_power_set_flag->get() == 1)
+	       {
+		    if(sh_motor_select->get() == 1)
+			 p_motor_1->set_power(sh_power_entry->get());	// Set power for motor 1
 
-	      else if(sh_motor_select->get() == 2)
-		    p_motor_2 -> brake(sh_braking_entry->get());	// Set braking for motor 2
+		    else if(sh_motor_select->get() == 2)
+			 p_motor_2->set_power(sh_power_entry->get());	// Set power for motor 2
+	       
+	       sh_power_set_flag->put(0);		// Make power_set_flag low when succesful power set
+	       }
+	       
+	       // Check if braking variable has changed, power flag = high, if not skip
+	       if (sh_braking_set_flag->get() == 1)
+	       {
+		    if(sh_motor_select->get() == 1)
+			 p_motor_1->brake(sh_braking_entry->get());	// Set braking for motor 1
 
-	      sh_power_set_flag->put(0);	// Make power_set_flag low when succesful power set
-	      sh_braking_set_flag->put(0);	// Make braking_set_flag low when succesful braking set
+		    else if(sh_motor_select->get() == 2)
+			 p_motor_2->brake(sh_braking_entry->get());	// Set braking for motor 2
 
+	       sh_power_set_flag->put(0);	// Make power_set_flag low when succesful power set
+	       sh_braking_set_flag->put(0);	// Make braking_set_flag low when succesful braking set
+	       }
+	       
+	       // Check if braking full flag is high, if not skip
+	       if (sh_braking_full_flag->get() == 1)
+	       {
+		    if(sh_motor_select->get() == 1)
+			 p_motor_1->brake_full();		// Stop motor 1
 
+		    else if(sh_motor_select->get() == 2)
+			 p_motor_2->brake_full();		// Stop motor 2
+	       
+			 sh_power_set_flag->put(0);	// Make power_set_flag low when successful power set
+			 sh_braking_set_flag->put(0);	// Make braking_set_flag low when successful braking set
+			 sh_braking_full_flag->put(0);	// Make braking_full_flag low when successful motor stop
+	       }
+	       
 	  }
-	  
-	  // Check if braking full flag is high, if not skip
-	  if (sh_braking_full_flag->get() == 1)
-	  {
-	      if(sh_motor_select->get() == 1)
-		    p_motor_1 -> brake_full();		// Stop motor 1
-
-	      else if(sh_motor_select->get() == 2)
-		    p_motor_2 -> brake_full();		// Stop motor 2
-	      
-	      sh_power_set_flag->put(0);	// Make power_set_flag low when successful power set
-	      sh_braking_set_flag->put(0);	// Make braking_set_flag low when successful braking set
-	      sh_braking_full_flag->put(0);	// Make braking_full_flag low when successful motor stop
-	  }
-	  
-	delay_ms(100);				// Delay for lower priority tasks
-
-	}
+	  delay_ms(100);				// Delay for lower priority tasks
+     }
 }
