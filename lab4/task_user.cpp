@@ -9,6 +9,7 @@
  *    @li 11-04-2012 JRR Modified from the data acquisition example to the test suite
  *    @li 01-04-2014 JRR Changed base class names to TaskBase, TaskShare, etc.
  *    @li April 29, 2016 -- BKK Cleaned up comments, added return command to Main Menu
+ *    @li May 8, 2016 -- BKK Added PID control flag and user option
  *
  *  License:
  *	This file is copyright 2015 by JR Ridgely and released under the Lesser GNU Public License, 
@@ -109,14 +110,32 @@ void task_user::run (void)
 
 			      // The 's' command: returns version and status information
 			      case ('s'):
-				   show_status ();
+				   show_status();
 				   break;
 
 			      // The 'd' command: all the tasks dump their stacks
 			      case ('d'):
 				   print_task_stacks (p_serial);
 				   break;
+				   
+			      // The 'a' command: enables PID control
+			      case ('a'):
+				   if(sh_PID_control->get() == 0)
+				   {
+					sh_PID_control->put(1);		// Set PID flag high
+					*p_serial << PMS ("Autonomous Mode: ACTIVE") << endl;
+					print_PID_menu();
+					transition_to (3);
 
+				   }
+				   else if(sh_PID_control->get() == 1)
+				   {
+					sh_PID_control->put(0);
+					*p_serial << PMS ("Autonomous Mode: HALTED") << endl;
+					transition_to (0);
+				   }
+				   break;
+				   
 			      // The 'm' command: allows for motor selection to be made
 			      case ('m'):
 				   *p_serial << PMS ("Enter number, 1 or 2, for motor selection: ") << endl;
@@ -135,7 +154,7 @@ void task_user::run (void)
 
 			      // The 'r' command: return to Main Menu
 			      case ('r'):
-				   print_main_menu ();
+				   print_main_menu();
 				   break;
 
 			      // Unrecognized character: return typed character and prompt user for a retype
@@ -227,7 +246,7 @@ void task_user::run (void)
 
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
-					print_main_menu ();
+					print_main_menu();
 					transition_to (0);			// Transition to main case
 				   }
     
@@ -248,7 +267,7 @@ void task_user::run (void)
 
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
-					print_main_menu ();
+					print_main_menu();
 					transition_to (0);			// Transition to main case
 				   }
     
@@ -257,6 +276,30 @@ void task_user::run (void)
 					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
+			      }
+			      
+			      // Motor 1 PID setpoint input
+			      // TODO Add limits to setpoints
+			      else if (number_state == 3)
+			      {
+				   sh_setpoint_1->put(number_entered);
+				   *p_serial << PMS ("Motor 1 setpoint: ") << number_entered << endl;
+				   number_entered = 0;			// Clear number entered
+				   number_state = 4;			// Transition to input Motor 2 setpoint
+				   *p_serial << PMS ("Input setpoint for Motor 2: ") << endl;
+				   transition_to (1);
+
+			      }
+			      
+			      // Motor 2 PID setpoint input
+			      // TODO Add limits to setpoints
+			      else if (number_state == 4)
+			      {
+				   sh_setpoint_2->put(number_entered);
+				   *p_serial << PMS ("Motor 2 setpoint: ") << number_entered << endl;
+				   number_state = 0; 			// Clear number_state
+				   print_main_menu();
+				   transition_to (0);
 			      }
 			 }
 				
@@ -326,6 +369,47 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 2
+		    
+	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	       // In state 3 the user inputs PID controls
+	       case (3):
+		    if (p_serial->check_for_char ())		// Wait for character and read
+		    {
+			 char_in = p_serial -> getchar ();
+
+			 // Switch statement that responds user command characters
+			 switch (char_in)
+			 {
+
+			      // The 's' command: for setpoint motor 1 and motor 2
+			      case ('s'):
+				   *p_serial << PMS ("Input setpoint for Motor 1: ") << endl;
+				   number_state = 3;
+				   transition_to (1);
+				   break;
+				   
+			      // A Ctrl-C character causes the CPU to restart
+			      case (3):
+				   *p_serial << PMS ("Resetting AVR") << endl;
+				   wdt_enable (WDTO_120MS);
+				   for (;;);
+				   break;
+
+			      // The 'r' command: return to Main Menu
+			      case ('r'):
+				   sh_PID_control->put(0);		// Clear PID flag
+				   print_main_menu();
+				   transition_to (0);
+				   break;
+
+			      // Unrecognized character: return typed character and prompt user for a retype
+			      default:
+				   *p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
+				   break;
+			 }; // End switch for characters
+		    } // End if a character was received
+
+	       break; // End of state 0
 				
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	       // If ever sent to default state, restart since obvious error
@@ -353,6 +437,7 @@ void task_user::print_main_menu (void)
      *p_serial << PMS ("    t:      Show the current time") << endl;
      *p_serial << PMS ("    s:      Version/Setup information") << endl;
      *p_serial << PMS ("    d:      Stack dump for tasks") << endl;
+     *p_serial << PMS ("    a:      Enable/Disable Autonomous Mode (PID)") << endl;
      *p_serial << PMS ("    m:      Motor select and Power value") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
@@ -369,6 +454,19 @@ void task_user::print_motor_menu (void)
      *p_serial << PMS ("    p:      Motor POWER with PWM [-255, 255]") << endl;
      *p_serial << PMS ("    b:      Motor BRAKE with PWM [-255, 255]") << endl;
      *p_serial << PMS ("    s:      Full Brake") << endl;
+     *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
+     *p_serial << PMS ("    r:      Return to Main Menu") << endl;
+     *p_serial << endl;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------
+// This method prints the Motor Menu message.
+void task_user::print_PID_menu (void)
+{
+     *p_serial << endl;
+     *p_serial << PMS ("--------------- AUTONOMOUS MENU ---------------") << endl;
+     *p_serial << PMS ("    s:      Enter setpoints for Motor 1 then Motor 2") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;

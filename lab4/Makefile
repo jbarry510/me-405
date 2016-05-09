@@ -30,7 +30,7 @@ PROJECT_NAME = lab4
 
 # A list of the source (.c, .cc, .cpp) files in the project. Files in library 
 # subdirectories do not go in this list; they're included automatically
-SOURCES = main.cpp task_user.cpp adc.cpp motor_drv.cpp task_motor.cpp task_encoder.cpp encoder_drv.cpp pid.cpp satmath.cpp pid_drv.cpp task_pid.cpp 
+SOURCES = main.cpp task_user.cpp adc.cpp motor_drv.cpp task_motor.cpp task_encoder.cpp encoder_drv.cpp pid.cpp satmath.cpp task_pid.cpp 
 #//task_brightness.cpp
 
 # Clock frequency of the CPU, in Hz. This number should be an unsigned long integer.

@@ -25,10 +25,12 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
-#include "pid_drv.h"                    // Include header for the pid driver class
+#include "pid.h"			    // Include header for the pid driver class
+
 
 class task_pid : public TaskBase
 {
+     
 private:
 	/// No private variables or methods for this class
 

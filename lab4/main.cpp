@@ -49,14 +49,13 @@
 #include "taskshare.h"                      // Header for thread-safe shared data
 #include "shares.h"                         // Global ('extern') queue declarations
 
-#include "task_brightness.h"                // Header for the data acquisition task
 #include "task_user.h"                      // Header for user interface task
 #include "motor_drv.h"                      // Include header for the motor class
 #include "task_motor.h"                     // Include header for motor task
 #include "encoder_drv.h"		    // Include header for encoder driver
 #include "task_encoder.h"		    // Include header for encoder task
 #include "task_pid.h"
-#include "pid_drv.h"
+#include "pid.h"
 
 // Declare the queues which are used by tasks to communicate with each other here. Each queue must also be
 // declared 'extern' in a header file which will be read by every task that needs to use that queue. The
@@ -96,6 +95,14 @@ TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 TaskShare<volatile uint16_t>* sh_motor_1_speed;		// Motor 1 speed
 TaskShare<volatile uint16_t>* sh_motor_2_speed;		// Motor 2 speed
 
+TaskShare<int16_t>* sh_setpoint_1;			// Motor 1 PID setpoints
+TaskShare<int16_t>* sh_setpoint_2;			// Motor 2 PID setpoints
+
+TaskShare<int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
+TaskShare<int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
+
+TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
+
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the
  *  scheduler runs until power is turned off or there's a reset.
@@ -104,68 +111,76 @@ TaskShare<volatile uint16_t>* sh_motor_2_speed;		// Motor 2 speed
 
 int main (void)
 {
-	// Disables the watchdog timer; may have been left on or reverts on.
-	MCUSR = 0;
-	wdt_disable ();
+     // Disables the watchdog timer; may have been left on or reverts on.
+     MCUSR = 0;
+     wdt_disable ();
 
-	// Configure a serial port.
-	rs232* p_ser_port = new rs232 (9600, 1);
-	
-	// Print a starting line to display program information
-	*p_ser_port << clrscr << PMS ("-------- ME405 Lab 4 Starting Program --------") << endl;
+     // Configure a serial port.
+     rs232* p_ser_port = new rs232 (9600, 1);
+     
+     // Print a starting line to display program information
+     *p_ser_port << clrscr << PMS ("-------- ME405 Lab 4 Starting Program --------") << endl;
 
-	// Create the queues and other shared data items here
-	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 30);
-	
-	// Create a motor select share
-	sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
-	
-	// Create a motor power variable share and flag to indicate a power value change
-	sh_power_entry = new TaskShare<int16_t> ("sh_power_entry");
-	sh_power_set_flag = new TaskShare<int8_t> ("sh_power_set_flag");
-	
-	// Create a motor braking variable share and flag to indicate a braking value change
-	sh_braking_entry = new TaskShare<int16_t> ("sh_braking_entry");
-	sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
-	
-	// Create a flag to indicate a full braking requested
-	sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
-	
-	// Create encoder counters for motor 1 and motor 2
-	sh_encoder_count_1 = new TaskShare<volatile uint16_t> ("sh_encoder_count_1");
-	sh_encoder_count_2 = new TaskShare<volatile uint16_t> ("sh_encoder_count_2");
-	
-	// Create motor 1 shares for previous and new states to determine direction and tick skips
-	sh_encoder_old_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_1") ;
-	sh_encoder_new_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_1");
+     // Create the queues and other shared data items here
+     p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 30);
+     
+     // Create a motor select share
+     sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
+     
+     // Create a motor power variable share and flag to indicate a power value change
+     sh_power_entry = new TaskShare<int16_t> ("sh_power_entry");
+     sh_power_set_flag = new TaskShare<int8_t> ("sh_power_set_flag");
+     
+     // Create a motor braking variable share and flag to indicate a braking value change
+     sh_braking_entry = new TaskShare<int16_t> ("sh_braking_entry");
+     sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
+     
+     // Create a flag to indicate a full braking requested
+     sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
+     
+     // Create encoder counters for motor 1 and motor 2
+     sh_encoder_count_1 = new TaskShare<volatile uint16_t> ("sh_encoder_count_1");
+     sh_encoder_count_2 = new TaskShare<volatile uint16_t> ("sh_encoder_count_2");
+     
+     // Create motor 1 shares for previous and new states to determine direction and tick skips
+     sh_encoder_old_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_1") ;
+     sh_encoder_new_state_1 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_1");
 
-	// Create motor 2 shares for previous and new states to determine direction and tick skips
-	sh_encoder_old_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_2");
-	sh_encoder_new_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_2");
-	
-	// Create encoder tick jump error counts for motor 1 and motor 2
-	sh_encoder_error_count_1 = new TaskShare<uint16_t> ("sh_encoder_error_count_1");
-	sh_encoder_error_count_2 = new TaskShare<uint16_t> ("sh_encoder_error_count_2");
-	
-	// Create motor 1 and 2 speed variables
-	sh_motor_1_speed = new TaskShare<volatile uint16_t> ("sh_motor_1_speed"); // Motor 1
-	sh_motor_2_speed = new TaskShare<volatile uint16_t> ("sh_motor_2_speed"); // Motor 2
+     // Create motor 2 shares for previous and new states to determine direction and tick skips
+     sh_encoder_old_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_old_state_2");
+     sh_encoder_new_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_2");
+     
+     // Create encoder tick jump error counts for motor 1 and motor 2
+     sh_encoder_error_count_1 = new TaskShare<uint16_t> ("sh_encoder_error_count_1");
+     sh_encoder_error_count_2 = new TaskShare<uint16_t> ("sh_encoder_error_count_2");
+     
+     // Create motor 1 and 2 speed variables
+     sh_motor_1_speed = new TaskShare<volatile uint16_t> ("sh_motor_1_speed"); // Motor 1
+     sh_motor_2_speed = new TaskShare<volatile uint16_t> ("sh_motor_2_speed"); // Motor 2
+     
+     // Create motor 1 and 2 PID setpoint variables
+     sh_setpoint_1 = new TaskShare<int16_t> ("sh_setpoint_1");		// Motor 1
+     sh_setpoint_2 = new TaskShare<int16_t> ("sh_setpoint_2");		// Motor 2
 
-	// The user interface is at low priority; it could have been run in the idle task
-	// but it is desired to exercise the RTOS more thoroughly in this test program
-	new task_user ("UserInterface", task_priority (1), 260, p_ser_port);
+     // Create motor 1 and 2 PID power variables
+     sh_PID_1_power = new TaskShare<int16_t> ("sh_PID_1_power");	// Motor 1
+     sh_PID_2_power = new TaskShare<int16_t> ("sh_PID_2_power");	// Motor 2
+     
+     // Flag to indicate PID control enabled
+     sh_PID_control = new TaskShare<uint8_t> ("sh_PID_control");
 
-	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
-	//new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
-	
-	// Creating a task that operates the motor and runs a defined program
-	new task_motor ("    Motor    ", task_priority (2), 280, p_ser_port);
-	
-	// Creating a task that operates the encoder and runs a defined program
-	new task_encoder ("   Encoder   ", task_priority (4), 280, p_ser_port);
-	
-	new task_pid ("   Pid    ", task_priority(3), 280, p_ser_port);
+     // The user interface is at low priority; it could have been run in the idle task
+     // but it is desired to exercise the RTOS more thoroughly in this test program
+     new task_user ("UserInterface", task_priority (1), 260, p_ser_port);
+     
+     // Creating a task that operates the motor and runs a defined program
+     new task_motor ("    Motor    ", task_priority (2), 280, p_ser_port);
+     
+     // Creating a task that operates the encoder and runs a defined program
+     new task_encoder ("   Encoder   ", task_priority (4), 280, p_ser_port);
+     
+     new task_pid ("   Pid    ", task_priority(3), 280, p_ser_port);
 
-	// The RTOS scheduler, ran indefinetly:
-	vTaskStartScheduler ();
+     // The RTOS scheduler, ran indefinetly:
+     vTaskStartScheduler ();
 }

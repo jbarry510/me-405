@@ -60,14 +60,17 @@ private:
 	// No private variables or methods for this class
 
 protected:
-	/// This method displays the Main Menu message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it
+	/// This method displays the Main Menu message telling the user what to do
 	void print_main_menu (void);	
 	
-	/// This method displays the Motor Menu message for motor control. It's protected so that only methods of this class or possibly descendents can use it
+	/// This method displays the Motor Menu message for motor control
 	void print_motor_menu (void);
 
 	/// This method displays information about the status of the system
 	void show_status (void);
+	
+	/// This method displays the autonomous Menu message for PID control
+	void print_PID_menu (void);
 
 public:
 	/// This constructor creates a user interface task object
