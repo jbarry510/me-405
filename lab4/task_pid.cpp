@@ -44,27 +44,27 @@ void task_pid::run (void)
       
       // Motor 1 PID Constants
       int16_t Kp_1 = 5 * 1024;					// K_p Proportional gain
-      int16_t Ki_1 = 5 * 1024;					// K_i Integral gain
-      int16_t Kw_1 = 5 * 1024;					// K_w Anti-windup gain
+      int16_t Ki_1 = 0;					// K_i Integral gain
+      int16_t Kw_1 = 0;					// K_w Anti-windup gain
       int16_t min_1 = -1000;					// Minimum saturation limit
       int16_t max_1 = 1000;					// Maximum saturation limit
       sh_motor_1_speed->put(0);					// Clear motor speed
       sh_setpoint_1->put(0);					// Clear motor setpoint
       
       // pid::config{mode, Ki, Kp, Kd, Kw, min_satur, max_satur};
-      pid_1->set_config(pid::config_t{pid::PI, Ki_1, Kp_1, 0, Kw_1, min_1, max_1});
+      pid_1->set_config(pid::config_t{pid::P, Ki_1, Kp_1, 0, Kw_1, min_1, max_1});
 	  
       // Motor 2 PID Constants
       int16_t Kp_2 = 5 * 1024;					// K_p Proportional gain
-      int16_t Ki_2 = 5 * 1024;					// K_i Integral gain
-      int16_t Kw_2 = 5 * 1024;					// K_w Anti-windup gain
+      int16_t Ki_2 = 0;					// K_i Integral gain
+      int16_t Kw_2 = 0;					// K_w Anti-windup gain
       int16_t min_2 = -1000;					// Minimum saturation limit
       int16_t max_2 = 1000;					// Maximum saturation limit
       sh_motor_2_speed->put(0);					// Clear motor speed
       sh_setpoint_2->put(0);					// Clear motor setpoint
       
       // pid::config{mode, Ki, Kp, Kd, Kw, min_satur, max_satur};
-      pid_2->set_config(pid::config_t{pid::PI, Ki_2, Kp_2, 0, Kw_2, min_2, max_2});
+      pid_2->set_config(pid::config_t{pid::P, Ki_2, Kp_2, 0, Kw_2, min_2, max_2});
       
       
       for(;;)
@@ -72,7 +72,7 @@ void task_pid::run (void)
 	  if (sh_PID_control->get() == 1)
 	  {
 	       //Set power for motor 1
-	       sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(),sh_setpoint_1->get()));
+	       sh_PID_1_power->put(pid_1->compute(sh_encoder_count_1->get(),sh_setpoint_1->get()));
 // 	       *p_serial << PMS ("sh_motor_1_speed    : ") << sh_motor_1_speed->get() << endl;
 // 	       *p_serial << PMS ("sh_setpoint_1       : ") << sh_setpoint_1->get() << endl;
 // 	       *p_serial << PMS ("sh_PID_1_power      : ") << sh_PID_1_power->get() << endl;
@@ -80,16 +80,17 @@ void task_pid::run (void)
 // 	       *p_serial << endl;
 
 	       //Set power for motor 2
-	       sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(),sh_setpoint_2->get()));
-	       *p_serial << PMS ("sh_motor_2_speed: ") << sh_motor_2_speed->get() <<  endl;
+	       sh_PID_2_power->put(pid_2->compute(sh_encoder_count_2->get(),sh_setpoint_2->get()));
+	       *p_serial << PMS ("sh_encoder_count_2: ") << sh_encoder_count_2->get() <<  endl;
 	       *p_serial << PMS ("sh_setpoint_2   : ") << sh_setpoint_2->get() << endl;
 	       *p_serial << PMS ("sh_PID_2_power  : ") << sh_PID_2_power->get() << endl;
-	       *p_serial << PMS ("sh_encoder_count_2  : ") << sh_encoder_count_2->get() << endl;
+	       *p_serial << PMS ("Error		  : ") << pid_2->get_output() << endl;
+// 	       *p_serial << PMS ("sh_encoder_count_2  : ") << sh_encoder_count_2->get() << endl;
 	       *p_serial << endl;
 
 	  }
 
 	  //TODO fix this delay.... smaller
-	  delay_ms(1000); // add in time for pid to delay
+	  delay_ms(10); // add in time for pid to delay
       }
 }

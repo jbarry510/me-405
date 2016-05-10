@@ -92,8 +92,8 @@ TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	// Motor 2 encoder next sta
 TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
 TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 
-TaskShare<volatile uint16_t>* sh_motor_1_speed;		// Motor 1 speed
-TaskShare<volatile uint16_t>* sh_motor_2_speed;		// Motor 2 speed
+TaskShare<volatile int16_t>* sh_motor_1_speed;		// Motor 1 speed
+TaskShare<volatile int16_t>* sh_motor_2_speed;		// Motor 2 speed
 
 TaskShare<int16_t>* sh_setpoint_1;			// Motor 1 PID setpoints
 TaskShare<int16_t>* sh_setpoint_2;			// Motor 2 PID setpoints
@@ -155,8 +155,8 @@ int main (void)
      sh_encoder_error_count_2 = new TaskShare<uint16_t> ("sh_encoder_error_count_2");
      
      // Create motor 1 and 2 speed variables
-     sh_motor_1_speed = new TaskShare<volatile uint16_t> ("sh_motor_1_speed"); // Motor 1
-     sh_motor_2_speed = new TaskShare<volatile uint16_t> ("sh_motor_2_speed"); // Motor 2
+     sh_motor_1_speed = new TaskShare<volatile int16_t> ("sh_motor_1_speed"); // Motor 1
+     sh_motor_2_speed = new TaskShare<volatile int16_t> ("sh_motor_2_speed"); // Motor 2
      
      // Create motor 1 and 2 PID setpoint variables
      sh_setpoint_1 = new TaskShare<int16_t> ("sh_setpoint_1");		// Motor 1

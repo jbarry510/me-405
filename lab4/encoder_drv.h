@@ -47,7 +47,7 @@ class encoder_drv
 
 	encoder_drv (emstream* = NULL, uint8_t = 0);
 	
-	uint16_t calc_motor_speed (uint16_t old_count, uint16_t new_count, uint16_t period_ms);
+	int16_t calc_motor (uint16_t old_count, uint16_t new_count);
 	
 	private:
 	  

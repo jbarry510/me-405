@@ -20,9 +20,6 @@
 
 #include "encoder_drv.h"                    // Header for this task
 
-
-
-
 //-----------------------------------------------------------------------------------------------------------
 /** \brief This constructor enables global external interrupts on channels E4->E7 and masks them 
  * 	   appropriately to trigger an interrupt for any logical change.
@@ -64,10 +61,12 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 }
 
 
-// TODO Where 979 is due to wheel size?????????? Huh Zackaria???? What units?
-uint16_t encoder_drv::calc_motor_speed (uint16_t old_count, uint16_t new_count, uint16_t period_ms)
+// Returns revolutions of wheel * 1024 (angular displacement)
+int16_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count)
 {
-    return ((new_count - old_count) * 60) / (979 * (period_ms / 1000));
+    // 979 = 48 [ticks] * 20.4 [gear ratio]
+    
+    return (new_count - old_count);
 }
 
 
