@@ -132,6 +132,7 @@ void task_user::run (void)
 				   {
 					sh_PID_control->put(0);
 					*p_serial << PMS ("Autonomous Mode: HALTED") << endl;
+					print_main_menu();
 					transition_to (0);
 				   }
 				   break;
@@ -466,7 +467,7 @@ void task_user::print_PID_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("--------------- AUTONOMOUS MENU ---------------") << endl;
-     *p_serial << PMS ("    s:      Enter setpoints [0->240] for Motor 1 then Motor 2") << endl;
+     *p_serial << PMS ("    s:      Enter setpoints xxxxxx for Motor 1 then Motor 2") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;

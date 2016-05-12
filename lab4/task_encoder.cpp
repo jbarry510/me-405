@@ -52,9 +52,8 @@ void task_encoder::run (void)
       encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
       
       // maximum time for encoder to count 0 to 48 at max speed
-      uint8_t speed_period_ms = 20; 
+      uint8_t speed_period_ms = 5; 
       
-      // Reminder: Make shared variables!!
       // counts before/after used to determine speed
       uint16_t encoder_count_new_motor_1 = 0;
       uint16_t encoder_count_old_motor_1 = 0;

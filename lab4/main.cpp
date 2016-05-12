@@ -95,8 +95,8 @@ TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
 TaskShare<volatile int16_t>* sh_motor_1_speed;		// Motor 1 speed
 TaskShare<volatile int16_t>* sh_motor_2_speed;		// Motor 2 speed
 
-TaskShare<int16_t>* sh_setpoint_1;			// Motor 1 PID setpoints
-TaskShare<int16_t>* sh_setpoint_2;			// Motor 2 PID setpoints
+TaskShare<int32_t>* sh_setpoint_1;			// Motor 1 PID setpoints
+TaskShare<int32_t>* sh_setpoint_2;			// Motor 2 PID setpoints
 
 TaskShare<int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
 TaskShare<int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
@@ -159,8 +159,8 @@ int main (void)
      sh_motor_2_speed = new TaskShare<volatile int16_t> ("sh_motor_2_speed"); // Motor 2
      
      // Create motor 1 and 2 PID setpoint variables
-     sh_setpoint_1 = new TaskShare<int16_t> ("sh_setpoint_1");		// Motor 1
-     sh_setpoint_2 = new TaskShare<int16_t> ("sh_setpoint_2");		// Motor 2
+     sh_setpoint_1 = new TaskShare<int32_t> ("sh_setpoint_1");		// Motor 1
+     sh_setpoint_2 = new TaskShare<int32_t> ("sh_setpoint_2");		// Motor 2
 
      // Create motor 1 and 2 PID power variables
      sh_PID_1_power = new TaskShare<int16_t> ("sh_PID_1_power");	// Motor 1
@@ -168,7 +168,7 @@ int main (void)
      
      // Flag to indicate PID control enabled
      sh_PID_control = new TaskShare<uint8_t> ("sh_PID_control");
-
+     
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
      new task_user ("UserInterface", task_priority (1), 260, p_ser_port);

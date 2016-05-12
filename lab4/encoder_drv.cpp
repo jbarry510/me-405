@@ -61,12 +61,10 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 }
 
 
-// TODO Returns revolutions of wheel * 1024 (angular displacement)
-int16_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count, uint8_t speed_period_ms)
+// Returns [mm/sec] of wheel distance
+uint32_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count, uint8_t speed_period_ms)
 {
-     // 979 = 48 [ticks] * 20.4 [gear ratio]
-     // Returns a scaled up tick value so it may range from 0 -> 240 (close to 255 max PWM for motor)
-    return ((new_count - old_count));	// [ticks]
+     return (new_count - old_count) / speed_period_ms;			// [ticks/ms]
 }
 
 
