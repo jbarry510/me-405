@@ -61,12 +61,12 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 }
 
 
-// Returns revolutions of wheel * 1024 (angular displacement)
-int16_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count)
+// TODO Returns revolutions of wheel * 1024 (angular displacement)
+int16_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count, uint8_t speed_period_ms)
 {
-    // 979 = 48 [ticks] * 20.4 [gear ratio]
-    
-    return (new_count - old_count);
+     // 979 = 48 [ticks] * 20.4 [gear ratio]
+     // Returns a scaled up tick value so it may range from 0 -> 240 (close to 255 max PWM for motor)
+    return ((new_count - old_count));	// [ticks]
 }
 
 
@@ -87,7 +87,7 @@ ISR (INT4_vect)
       // Stores new state of motor 1 (channels A and B)
       sh_encoder_new_state_1 -> put(((PINE & _BV(PINE4)) | (PINE & _BV(PINE5))) >> 4);	
    
-// Compare motor 1 encoder state and determine direction, Yellow = A, 5, White = B, 4
+// Compare motor 1 encoder state and determine direction, Yellow = A, 4, White = B, 5
 // CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
 // CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
       switch(sh_encoder_old_state_1->ISR_get())
@@ -150,45 +150,45 @@ ISR (INT6_vect)
       // Stores new state of motor 2 (channels A and B)
       sh_encoder_new_state_2->ISR_put(((PINE & _BV(PINE6)) | (PINE & _BV(PINE7))) >> 6);
       
-// Compare motor 2 encoder state and determine direction, Yellow = A, 7, White = B, 6
+// Compare motor 2 encoder state and determine direction, Yellow = A, 6, White = B, 7
 // CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
 // CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
       switch(sh_encoder_old_state_2->ISR_get())
       {
 	case(0b00):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b10)		// If next state increment
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
 	  else if(sh_encoder_new_state_2->ISR_get() == 0b01)	// If previous state decrement
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);	
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
-	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	
+	       sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	
 	  break;
 	  
 	case(0b10):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b11)		// If next state increment
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
 	  else if(sh_encoder_new_state_2->ISR_get() == 0b00)	// If previous state decrement
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);	
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
 	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);
 	  break;
 
 	case(0b11):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b01)		// If next state increment
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
 	  else if(sh_encoder_new_state_1->ISR_get() == 0b10)	// If previous state decrement
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
-	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);
+	       sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);
 	  break;
 	  
 	case(0b01):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b00)		// If next state increment
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
 	  else if(sh_encoder_new_state_1->ISR_get() == 0b11)	// If previous state decrement
-	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			
+	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
-	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	
+	       sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	
       }
 }
 

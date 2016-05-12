@@ -466,7 +466,7 @@ void task_user::print_PID_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("--------------- AUTONOMOUS MENU ---------------") << endl;
-     *p_serial << PMS ("    s:      Enter setpoints for Motor 1 then Motor 2") << endl;
+     *p_serial << PMS ("    s:      Enter setpoints [0->240] for Motor 1 then Motor 2") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
