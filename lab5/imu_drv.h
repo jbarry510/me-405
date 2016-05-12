@@ -1,7 +1,11 @@
 //************************************************************************************************************
 /** @file imu_drv.h
- *    This file contains the driver for the 9 DOF IMU breakout board (BNO055).
+ *    This file contains the driver for the 9 DOF IMU breakout board (BNO055). Most of the code used was
+ *    copied and modifed from the Adafruit BNO055 driver files
+ *    (https://github.com/adafruit/Adafruit_BNO055/blob/master/Adafruit_BNO055.h).
  *
+ *  TODO: Needs calibration and i2c stuffs. UNTESTED
+ * 
  *  Revisions:
  *    @li 05-08-2016 ME405 Group 3 original file
  *
@@ -21,11 +25,11 @@
 // #define BNO055_ADDRESS_A (0x28)
 // #define BNO055_ADDRESS_B (0x29)
 // #define BNO055_ID        (0xA0)
-// 
+//
 // #define NUM_BNO055_OFFSET_REGISTERS (22)
 
 //------------------------------------------------------------------------------------------------------------
-/** @brief   This class will enable the 9 DOF IMU breakout board with the ME 405 board.    
+/** @brief   This class will enable the 9 DOF IMU breakout board with the ME 405 board.
  *  @details TODO
  */
 
