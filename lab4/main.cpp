@@ -179,7 +179,7 @@ int main (void)
      // Creating a task that operates the encoder and runs a defined program
      new task_encoder ("   Encoder   ", task_priority (4), 280, p_ser_port);
      
-     new task_pid ("   Pid    ", task_priority(3), 280, p_ser_port);
+     new task_pid ("   Pid       ", task_priority(3), 280, p_ser_port);
 
      // The RTOS scheduler, ran indefinetly:
      vTaskStartScheduler ();

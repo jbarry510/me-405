@@ -42,14 +42,15 @@ void task_encoder::run (void)
 {
       encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
       
+      
       for(;;)
       {
-// 	*p_serial << PMS("Encoder count 2 = ") << dec << sh_encoder_count_2->get() << endl;
-// 	*p_serial << PMS("OLD state 2 = ") << bin << sh_encoder_old_state_2->get() << endl;
-// 	*p_serial << PMS("NEW state 2 = ") << bin << sh_encoder_new_state_2->get() << endl;
-// 	*p_serial << PMS("Error count 2 = ") << dec << sh_encoder_error_count_2->get() << endl;
-// 	*p_serial << endl;
+ 	*p_serial << PMS("Encoder count 1 = ") << dec << sh_encoder_count_1->get() << endl;
+ 	*p_serial << PMS("OLD state 1 = ") << bin << sh_encoder_old_state_1->get() << endl;
+ 	*p_serial << PMS("NEW state 1 = ") << bin << sh_encoder_new_state_1->get() << endl;
+ 	*p_serial << PMS("Error count 1 = ") << dec << sh_encoder_error_count_1->get() << endl;
+ 	*p_serial << endl;
 	
-	delay_ms(500);
+	delay_ms(2000);
       }
 }

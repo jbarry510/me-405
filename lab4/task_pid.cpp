@@ -38,15 +38,15 @@ task_pid::task_pid (const char* a_name, unsigned portBASE_TYPE a_priority, size_
 
 void task_pid::run (void)
 {	  
-     //int32_t setpoint_2_ticks = 0;		// Converted setpoint from user input of [in/sec] to [ticks/ms]
+     int32_t setpoint_2_ticks = 0;		// Converted setpoint from user input of [in/sec] to [ticks/ms]
      int32_t motor2_temp_ticks = 0;		// Temporary for converting ticks to PWM power range
      int32_t max_motor_ticks = (192 * 20.4) / 6;		// Max speed ticks in one rev / time period for one rev
      
      // Make a variable which will hold times to use for precise task scheduling
      TickType_t previousTicks = xTaskGetTickCount ();
      
-      uint16_t max_motor_power = 255;					// Maximum motor power for PWM
-      uint16_t max_motor_lin_speed = (500 * 2 * 3.14159 * 1.75) / 60;	// [rev/min] * 2pi * 1.75 [in]) / (60 [min/sec])
+//       uint16_t max_motor_power = 255;					// Maximum motor power for PWM
+//       uint16_t max_motor_lin_speed = (500 * 2 * 3.14159 * 1.75) / 60;	// [rev/min] * 2pi * 1.75 [in]) / (60 [min/sec])
 	  
 	  
      // Creating the PID objects for Motor 1 and Motor 2
@@ -78,7 +78,6 @@ void task_pid::run (void)
       // pid::config{mode, Ki, Kp, Kd, Kw, min_satur, max_satur};
       pid_2->set_config(pid::config_t{pid::PI, Ki_2, Kp_2, 0, Kw_2, min_2, max_2});
       
-
       for(;;)
       {
 	  if (sh_PID_control->get() == 1)
@@ -105,8 +104,10 @@ void task_pid::run (void)
 		    *p_serial << PMS ("sh_motor_2_speed: ") << sh_motor_2_speed->get() << endl;
 		    *p_serial << PMS ("sh_setpoint_2   : ") << sh_setpoint_2->get() << endl;
 		    *p_serial << PMS ("sh_PID_2_power  : ") << sh_PID_2_power->get() << endl;
-		    //*p_serial << PMS ("Feedback        : ") << pid_2->get_input() << endl;
-		    //*p_serial << PMS ("Ouput           : ") << pid_2->get_output() << endl;
+		    *p_serial << PMS ("Tick Counter    : ") << previousTicks << endl;
+		    *p_serial << PMS ("Error Counter   : ") << sh_encoder_error_count_2 << endl;
+		    *p_serial << PMS ("Feedback        : ") << pid_2->get_input() << endl;
+		    *p_serial << PMS ("Ouput           : ") << pid_2->get_output() << endl;
 		    *p_serial << endl;
 		    //what the fuck
 	       }

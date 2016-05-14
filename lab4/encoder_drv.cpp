@@ -174,7 +174,7 @@ ISR (INT6_vect)
 	case(0b11):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b01)		// If next state increment
 	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
-	  else if(sh_encoder_new_state_1->ISR_get() == 0b10)	// If previous state decrement
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b10)	// If previous state decrement
 	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
 	       sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);
@@ -183,7 +183,7 @@ ISR (INT6_vect)
 	case(0b01):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b00)		// If next state increment
 	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
-	  else if(sh_encoder_new_state_1->ISR_get() == 0b11)	// If previous state decrement
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b11)	// If previous state decrement
 	       sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
 	       sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	

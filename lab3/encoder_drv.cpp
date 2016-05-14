@@ -45,19 +45,26 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 // For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
 // an interrupt request."
 
-// Interrupt 7
+// External Interrupt 7
       EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to zero
       EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= (1<<interrupt_ch);		// Set External Interrupt Mask Register for passed in channel
-      
-// Interrupt 6   
+// External Interrupt 6
       EICRB &= ~(1<<(interrupt_ch - 2));	// Sets the 'interrupt channel passed in' bit to zero
       EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
-	    
-// Sets direction of port E bits 4 -> 7 to inputs (Direction control)
-      DDRE &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
-      PORTE |= 0b11110000;			// Activate pull up resistors for Port E
+// Pin Change Interrupt 8
+      PCICR |= 1<< (1);
+      PCMSK1 |= 1 << (0);
+// Pin Change Interrupt 7
+      PCICR |= 1 << (0);
+      PCMSK0 |= 1 << (7);
+// Sets direction of port E bits 6,7,0 to inputs (Direction control)
+      DDRE &= 0b00111110;			// Sets pins 6,7,0 to outputs and the others to inputs
+      PORTE |= 0b11000001;			// Activate appropriate pull up resistors for Port E
+// Sets direction of port B7 to inputs (Direction control)
+      DDRB &= ~(1<<DDB7);			// Sets pin 7 to output and rest to inputs
+      PORTB |= 1 << PORTB7;			// Activates appropriate pull up resistor
 }
 
 
@@ -167,7 +174,7 @@ ISR (INT6_vect)
 	case(0b11):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b01)		// If next state increment
 	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);
-	  else if(sh_encoder_new_state_1->ISR_get() == 0b10)	// If previous state decrement
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b10)	// If previous state decrement
 	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);
 	  else							// If neither, increment error count
 	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);
@@ -176,12 +183,11 @@ ISR (INT6_vect)
 	case(0b01):
 	  if(sh_encoder_new_state_2->ISR_get() == 0b00)		// If next state increment
 	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() + 1);			
-	  else if(sh_encoder_new_state_1->ISR_get() == 0b11)	// If previous state decrement
+	  else if(sh_encoder_new_state_2->ISR_get() == 0b11)	// If previous state decrement
 	      sh_encoder_count_2->ISR_put(sh_encoder_count_2->ISR_get() - 1);			
 	  else							// If neither, increment error count
 	      sh_encoder_error_count_2->ISR_put(sh_encoder_error_count_2->ISR_get() + 1);	
       }
 }
-
 // Aliases the pin E7 interrupt to run the pin E6 interrupt service routine
 ISR_ALIAS(INT7_vect, INT6_vect);
