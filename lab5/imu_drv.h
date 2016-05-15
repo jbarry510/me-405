@@ -21,8 +21,10 @@
 #include "task.h"                           // Header for FreeRTOS task functions
 #include "queue.h"                          // Header for FreeRTOS queues
 #include "semphr.h"                         // Header for FreeRTOS semaphores
+#include "i2c_master.h"			    // Include header for the I2C communication class
 
 #define IMU_ADDRESS (0x50)
+#define BNO055_ID   (0xA0)
 //------------------------------------------------------------------------------------------------------------
 /** @brief   This class will enable the 9 DOF IMU breakout board with the ME 405 board.
  *  @details TODO
@@ -31,8 +33,10 @@
 class imu_drv
 {
 	protected:
-	/// The motor class uses this pointer to print debug messages via the serial port
-	emstream* ptr_to_serial;
+	/// The imu class uses this pointer to print debug messages via the serial port and I2C communcations
+	/// with the sensor.
+	emstream* p_serial;
+	i2c_master* i2c_comm;
 
 	public:
 	/// The constructor sets up the IMU driver for use. The "= NULL" part is a
@@ -238,7 +242,9 @@ class imu_drv
 	  REMAP_SIGN_P7                                           = 0x05
 	} imu_axis_remap_sign_t;
 
-	imu_drv (emstream* = NULL);
+	imu_drv (emstream* = NULL, i2c_master* = NULL);
+	
+	void setMode(imu_opmode_t mode);
 
 }; /// end of class imu_drv
 

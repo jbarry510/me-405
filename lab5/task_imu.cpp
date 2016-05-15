@@ -38,22 +38,11 @@ task_imu::task_imu (const char* a_name, unsigned portBASE_TYPE a_priority, size_
 
 void task_imu::run (void)
 {
-     imu_drv* imu_sensor = new imu_drv(p_serial);
      i2c_master* i2c_comm = new i2c_master(p_serial);
+     imu_drv* imu_sensor = new imu_drv(p_serial,i2c_comm);
      
      for(;;)
      {
-	  if(i2c_comm->ping(IMU_ADDRESS))
-	  {
-	       *p_serial << PMS ("You got pinged, yo")<< endl;
-	       *p_serial << PMS ("When we walk in da club we don't need ID: ") << hex << i2c_comm->read(IMU_ADDRESS,imu_drv::BNO055_CHIP_ID_ADDR)<< endl;
-	       *p_serial << endl;
-	  }
-	  else
-	  {
-	       *p_serial << PMS (":(") << endl;
-	  }
-	  
-	  delay_ms(5000); // Time that the task waits before looping
+	  delay_ms(1000); // Time that the task waits before looping
      }
 }

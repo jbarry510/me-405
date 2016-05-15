@@ -17,7 +17,6 @@
 
 #include "rs232int.h"                     // Include header for serial port class
 #include "imu_drv.h"                      // Include header for the motor class
-#include "i2c_master.h"			  // Include header for the I2C communication class
 
 //------------------------------------------------------------------------------------------------------------
 /** \brief This constructor sets up the 9 DOF IMU object.
@@ -25,8 +24,37 @@
  *  @param p_serial_port A pointer to the serial port which writes debugging info.
  */
 
-imu_drv::imu_drv(emstream* p_serial_port)
+imu_drv::imu_drv(emstream* p_serial_port,i2c_master* i2c_comm_port)
 {
-    ptr_to_serial = p_serial_port;
+    // Declares ptr_to_serial variable which is used for printing to serial port
+    p_serial = p_serial_port;
+    
+    // Declares i2c_comm variable which is used for communicating with the sensor 
+    i2c_comm = i2c_comm_port;
+    
+    // Make sure we have the right device
+    uint8_t id = i2c_comm->read(IMU_ADDRESS, BNO055_CHIP_ID_ADDR);
+    if(id != BNO055_ID)
+    {
+	 id = i2c_comm->read(IMU_ADDRESS, BNO055_CHIP_ID_ADDR);
+	 if(id != BNO055_ID) 
+	 {
+	      *p_serial << PMS ("It broke") << endl;
+	 }
+	 else
+	 {
+	      *p_serial << PMS ("All good fam") << endl;
+	 }
+    }
 }
 
+
+//------------------------------------------------------------------------------------------------------------
+/** \brief TODO
+ *  \details
+ *  @param mode
+ */
+void imu_drv::setMode(imu_opmode_t mode)
+{
+     return;
+}
