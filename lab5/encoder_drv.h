@@ -37,7 +37,6 @@ class encoder_drv
 	/// The motor class uses this pointer to print debug messages via the serial port
 	emstream* ptr_to_serial;
 	
-
 	public:
 	/// The constructor sets up the encoder driver for use. The "= NULL" part is a default parameter,
 	/// signifying that if that parameter isn't given on the line where this constructor is called, the

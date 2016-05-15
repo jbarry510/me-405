@@ -22,12 +22,7 @@
 #include "queue.h"                          // Header for FreeRTOS queues
 #include "semphr.h"                         // Header for FreeRTOS semaphores
 
-// #define BNO055_ADDRESS_A (0x28)
-// #define BNO055_ADDRESS_B (0x29)
-// #define BNO055_ID        (0xA0)
-//
-// #define NUM_BNO055_OFFSET_REGISTERS (22)
-
+#define IMU_ADDRESS (0x50)
 //------------------------------------------------------------------------------------------------------------
 /** @brief   This class will enable the 9 DOF IMU breakout board with the ME 405 board.
  *  @details TODO
@@ -194,16 +189,15 @@ class imu_drv
 	  MAG_RADIUS_MSB_ADDR                                     = 0X6A
 	} imu_reg_t;
 	
-	typedef enum imu_powermode
+	typedef enum
 	{
 	  POWER_MODE_NORMAL                                       = 0X00,
 	  POWER_MODE_LOWPOWER                                     = 0X01,
 	  POWER_MODE_SUSPEND                                      = 0X02
 	} imu_powermode_t;
-
-	typedef enum imu_opmode
+	
+	typedef enum
 	{
-	  /* Operation mode settings*/
 	  OPERATION_MODE_CONFIG                                   = 0X00,
 	  OPERATION_MODE_ACCONLY                                  = 0X01,
 	  OPERATION_MODE_MAGONLY                                  = 0X02,
@@ -218,6 +212,7 @@ class imu_drv
 	  OPERATION_MODE_NDOF_FMC_OFF                             = 0X0B,
 	  OPERATION_MODE_NDOF                                     = 0X0C
 	} imu_opmode_t;
+
 
 	typedef enum imu_axis_remap_config
 	{
@@ -243,29 +238,7 @@ class imu_drv
 	  REMAP_SIGN_P7                                           = 0x05
 	} imu_axis_remap_sign_t;
 
-	typedef struct imu_rev_info
-	{
-	  uint8_t  accel_rev;
-	  uint8_t  mag_rev;
-	  uint8_t  gyro_rev;
-	  uint16_t sw_rev;
-	  uint8_t  bl_rev;
-	} imu_rev_info_t;
-
-	typedef enum imu_vector_type
-	{
-	  VECTOR_ACCELEROMETER = BNO055_ACCEL_DATA_X_LSB_ADDR,
-	  VECTOR_MAGNETOMETER  = BNO055_MAG_DATA_X_LSB_ADDR,
-	  VECTOR_GYROSCOPE     = BNO055_GYRO_DATA_X_LSB_ADDR,
-	  VECTOR_EULER         = BNO055_EULER_H_LSB_ADDR,
-	  VECTOR_LINEARACCEL   = BNO055_LINEAR_ACCEL_DATA_X_LSB_ADDR,
-	  VECTOR_GRAVITY       = BNO055_GRAVITY_DATA_X_LSB_ADDR
-	} imu_vector_type_t;
-
 	imu_drv (emstream* = NULL);
-
-	/// Example method
-	void foo(uint8_t bar) ;
 
 }; /// end of class imu_drv
 

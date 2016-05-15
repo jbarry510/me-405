@@ -1,5 +1,5 @@
 //***********************************************************************************************************
-/** @file task_pid.cpp
+/** @file task_imu.cpp
  * 
  * 
  */
@@ -7,13 +7,13 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
-//#include "pid_drv.h"
 
-#include "task_pid.h"                   // Header for this task
+#include "task_imu.h"                       // Header for this task
+#include "i2c_master.h"			    // Include header for the I2C communication class
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
- *  NEEDS CHANGE!!! 
+ *  TODO NEEDS CHANGE!!! 
  *  This constructor creates a task which controls the ouput of two encoders. The main job of this
  *  constructor is to call the constructor of parent class (\c frt_task ); the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
@@ -23,7 +23,7 @@
  *		     to communicate (default: NULL)
  */
 
-task_pid::task_pid (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
+task_imu::task_imu (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
 			emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. 
@@ -32,21 +32,28 @@ task_pid::task_pid (const char* a_name, unsigned portBASE_TYPE a_priority, size_
 
 //-----------------------------------------------------------------------------------------------------------
 /** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it instatiates a
- *  new encoder object, giving the interrupt pin, 7, enabling external interrupt derived encoder data about
+ *  new encoder object, giving the interrupt pin, 7, TODO enabling external interrupt derived encoder data about
  *  the motor rotation.
  */
 
-void task_pid::run (void)
+void task_imu::run (void)
 {
-      //pid_drv* pid_driver_1 = new pid_drv(p_serial, ... );
-      //pid_drv* pid_driver_2 = new pid_drv(p_serial, ... );
-      
-      for(;;)
-      {
-	
-	//*p_serial << PMS("Generic Print") << dec << sh_name_of_variable << endl;
-	//p_serial << endl;
-	
-	delay_ms(1000); // add in time for pid to delay
-      }
+     imu_drv* imu_sensor = new imu_drv(p_serial);
+     i2c_master* i2c_comm = new i2c_master(p_serial);
+     
+     for(;;)
+     {
+	  if(i2c_comm->ping(IMU_ADDRESS))
+	  {
+	       *p_serial << PMS ("You got pinged, yo")<< endl;
+	       *p_serial << PMS ("When we walk in da club we don't need ID: ") << hex << i2c_comm->read(IMU_ADDRESS,imu_drv::BNO055_CHIP_ID_ADDR)<< endl;
+	       *p_serial << endl;
+	  }
+	  else
+	  {
+	       *p_serial << PMS (":(") << endl;
+	  }
+	  
+	  delay_ms(5000); // Time that the task waits before looping
+     }
 }
