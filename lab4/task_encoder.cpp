@@ -39,53 +39,42 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
  *  the motor rotation.
  */
 
-// TODO Use task encoder to compute RPM values and process encoder data. Then this information will be passed
-// to a task_pid?
 void task_encoder::run (void)
 {
      // Make a variable which will hold times to use for precise task scheduling
-	  TickType_t previousTicks = xTaskGetTickCount ();
-	
-      // Construction of Encoder Drivers
-      //encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
-      encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
-      encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
-      
-      // maximum time for encoder to count 0 to 48 at max speed
-      uint8_t speed_period_ms = 5; 
-      
-      // counts before/after used to determine speed
-      uint16_t encoder_count_new_motor_1 = 0;
-      uint16_t encoder_count_old_motor_1 = 0;
-      
-      uint16_t encoder_count_new_motor_2 = 0;
-      uint16_t encoder_count_old_motor_2 = 0;
-      
-      sh_motor_1_speed->put(0);				// Clear motor 1 speed
-      sh_motor_2_speed->put(0);				// Clear motor 2 speed
-      
-      for(;;)
-      {
+     TickType_t previousTicks = xTaskGetTickCount ();
+     
+     // Construction of Encoder Drivers
+     //encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
+     encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
+     encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
+     
+     uint8_t speed_period_ms = 5;
+     
+     // Counts before/after used to determine speed
+     uint16_t encoder_count_new_motor_1 = 0;
+     uint16_t encoder_count_old_motor_1 = 0;
+     
+     uint16_t encoder_count_new_motor_2 = 0;
+     uint16_t encoder_count_old_motor_2 = 0;
+     
+     sh_motor_1_speed->put(0);				// Clear motor 1 speed
+     sh_motor_2_speed->put(0);				// Clear motor 2 speed
+     
+     for(;;)
+     {
 	  // Sets the new/old variables so speed can be calculated
 	  encoder_count_old_motor_1 = encoder_count_new_motor_1;
 	  encoder_count_new_motor_1 = sh_encoder_count_1->get();
 	  
 	  encoder_count_old_motor_2 = encoder_count_new_motor_2;
 	  encoder_count_new_motor_2 = sh_encoder_count_2->get();
-	  
-	  //sh_motor_1_speed->put(encoder_count_new_motor_1 - encoder_count_old_motor_1);
-	  //sh_motor_2_speed->put(encoder_count_new_motor_2 - encoder_count_old_motor_2);
 
 	  sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_old_motor_1, encoder_count_new_motor_1, speed_period_ms));
-	  sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2, speed_period_ms));
+	  //sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2, speed_period_ms));
 	  
-     
-// 	*p_serial << PMS("Encoder count 2 = ") << dec << sh_encoder_count_2->get() << endl;
-// 	*p_serial << PMS("OLD state 2 = ") << bin << sh_encoder_old_state_2->get() << endl;
-// 	*p_serial << PMS("NEW state 2 = ") << bin << sh_encoder_new_state_2->get() << endl;
-// 	*p_serial << PMS("Error count 2 = ") << dec << sh_encoder_error_count_2->get() << endl;
-     // 	*p_serial << endl;
+	  sh_motor_2_speed->put(encoder_count_new_motor_2 - encoder_count_old_motor_2);
 	  
 	  delay_from_for_ms(previousTicks,speed_period_ms);
-      }
+     }
 }

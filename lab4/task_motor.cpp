@@ -96,6 +96,6 @@ void task_motor::run (void)
 	       }
 	       
 	  }
-	  delay_ms(100);				// Delay for lower priority tasks
+	  delay_ms(5);				// Delay for lower priority tasks
      }
 }
