@@ -9,7 +9,6 @@
 #include "shares.h"                         // Shared inter-task communications
 
 #include "task_imu.h"                       // Header for this task
-#include "i2c_master.h"			    // Include header for the I2C communication class
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
@@ -38,11 +37,20 @@ task_imu::task_imu (const char* a_name, unsigned portBASE_TYPE a_priority, size_
 
 void task_imu::run (void)
 {
-     i2c_master* i2c_comm = new i2c_master(p_serial);
-     imu_drv* imu_sensor = new imu_drv(p_serial,i2c_comm);
+     imu_drv* imu_sensor = new imu_drv(p_serial);
+     int16_t heading = 0; 
+     int16_t pitch = 0; 
+     int16_t roll = 0;
      
      for(;;)
      {
-	  delay_ms(1000); // Time that the task waits before looping
+	  imu_sensor->getSysStatus();
+	  heading = imu_sensor->getEulerAng(1);
+	  roll = imu_sensor->getEulerAng(2);
+	  pitch = imu_sensor->getEulerAng(3);
+	  *p_serial << PMS("Euler Heading: ") << heading << endl;
+	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
+	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
+	  delay_ms(2000); // Time that the task waits before looping
      }
 }

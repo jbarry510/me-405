@@ -78,7 +78,7 @@ bool i2c_master::start (void)
 	// Wait for the TWINT bit to indicate that the start condition has been completed
 	for (uint16_t tntr = 0; !(TWCR & (1 << TWINT)); tntr++)
 	{
-		if (tntr > 500)
+		if (tntr > 1000)
 		{
 			return true;
 		}
@@ -110,7 +110,7 @@ bool i2c_master::restart (void)
 	// Wait for the TWINT bit to indicate that the start condition has been completed
 	for (uint16_t tntr = 0; !(TWCR & (1 << TWINT)); tntr++)
 	{
-		if (tntr > 500)
+		if (tntr > 1000)
 		{
 			return true;
 		}
@@ -146,7 +146,7 @@ bool i2c_master::write_byte (uint8_t byte)
 	TWCR = (1 << TWINT) | (1 << TWEN);
 	for (uint16_t tntr = 0; !(TWCR & (1 << TWINT)); tntr++)
 	{
-		if (tntr > 500)
+		if (tntr > 1000)
 		{
 			I2C_DBG (PMS ("I2C send timeout") << endl);
 			return false;
@@ -194,7 +194,7 @@ uint8_t i2c_master::read_byte (bool ack)
 
 	for (uint16_t tntr = 0; !(TWCR & (1 << TWINT)); tntr++)
 	{
-		if (tntr > 500)
+		if (tntr > 1000)
 		{
 			return 0xFF;
 		}

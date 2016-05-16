@@ -109,7 +109,7 @@ int main (void)
 	rs232* p_ser_port = new rs232 (9600, 1);
 	
 	// Print a starting line to display program information
-	*p_ser_port << clrscr << PMS ("-------- ME405 Lab 4 Starting Program --------") << endl;
+	*p_ser_port << clrscr << PMS ("-------- ME405 Lab 5 Starting Program --------") << endl;
 
 	// Create the queues and other shared data items here
 	p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 30);

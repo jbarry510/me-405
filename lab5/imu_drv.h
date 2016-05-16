@@ -242,9 +242,15 @@ class imu_drv
 	  REMAP_SIGN_P7                                           = 0x05
 	} imu_axis_remap_sign_t;
 
-	imu_drv (emstream* = NULL, i2c_master* = NULL);
+	// Contructor declaration with emstream* = NULL being the default input if nothing entered.
+	imu_drv (emstream* = NULL);
 	
-	void setMode(imu_opmode_t mode);
+	// Declaration of class methods
+	void setOpMode(imu_opmode_t mode);
+	void setPwrMode(imu_powermode_t mode);
+	void setUnits();
+	void getSysStatus();
+	int16_t getEulerAng(uint8_t data_sel);
 
 }; /// end of class imu_drv
 
