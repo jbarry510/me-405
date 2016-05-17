@@ -30,7 +30,6 @@
 
 encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 {
-      ptr_to_serial = p_serial_port;
       sh_encoder_count_1->put(0);		// Clears motor 1 encoder count
       sh_encoder_count_2->put(0);		// Clears motor 2 encoder count
       
@@ -40,13 +39,11 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       sh_encoder_old_state_2->put(0);		// Clears motor 2 encoder old state
       sh_encoder_new_state_2->put(0);		// Clears motor 2 encoder old state
       
-      SREG |= 1<<7;				// Sets 7th bit to 1 to enable global interrupts
-      
 // For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
 // an interrupt request."
 
 // Interrupt 7
-      EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to zero
+      EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to   zero
       EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= (1<<interrupt_ch);		// Set External Interrupt Mask Register for passed in channel
       
@@ -62,9 +59,9 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 
 
 // Returns [mm/sec] of wheel distance
-uint32_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count, uint8_t speed_period_ms)
+uint32_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count)
 {
-     return (new_count - old_count) / speed_period_ms;			// [ticks/ms]
+     return (new_count - old_count); 	// ticks
 }
 
 

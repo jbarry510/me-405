@@ -45,11 +45,8 @@ void task_encoder::run (void)
      TickType_t previousTicks = xTaskGetTickCount ();
      
      // Construction of Encoder Drivers
-     //encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
      encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
      encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
-     
-     uint8_t speed_period_ms = 5;
      
      // Counts before/after used to determine speed
      uint16_t encoder_count_new_motor_1 = 0;
@@ -70,11 +67,9 @@ void task_encoder::run (void)
 	  encoder_count_old_motor_2 = encoder_count_new_motor_2;
 	  encoder_count_new_motor_2 = sh_encoder_count_2->get();
 
-	  sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_old_motor_1, encoder_count_new_motor_1, speed_period_ms));
-	  //sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2, speed_period_ms));
+	  sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_old_motor_1, encoder_count_new_motor_1));	  
+	  sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2));
 	  
-	  sh_motor_2_speed->put(encoder_count_new_motor_2 - encoder_count_old_motor_2);
-	  
-	  delay_from_for_ms(previousTicks,speed_period_ms);
+	  delay_from_for_ms(previousTicks, 5);
      }
 }

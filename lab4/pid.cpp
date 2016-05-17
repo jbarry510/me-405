@@ -294,7 +294,6 @@ int16_t pid::compute()
 		case PI:
 			temp = ssadd(ssdiv(ssmul(config.Ki,esum),1024), ssdiv(ssmul(config.Kp,error),1024));
 			break;
-		
 		// Proportional and Derivative
 		case PD:
 			temp = ssadd(ssdiv(ssmul(config.Kd,dinput),1024),ssdiv(ssmul(config.Kp,error),1024));

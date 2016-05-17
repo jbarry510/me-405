@@ -54,17 +54,17 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
 // Pin Change Interrupt 8
-      PCICR |= 1<< (1);
-      PCMSK1 |= 1 << (0);
+//       PCICR |= 1<< (1);
+//       PCMSK1 |= 1 << (0);
 // Pin Change Interrupt 7
-      PCICR |= 1 << (0);
-      PCMSK0 |= 1 << (7);
+//       PCICR |= 1 << (0);
+//       PCMSK0 |= 1 << (7);
 // Sets direction of port E bits 6,7,0 to inputs (Direction control)
-      DDRE &= 0b00111110;			// Sets pins 6,7,0 to outputs and the others to inputs
-      PORTE |= 0b11000001;			// Activate appropriate pull up resistors for Port E
+      DDRE &= 0b00001111;			// Sets pins 6,7,0 to outputs and the others to inputs
+      PORTE |= 0b11110000;			// Activate appropriate pull up resistors for Port E
 // Sets direction of port B7 to inputs (Direction control)
-      DDRB &= ~(1<<DDB7);			// Sets pin 7 to output and rest to inputs
-      PORTB |= 1 << PORTB7;			// Activates appropriate pull up resistor
+//       DDRB &= ~(1<<DDB7);			// Sets pin 7 to output and rest to inputs
+//       PORTB |= 1 << PORTB7;			// Activates appropriate pull up resistor
 }
 
 

@@ -98,8 +98,8 @@ int main (void)
 	// but it is desired to exercise the RTOS more thoroughly in this test program
 	new task_user ("UserInt", task_priority (1), 260, p_ser_port);
 
-	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
-	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
+// 	// Create a task which reads the A/D and adjusts an LED's brightness accordingly
+// 	new task_brightness ("Bright", task_priority (2), 280, p_ser_port);
 	
 	// Creating a task that operates the motor and runs a defined program
 	new task_motor ("Motor", task_priority (3), 280, p_ser_port);

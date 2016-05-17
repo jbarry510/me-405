@@ -40,7 +40,8 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 
 void task_encoder::run (void)
 {
-      encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
+      encoder_drv* p_enc_2 = new encoder_drv(p_serial, 5);
+//       encoder_drv* p_enc_1 = new encoder_drv(p_serial, 5); 
       
       
       for(;;)

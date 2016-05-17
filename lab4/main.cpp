@@ -171,7 +171,7 @@ int main (void)
      
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
-     new task_user ("UserInterface", task_priority (1), 260, p_ser_port);
+     new task_user ("UserInterface", task_priority (1), 280, p_ser_port);
      
      // Creating a task that operates the motor and runs a defined program
      new task_motor ("    Motor    ", task_priority (2), 280, p_ser_port);
