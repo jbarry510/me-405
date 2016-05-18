@@ -79,6 +79,7 @@ void task_pid::run (void)
 	      // Set power for motor 1
 	      setpoint_1 = sh_setpoint_1->get();
 	      
+	      // Saturates maximum and minimum new power setting to +- 40 for Motor 1
 	      if(setpoint_1 >= -40 && setpoint_1 <= 40)
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
 	      else if(setpoint_1 < 0) 
@@ -94,10 +95,11 @@ void task_pid::run (void)
 	      else
 		  *p_serial << PMS ("PID error") << endl;
 
-	      // Set power for motor 
+	      // Set power for motor 2
 	      // [power] = [ticks] * max power / max ticks [ticks]
 	      setpoint_2 = sh_setpoint_2->get();
 	      
+	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
 	      if(setpoint_2 >= -40 && setpoint_2 <= 40)
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 	      else if(setpoint_2 < 0) 
@@ -113,7 +115,7 @@ void task_pid::run (void)
 	      else
 		  *p_serial << PMS ("PID error") << endl;
 		
-	      // Timer for serial print
+	      // Timer for serial print (about 1 second)
 	      if(runs % 167 == 0)
 	      {
 		  *p_serial << PMS ("sh_motor_1_speed: ") << sh_motor_1_speed->get() << endl;
@@ -127,7 +129,7 @@ void task_pid::run (void)
 		  *p_serial << PMS ("Ouput           : ") << pid_2->get_output() << endl << endl;
 	      }
 	  }
-     runs++;					// Increment the run counter.
-     delay_from_for_ms (previousTicks, 5);	// Time for pid to delay
+     runs++;					// Increment the timer run counter.
+     delay_from_for_ms (previousTicks, 5);	// Task runs every 5 ms
      }
 }

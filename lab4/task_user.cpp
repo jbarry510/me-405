@@ -439,7 +439,7 @@ void task_user::print_main_menu (void)
      *p_serial << PMS ("    s:      Version/Setup information") << endl;
      *p_serial << PMS ("    d:      Stack dump for tasks") << endl;
      *p_serial << PMS ("    a:      Enable/Disable Autonomous Mode (PID)") << endl;
-     *p_serial << PMS ("    m:      Motor select and Power value") << endl;
+     *p_serial << PMS ("    m:      Motor select and power value ") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
