@@ -42,7 +42,7 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 // For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
 // an interrupt request."
 
-// Interrupt 7
+/* Interrupt 7
       EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to   zero
       EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= (1<<interrupt_ch);		// Set External Interrupt Mask Register for passed in channel
@@ -51,6 +51,29 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       EICRB &= ~(1<<(interrupt_ch - 2));	// Sets the 'interrupt channel passed in' bit to zero
       EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
       EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
+      */
+      
+      // Interrupt 7
+      EICRB &= ~(1<<interrupt_ch);        	// Sets the 'interrupt channel passed in' bit to   zero
+      EICRB |= 1<<(interrupt_ch - 1);           // Sets the 'interrupt channel' minus one bit to one
+      
+      
+      // Interrupt 6   
+      EICRB &= ~(1<<(interrupt_ch - 2));        // Sets the 'interrupt channel passed in' bit to zero
+      EICRB |= 1<<(interrupt_ch - 3);           // Sets the 'interrupt channel' minus one bit to one
+      
+      
+      if(interrupt_ch == 7)
+      {
+          EIMSK |= 1<<interrupt_ch;       	 // Set External Interrupt Mask Register for passed in channel
+          EIMSK |= 1<<(interrupt_ch - 1);        // Set External Interrupt Mask Register for passed in channel
+      }
+      else if(interrupt_ch == 3)
+      {
+          EIMSK |= 1<<(interrupt_ch + 2);        // Set External Interrupt Mask Register for passed in channel
+          EIMSK |= 1<<(interrupt_ch + 1);        // Set External Interrupt Mask Register for passed in channel  
+      }
+
 	    
 // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
       DDRE &= 0b00001111;			// Sets first four pins to outputs and last four to inputs

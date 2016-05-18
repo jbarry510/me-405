@@ -40,25 +40,33 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       sh_encoder_old_state_2->put(0);		// Clears motor 2 encoder old state
       sh_encoder_new_state_2->put(0);		// Clears motor 2 encoder old state
       
-      SREG |= 1<<7;				// Sets 7th bit to 1 to enable global interrupts
+      //SREG |= 1<<7;				// Sets 7th bit to 1 to enable global interrupts
       
 // For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
 // an interrupt request."
 
-// External Interrupt 7
-      EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to zero
-      EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
-      EIMSK |= (1<<interrupt_ch);		// Set External Interrupt Mask Register for passed in channel
-// External Interrupt 6
-      EICRB &= ~(1<<(interrupt_ch - 2));	// Sets the 'interrupt channel passed in' bit to zero
-      EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
-      EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
-// Pin Change Interrupt 8
-//       PCICR |= 1<< (1);
-//       PCMSK1 |= 1 << (0);
-// Pin Change Interrupt 7
-//       PCICR |= 1 << (0);
-//       PCMSK0 |= 1 << (7);
+     
+      // Interrupt 7
+      EICRB &= ~(1<<interrupt_ch);        	// Sets the 'interrupt channel passed in' bit to   zero
+      EICRB |= 1<<(interrupt_ch - 1);           // Sets the 'interrupt channel' minus one bit to one
+      
+      
+      // Interrupt 6   
+      EICRB &= ~(1<<(interrupt_ch - 2));        // Sets the 'interrupt channel passed in' bit to zero
+      EICRB |= 1<<(interrupt_ch - 3);           // Sets the 'interrupt channel' minus one bit to one
+      
+      
+      if(interrupt_ch == 7)
+      {
+          EIMSK |= 1<<interrupt_ch;       	 // Set External Interrupt Mask Register for passed in channel
+          EIMSK |= 1<<(interrupt_ch - 1);        // Set External Interrupt Mask Register for passed in channel
+      }
+      else if(interrupt_ch == 3)
+      {
+          EIMSK |= 1<<(interrupt_ch + 2);        // Set External Interrupt Mask Register for passed in channel
+          EIMSK |= 1<<(interrupt_ch + 1);        // Set External Interrupt Mask Register for passed in channel  
+      }
+      
 // Sets direction of port E bits 6,7,0 to inputs (Direction control)
       DDRE &= 0b00001111;			// Sets pins 6,7,0 to outputs and the others to inputs
       PORTE |= 0b11110000;			// Activate appropriate pull up resistors for Port E
