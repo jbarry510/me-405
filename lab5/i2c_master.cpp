@@ -209,7 +209,6 @@ uint8_t i2c_master::read_byte (bool ack)
 	return TWDR;
 }
 
-
 //-------------------------------------------------------------------------------------
 /** @brief   Read one byte from a slave device on the I2C bus.
  *  @details This method reads a single byte from the device on the I2C bus at the
@@ -248,7 +247,6 @@ uint8_t i2c_master::read (uint8_t address, uint8_t reg)
 	xSemaphoreGive (mutex);                 // Return the mutex, as we're done
 	return (data);
 }
-
 
 //-------------------------------------------------------------------------------------
 /** @brief   Read multiple bytes from a slave device on the I2C bus.
@@ -296,7 +294,6 @@ bool i2c_master::read (uint8_t address, uint8_t reg, uint8_t *p_buffer, uint8_t 
 	xSemaphoreGive (mutex);                 // Return the mutex, as we're done
 	return false;
 }
-
 
 //-------------------------------------------------------------------------------------
 /** @brief   Write one byte to a slave device on the I2C bus.

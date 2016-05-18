@@ -53,12 +53,12 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
       */
       
-      // Interrupt 7
+      // Interrupt 5 & 7
       EICRB &= ~(1<<interrupt_ch);        	// Sets the 'interrupt channel passed in' bit to   zero
       EICRB |= 1<<(interrupt_ch - 1);           // Sets the 'interrupt channel' minus one bit to one
       
       
-      // Interrupt 6   
+      // Interrupt 4 & 6   
       EICRB &= ~(1<<(interrupt_ch - 2));        // Sets the 'interrupt channel passed in' bit to zero
       EICRB |= 1<<(interrupt_ch - 3);           // Sets the 'interrupt channel' minus one bit to one
       
