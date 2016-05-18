@@ -46,7 +46,7 @@ void task_encoder::run (void)
      
      // Construction of Encoder Drivers
      encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
-     //encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 3);  // 4 and 5 aliased
+     encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 3);  // 4 and 5 aliased
      
      // Counts before/after used to determine speed
      uint16_t encoder_count_new_motor_1 = 0;
