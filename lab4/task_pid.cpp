@@ -69,8 +69,8 @@ void task_pid::run (void)
      //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
      pid_2->set_config(pid::config_t{pid::PI, Kp_2, Ki_2, 0, Kw_2, min_2, max_2});
      
-     int8_t setpoint_1 = 0;
-     int8_t setpoint_2 = 0;
+     int8_t setpoint_1 = 0;					// Velocity set point Motor 1
+     int8_t setpoint_2 = 0;					// Velocity set point Motor 2
      
      for(;;)
      {
@@ -113,7 +113,7 @@ void task_pid::run (void)
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 	      }
 	      else
-		  *p_serial << PMS ("PID error") << endl;
+		  *p_serial << PMS ("PID error") << endl; // Debugs error message
 		
 	      // Timer for serial print (about 1 second)
 	      if(runs % 167 == 0)

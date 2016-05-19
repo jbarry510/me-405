@@ -38,7 +38,7 @@ protected:
 	/// No protected variables or methods for this class
   
 public:
-	/// This constructor creates a generic pid task of which many copies can be made.
+	/// This constructor creates a generic PID task of which many copies can be made.
 	task_pid (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	/// This method is called by the RTOS once to run the task loop indefinetly.

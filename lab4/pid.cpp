@@ -29,8 +29,8 @@
  *  @param p_serial_port A pointer to the serial port which writes debugging info.
  */
 pid::pid (emstream* p_serial_port):
-	p_serial(p_serial_port),
-	config{OFF,0,0,0,0,INT16_MIN,INT16_MAX},
+	p_serial(p_serial_port),			// 
+	config{OFF,0,0,0,0,INT16_MIN,INT16_MAX},	// Clear all variables
 	input(0),
 	output(0),
 	setpoint(0),
