@@ -3,11 +3,9 @@
  *    This file contains the driver for the 9 DOF IMU breakout board (BNO055). Most of the code used was
  *    copied and modifed from the Adafruit BNO055 driver files
  *    (https://github.com/adafruit/Adafruit_BNO055/blob/master/Adafruit_BNO055.h).
- *
- *  TODO: Needs calibration and i2c stuffs. UNTESTED
  * 
  *  Revisions:
- *    @li 05-08-2016 ME405 Group 3 original file
+ *    @li 05-14-2016 ME405 Group 3 original file
  *
  */
 //************************************************************************************************************
@@ -23,11 +21,13 @@
 #include "semphr.h"                         // Header for FreeRTOS semaphores
 #include "i2c_master.h"			    // Include header for the I2C communication class
 
-#define IMU_ADDRESS (0x50)
-#define BNO055_ID   (0xA0)
+#define IMU_ADDRESS (0x50)		    // Defines the ME 405 boards address for the IMU
+#define BNO055_ID   (0xA0)		    // Defines the ID of the IMU for communication verification
+
 //------------------------------------------------------------------------------------------------------------
 /** @brief   This class will enable the 9 DOF IMU breakout board with the ME 405 board.
- *  @details TODO
+ *  @details This header file defines many of the useful register addresses and some settings assosciated with
+ * 	     those registers.
  */
 
 class imu_drv
@@ -178,7 +178,7 @@ class imu_drv
 	  MAG_OFFSET_Z_LSB_ADDR                                   = 0X5F,
 	  MAG_OFFSET_Z_MSB_ADDR                                   = 0X60,
 
-	  /* Gyroscope Offset register s*/
+	  /* Gyroscope Offset registers */
 	  GYRO_OFFSET_X_LSB_ADDR                                  = 0X61,
 	  GYRO_OFFSET_X_MSB_ADDR                                  = 0X62,
 	  GYRO_OFFSET_Y_LSB_ADDR                                  = 0X63,
@@ -193,6 +193,7 @@ class imu_drv
 	  MAG_RADIUS_MSB_ADDR                                     = 0X6A
 	} imu_reg_t;
 	
+	/* Values for setting different power modes */
 	typedef enum
 	{
 	  POWER_MODE_NORMAL                                       = 0X00,
@@ -200,6 +201,7 @@ class imu_drv
 	  POWER_MODE_SUSPEND                                      = 0X02
 	} imu_powermode_t;
 	
+	/* Values for setting different operation modes */
 	typedef enum
 	{
 	  OPERATION_MODE_CONFIG                                   = 0X00,
@@ -217,7 +219,7 @@ class imu_drv
 	  OPERATION_MODE_NDOF                                     = 0X0C
 	} imu_opmode_t;
 
-
+	/* Values for remapping the orientation x,y, and z axis */
 	typedef enum imu_axis_remap_config
 	{
 	  REMAP_CONFIG_P0                                         = 0x21,
@@ -229,7 +231,8 @@ class imu_drv
 	  REMAP_CONFIG_P6                                         = 0x21,
 	  REMAP_CONFIG_P7                                         = 0x24
 	} imu_axis_remap_config_t;
-
+	
+	/* Values for remapping the sign of x,y, and z axis */
 	typedef enum imu_axis_remap_sign
 	{
 	  REMAP_SIGN_P0                                           = 0x04,

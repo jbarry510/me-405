@@ -1,6 +1,6 @@
 //===========================================================================================================
 /** @file task_imu.h
- *  This file contains the header for a task class that instatiates the IMU object.
+ *  This file contains the header for a task class that creates and tests the IMU object.
  *
  */
 //===========================================================================================================

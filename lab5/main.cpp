@@ -1,9 +1,7 @@
 //***********************************************************************************************************
 /** \file main.cpp
  *    This file contains the main() code for a program which runs the ME405 board for
- *    ME405 lab 1. This program currently uses the H-bridge chips on the board to set 
- *    the power of the two motors and let them run for two seconds then brakes them, 
- *    waits for two seconds, and then runs them again in the opposite direction.
+ *    ME405 lab 5.
  *
  *  Revisions:
  *    \li 09-30-2012 JRR Original file was a one-file demonstration with two tasks
@@ -160,6 +158,7 @@ int main (void)
 	
 	//new task_pid ("   Pid    ", task_priority(3), 280, p_ser_port);
 	
+	// Creating a task that sets up the IMU sensor and reads the Euler angles
 	new task_imu ("   IMU    ", task_priority(3), 280, p_ser_port);
 
 	// The RTOS scheduler, ran indefinetly:

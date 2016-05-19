@@ -4,10 +4,8 @@
  *    copied and modifed from the Adafruit BNO055 driver files
  *    (https://github.com/adafruit/Adafruit_BNO055/blob/master/Adafruit_BNO055.cpp).
  *
- *   TODO: Need calibration and i2c stuffs. UNTESTED
- *
  *  Revisions:
- *    @li 05-08-2016 ME405 Group 3 original file
+ *    @li 05-14-2016 ME405 Group 3 original file
  *
  */
 //************************************************************************************************************
@@ -20,7 +18,11 @@
 
 //------------------------------------------------------------------------------------------------------------
 /** \brief This constructor sets up the 9 DOF IMU object.
- *  \details
+ *  \details The constructor creates a p_serial object for printing to the serial port and creates a i2c_comm
+ *           object which allows for communication between the sensor and ME 405 board. The constructor also
+ *           checks that the i2c_comm object can communicate with the IMU and verifies the address of the IMU.
+ *           Lastly the constructor sets the default settings of the imu which are nDOF mode, metric units,
+ *           and normal power mode.
  *  @param p_serial_port A pointer to the serial port which writes debugging info.
  */
 
@@ -52,11 +54,12 @@ imu_drv::imu_drv(emstream* p_serial_port)
 }
 
 
-// Setter Methods
+/// Setter Methods
 //------------------------------------------------------------------------------------------------------------
 /** \brief Sets operation mode of IMU
- *  \details
- *  @param mode
+ *  \details Changes the operation mode to one of the operation mode values defineed in the header file and 
+ *           prints a confirmation message.
+ *  @param mode Variable of imu_opmode type as defined in the header file.
  */
 void imu_drv::setOpMode(imu_opmode_t mode)
 {
@@ -66,8 +69,9 @@ void imu_drv::setOpMode(imu_opmode_t mode)
 
 //------------------------------------------------------------------------------------------------------------
 /** \brief Sets power mode of IMU
- *  \details
- *  @param mode
+ *  \details Changes the power mode to one of the operation mode values defineed in the header file and prints
+ *           a confirmation message.
+ *  @param mode Variable of imu_powermode type as defined in the header file.
  */
 void imu_drv::setPwrMode(imu_powermode_t mode)
 {
@@ -93,17 +97,19 @@ void imu_drv::setUnits()
   *p_serial << PMS ("IMU units set") << endl;
 }
 
-// Getter methods
+/// Getter methods
 //------------------------------------------------------------------------------------------------------------
 /** \brief Reads system status register of the IMU
- *  \details 
+ *  \details Prints out the system status of the IMU (numbers correspond to values listed in comments). If an
+ *           error status is determined then the error message is also printed (numbers correspond to values
+ *           listed in commments).
  *  @param none
  */
 
 void imu_drv::getSysStatus()
 {
   // Reads the system status register and saves it.
-  /* System Status (see section 4.3.58)
+  /* System Status
      ---------------------------------
      0 = Idle
      1 = System Error
@@ -116,7 +122,7 @@ void imu_drv::getSysStatus()
   uint8_t sys_status = i2c_comm->read(IMU_ADDRESS, BNO055_SYS_STAT_ADDR);
   
   // Reads the system self test register and saves it.
-  /* Self Test Results (see section )
+  /* Self Test Results
      --------------------------------
      1 = test passed, 0 = test failed
      0 = Accelerometer self test
@@ -143,8 +149,11 @@ void imu_drv::getSysStatus()
 
 //------------------------------------------------------------------------------------------------------------
 /** \brief Reads Euler angle registers and returns selected value.
- *  \details
- *  @param data_sel
+ *  \details This method returns the Euler angle value desired based on the data select input. An input of 1
+ *           returns the heading value, an input of 2 returns the roll value, and an input of 3 returns the
+ *           pitch value. The values read are 16x the value in degrees so the returned values are divided by
+ *           16.
+ *  @param data_sel Variable used to pick which Euler angle value (heading, roll, or pitch) is desired. 
  */
 
 int16_t imu_drv::getEulerAng(uint8_t data_sel)
