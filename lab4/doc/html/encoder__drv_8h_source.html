@@ -134,7 +134,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="classencoder__drv.html#a25af67f4725b47983ceb8ce4edf3296a">encoder_drv</a> (emstream* = NULL, uint8_t = 0);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    uint16_t calc_motor_speed (uint16_t old_count, uint16_t new_count, uint16_t period_ms);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    uint32_t calc_motor (uint16_t old_count, uint16_t new_count);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      </div>
@@ -144,13 +144,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif /// _ENCODER_DRV_H_</span></div>
 <div class="ttc" id="classencoder__drv_html"><div class="ttname"><a href="classencoder__drv.html">encoder_drv</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="encoder__drv_8h_source.html#l00034">encoder_drv.h:34</a></div></div>
-<div class="ttc" id="classencoder__drv_html_a25af67f4725b47983ceb8ce4edf3296a"><div class="ttname"><a href="classencoder__drv.html#a25af67f4725b47983ceb8ce4edf3296a">encoder_drv::encoder_drv</a></div><div class="ttdeci">encoder_drv(emstream *=NULL, uint8_t=0)</div><div class="ttdoc">This constructor enables global external interrupts on channels E4-&gt;E7 and masks them appropriately t...</div><div class="ttdef"><b>Definition:</b> <a href="encoder__drv_8cpp_source.html#l00034">encoder_drv.cpp:34</a></div></div>
+<div class="ttc" id="classencoder__drv_html_a25af67f4725b47983ceb8ce4edf3296a"><div class="ttname"><a href="classencoder__drv.html#a25af67f4725b47983ceb8ce4edf3296a">encoder_drv::encoder_drv</a></div><div class="ttdeci">encoder_drv(emstream *=NULL, uint8_t=0)</div><div class="ttdoc">This constructor enables global external interrupts on channels E4-&gt;E7 and masks them appropriately t...</div><div class="ttdef"><b>Definition:</b> <a href="encoder__drv_8cpp_source.html#l00031">encoder_drv.cpp:31</a></div></div>
 <div class="ttc" id="classencoder__drv_html_a9efa5138b331c06f0821b087168d2fda"><div class="ttname"><a href="classencoder__drv.html#a9efa5138b331c06f0821b087168d2fda">encoder_drv::ptr_to_serial</a></div><div class="ttdeci">emstream * ptr_to_serial</div><div class="ttdoc">The motor class uses this pointer to print debug messages via the serial port. </div><div class="ttdef"><b>Definition:</b> <a href="encoder__drv_8h_source.html#l00038">encoder_drv.h:38</a></div></div>
 <div class="ttc" id="shares_8h_html"><div class="ttname"><a href="shares_8h.html">shares.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 8 2016 16:46:27 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 19 2016 14:34:55 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

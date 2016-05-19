@@ -81,5 +81,6 @@ extern TaskShare<int16_t>* sh_PID_2_power;			// Motor 2
 // Flag to indicate PID control enabled
 extern TaskShare<uint8_t>* sh_PID_control;
 
+//extern TaskShare<uint16_t>* sh_adc_setpoint;
 
 #endif /// _SHARES_H_

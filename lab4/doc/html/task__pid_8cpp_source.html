@@ -85,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">task_pid.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="task__pid_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//***********************************************************************************************************</span><span class="comment"></span></div>
+<a href="task__pid_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; <span class="comment">//***********************************************************************************************************</span><span class="comment"></span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">/** @file task_pid.cpp</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * </span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * </span></div>
@@ -95,13 +95,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;taskshare.h&quot;</span>              <span class="comment">// Header for thread-safe shared data</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="shares_8h.html">shares.h</a>&quot;</span>             <span class="comment">// Shared inter-task communications</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pid_8h.html">pid.h</a>&quot;</span>                <span class="comment">// Header for pid functions</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="task__pid_8h.html">task_pid.h</a>&quot;</span>               <span class="comment">// Header for this task</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//-----------------------------------------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">/** </span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> *  TODO NEEDS CHANGE!!! </span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *  This constructor creates a task which controls the ouput of two encoders. The main job of this</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="adc_8h.html">adc.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="task__pid_8h.html">task_pid.h</a>&quot;</span>               <span class="comment">// Header for this task</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//-----------------------------------------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/** </span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *  This constructor creates a task which controls the ouput of two pid loops. The main job of this</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> *  constructor is to call the constructor of parent class (\c frt_task ); the parent&#39;s constructor the work.</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> *  @param a_name A character string which will be the name of this task</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> *  @param a_priority The priority at which this task will initially run (default: 0)</span></div>
@@ -124,43 +124,129 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classtask__pid.html#a5f113fb33b9bbecb5986ed9c8551d8e4">   39</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classtask__pid.html#a5f113fb33b9bbecb5986ed9c8551d8e4">task_pid::run</a> (<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="comment">// Creating the PID objects for Motor 1 and Motor 2</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <a class="code" href="classpid.html">pid</a>* pid_1 = <span class="keyword">new</span> <a class="code" href="classpid.html">pid</a>(p_serial);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <a class="code" href="classpid.html">pid</a>* pid_2 = <span class="keyword">new</span> <a class="code" href="classpid.html">pid</a>(p_serial);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="comment">// Motor 1 PID Constants</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <a class="code" href="classpid.html#a22af7b8da10bf9878ae85f6a90991054">pid::mode_t</a> my_mode = <a class="code" href="classpid.html#ae300b76b8ca84b4e1f31500d843b61c5a181d6db28b66c2004cc031ddd1bdc250">pid::PI</a>;                <span class="comment">// Setting mode to use PI control</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      int16_t Kp_1 = 5;                 <span class="comment">// K_p Proportional Constant</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      int16_t Ki_1 = 5;                 <span class="comment">// K_i Integral Constant</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="comment">// Setting Motor 1 PID controller</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      pid_1-&gt;<a class="code" href="classpid.html#adef385c61aa547f8cff8ec95c9a37b72">set_Kp</a>(Kp_1);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      pid_1-&gt;<a class="code" href="classpid.html#a81c384e57c6a8ff97d4baf1f9cd04b9e">set_Ki</a>(Ki_1);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">for</span>(;;)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">//*p_serial &lt;&lt; PMS(&quot;Generic Print&quot;) &lt;&lt; dec &lt;&lt; sh_name_of_variable &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">//p_serial &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    delay_ms(1000); <span class="comment">// add in time for pid to delay</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="ttc" id="classpid_html_a81c384e57c6a8ff97d4baf1f9cd04b9e"><div class="ttname"><a href="classpid.html#a81c384e57c6a8ff97d4baf1f9cd04b9e">pid::set_Ki</a></div><div class="ttdeci">void set_Ki(int16_t Ki)</div><div class="ttdoc">Updates the integral gain. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00113">pid.cpp:113</a></div></div>
-<div class="ttc" id="classpid_html_a22af7b8da10bf9878ae85f6a90991054"><div class="ttname"><a href="classpid.html#a22af7b8da10bf9878ae85f6a90991054">pid::mode_t</a></div><div class="ttdeci">enum pid::mode mode_t</div><div class="ttdoc">This enumeration defines possible modes of operation. </div></div>
-<div class="ttc" id="classpid_html_adef385c61aa547f8cff8ec95c9a37b72"><div class="ttname"><a href="classpid.html#adef385c61aa547f8cff8ec95c9a37b72">pid::set_Kp</a></div><div class="ttdeci">void set_Kp(int16_t Kp)</div><div class="ttdoc">Updates the proportional gain. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00103">pid.cpp:103</a></div></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{     </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;     </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;     <a class="code" href="classadc.html">adc</a>* adc_1 = <span class="keyword">new</span> <a class="code" href="classadc.html">adc</a>(p_serial);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;     </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;     <span class="comment">// Make a variable which will hold times to use for precise task scheduling</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;     TickType_t previousTicks = xTaskGetTickCount ();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;     <span class="comment">// Creating the PID objects for Motor 1 and Motor 2</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;     <a class="code" href="classpid.html">pid</a>* pid_1 = <span class="keyword">new</span> <a class="code" href="classpid.html">pid</a>(p_serial);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;     <a class="code" href="classpid.html">pid</a>* pid_2 = <span class="keyword">new</span> <a class="code" href="classpid.html">pid</a>(p_serial);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;     </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;     <span class="comment">// Motor 1 PID Constants</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;     int16_t Kp_1 = 1 * 1024;                   <span class="comment">// K_p Proportional gain</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;     int16_t Ki_1 = 1 * 256;                    <span class="comment">// K_i Integral gain</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;     int16_t Kw_1 = 1 * 256;                    <span class="comment">// K_w Anti-windup gain</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;     int16_t min_1 = -255;                  <span class="comment">// Minimum saturation limit</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;     int16_t max_1 = 255;                   <span class="comment">// Maximum saturation limit</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;     <a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;put(0);                  <span class="comment">// Clear motor speed</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;     sh_setpoint_1-&gt;put(0);                 <span class="comment">// Clear motor setpoint</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;     </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;     <span class="comment">// pid::config{mode, Ki, Kp, Kd, Kw, min_satur, max_satur};</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;     pid_1-&gt;<a class="code" href="classpid.html#a7f092a6e847b3d3ec2b35161a1c1a933">set_config</a>(<a class="code" href="structpid_1_1config.html">pid::config_t</a>{<a class="code" href="classpid.html#ae300b76b8ca84b4e1f31500d843b61c5a181d6db28b66c2004cc031ddd1bdc250">pid::PI</a>, Kp_1, Ki_1, 0, Kw_1, min_1, max_1});</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;     </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;     <span class="comment">// Motor 2 PID Constants</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;     int16_t Kp_2 = 1 * 1024;                   <span class="comment">// K_p Proportional gain</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;     int16_t Ki_2 = 1 * 256;                    <span class="comment">// K_i Integral gain</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;     int16_t Kw_2 = 1 * 256;                    <span class="comment">// K_w Anti-windup gain</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;     int16_t min_2 = -255;                  <span class="comment">// Minimum saturation limit</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;     int16_t max_2 = 255;                   <span class="comment">// Maximum saturation limit</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;     <a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;put(0);                  <span class="comment">// Clear motor speed</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;     sh_setpoint_2-&gt;put(0);                 <span class="comment">// Clear motor setpoint</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;     </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;     <span class="comment">//pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;     pid_2-&gt;<a class="code" href="classpid.html#a7f092a6e847b3d3ec2b35161a1c1a933">set_config</a>(<a class="code" href="structpid_1_1config.html">pid::config_t</a>{<a class="code" href="classpid.html#ae300b76b8ca84b4e1f31500d843b61c5a181d6db28b66c2004cc031ddd1bdc250">pid::PI</a>, Kp_2, Ki_2, 0, Kw_2, min_2, max_2});</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;     </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;     int8_t setpoint_1 = 0;                 <span class="comment">// Velocity set point Motor 1</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;     int8_t setpoint_2 = 0;                 <span class="comment">// Velocity set point Motor 2</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;     </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;     <span class="keywordflow">for</span>(;;)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;     {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keywordflow">if</span> (sh_PID_control-&gt;get() == 1)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;          <span class="comment">// Set power for motor 1</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;          <span class="comment">//setpoint_1 = sh_setpoint_1-&gt;get();</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;          </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;          setpoint_1 = adc_1-&gt;<a class="code" href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">read_oversampled</a>(0,10) / 16;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;          setpoint_2 = setpoint_1;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;          <span class="comment">// Saturates maximum and minimum new power setting to +- 40 for Motor 1</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;          <span class="keywordflow">if</span>(setpoint_1 &gt;= -40 &amp;&amp; setpoint_1 &lt;= 40)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          sh_PID_1_power-&gt;put(pid_1-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;get(), setpoint_1));</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          <span class="keywordflow">else</span> <span class="keywordflow">if</span>(setpoint_1 &lt; 0) </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;          {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;          setpoint_1 = -40;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          sh_PID_1_power-&gt;put(pid_1-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;get(), setpoint_1));</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;          <span class="keywordflow">else</span> <span class="keywordflow">if</span>(setpoint_1 &gt; 0)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;          {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;          setpoint_1 = 40;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;          sh_PID_1_power-&gt;put(pid_1-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;get(), setpoint_1));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;          }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;          <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;PID error&quot;</span>) &lt;&lt; endl;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          <span class="comment">// Set power for motor 2</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;          <span class="comment">// [power] = [ticks] * max power / max ticks [ticks]</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;          <span class="comment">//setpoint_2 = sh_setpoint_2-&gt;get();</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;          </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;          <span class="comment">// Saturates maximum and minimum new power setting to +- 40 for Motor 2</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;          <span class="keywordflow">if</span>(setpoint_2 &gt;= -40 &amp;&amp; setpoint_2 &lt;= 40)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;          sh_PID_2_power-&gt;put(pid_2-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;get(), setpoint_2));</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;          <span class="keywordflow">else</span> <span class="keywordflow">if</span>(setpoint_2 &lt; 0) </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;          {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;          setpoint_2 = -40;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;          sh_PID_2_power-&gt;put(pid_2-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;get(), setpoint_2));</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;          }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;          <span class="keywordflow">else</span> <span class="keywordflow">if</span>(setpoint_2 &gt; 0)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;          {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          setpoint_2 = 40;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;          sh_PID_2_power-&gt;put(pid_2-&gt;<a class="code" href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">compute</a>(<a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;get(), setpoint_2));</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;          }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;          <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;PID error&quot;</span>) &lt;&lt; endl; <span class="comment">// Debugs error message</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;          <span class="comment">// Timer for serial print (about 1 second)</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;          <span class="keywordflow">if</span>(runs % 167 == 0)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;          {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;sh_motor_1_speed: &quot;</span>) &lt;&lt; <a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;get() &lt;&lt; endl;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;sh_setpoint_1   : &quot;</span>) &lt;&lt; setpoint_1 &lt;&lt; PMS (<span class="stringliteral">&quot; [ticks]&quot;</span>) &lt;&lt; endl;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;Feedback        : &quot;</span>) &lt;&lt; pid_1-&gt;<a class="code" href="classpid.html#a6e4adafe020340b1d3630277db554c90">get_input</a>() &lt;&lt; endl;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;Ouput           : &quot;</span>) &lt;&lt; pid_1-&gt;<a class="code" href="classpid.html#a76cf4bd65ac9eabbcc8966b9bc11856f">get_output</a>() &lt;&lt; endl &lt;&lt; endl;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;          </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;sh_motor_2_speed: &quot;</span>) &lt;&lt; <a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;get() &lt;&lt; endl;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;sh_setpoint_2   : &quot;</span>) &lt;&lt; setpoint_2 &lt;&lt; PMS (<span class="stringliteral">&quot; [ticks]&quot;</span>) &lt;&lt; endl;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;Feedback        : &quot;</span>) &lt;&lt; pid_2-&gt;<a class="code" href="classpid.html#a6e4adafe020340b1d3630277db554c90">get_input</a>() &lt;&lt; endl;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;          *p_serial &lt;&lt; PMS (<span class="stringliteral">&quot;Ouput           : &quot;</span>) &lt;&lt; pid_2-&gt;<a class="code" href="classpid.html#a76cf4bd65ac9eabbcc8966b9bc11856f">get_output</a>() &lt;&lt; endl &lt;&lt; endl;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;          }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;     runs++;                    <span class="comment">// Increment the timer run counter.</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;     delay_from_for_ms (previousTicks, 5);  <span class="comment">// Task runs every 5 ms</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;     }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
+<div class="ttc" id="main_8cpp_html_a18576963336ab004d4812a76f52629b9"><div class="ttname"><a href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a></div><div class="ttdeci">TaskShare&lt; volatile int16_t &gt; * sh_motor_2_speed</div><div class="ttdoc">Motor 1. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00096">main.cpp:96</a></div></div>
+<div class="ttc" id="structpid_1_1config_html"><div class="ttname"><a href="structpid_1_1config.html">pid::config</a></div><div class="ttdoc">This struct defines a pid configuration. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8h_source.html#l00101">pid.h:101</a></div></div>
+<div class="ttc" id="classpid_html_afa843ac964cf25eded9d2a80ef2b9ceb"><div class="ttname"><a href="classpid.html#afa843ac964cf25eded9d2a80ef2b9ceb">pid::compute</a></div><div class="ttdeci">int16_t compute()</div><div class="ttdoc">Computes the new PID output value. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00269">pid.cpp:269</a></div></div>
 <div class="ttc" id="classtask__pid_html_a5f113fb33b9bbecb5986ed9c8551d8e4"><div class="ttname"><a href="classtask__pid.html#a5f113fb33b9bbecb5986ed9c8551d8e4">task_pid::run</a></div><div class="ttdeci">void run(void)</div><div class="ttdoc">This method is called by the RTOS once to run the task loop indefinetly. </div><div class="ttdef"><b>Definition:</b> <a href="task__pid_8cpp_source.html#l00039">task_pid.cpp:39</a></div></div>
 <div class="ttc" id="classtask__pid_html_a4c13bec6d43bd4cea284d0a74645db5a"><div class="ttname"><a href="classtask__pid.html#a4c13bec6d43bd4cea284d0a74645db5a">task_pid::task_pid</a></div><div class="ttdeci">task_pid(const char *, unsigned portBASE_TYPE, size_t, emstream *)</div><div class="ttdoc">No private variables or methods for this class. </div><div class="ttdef"><b>Definition:</b> <a href="task__pid_8cpp_source.html#l00026">task_pid.cpp:26</a></div></div>
+<div class="ttc" id="adc_8h_html"><div class="ttname"><a href="adc_8h.html">adc.h</a></div></div>
 <div class="ttc" id="classpid_html"><div class="ttname"><a href="classpid.html">pid</a></div><div class="ttdoc">This class runs a 16-bit fixed point PID. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8h_source.html#l00081">pid.h:81</a></div></div>
+<div class="ttc" id="classpid_html_a7f092a6e847b3d3ec2b35161a1c1a933"><div class="ttname"><a href="classpid.html#a7f092a6e847b3d3ec2b35161a1c1a933">pid::set_config</a></div><div class="ttdeci">void set_config(config_t config)</div><div class="ttdoc">Updates the PID configuration and clears esum, resetting the PID controller. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00092">pid.cpp:92</a></div></div>
+<div class="ttc" id="main_8cpp_html_aa090f3fc0fc26a4c180b84b4674216e9"><div class="ttname"><a href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a></div><div class="ttdeci">TaskShare&lt; volatile int16_t &gt; * sh_motor_1_speed</div><div class="ttdoc">Next state. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00095">main.cpp:95</a></div></div>
+<div class="ttc" id="classpid_html_a76cf4bd65ac9eabbcc8966b9bc11856f"><div class="ttname"><a href="classpid.html#a76cf4bd65ac9eabbcc8966b9bc11856f">pid::get_output</a></div><div class="ttdeci">int16_t get_output()</div><div class="ttdoc">Gets the controller output value. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00173">pid.cpp:173</a></div></div>
 <div class="ttc" id="classpid_html_ae300b76b8ca84b4e1f31500d843b61c5a181d6db28b66c2004cc031ddd1bdc250"><div class="ttname"><a href="classpid.html#ae300b76b8ca84b4e1f31500d843b61c5a181d6db28b66c2004cc031ddd1bdc250">pid::PI</a></div><div class="ttdef"><b>Definition:</b> <a href="pid_8h_source.html#l00092">pid.h:92</a></div></div>
+<div class="ttc" id="classadc_html_a58f1030fe64d3dea4ccd8a2687dd6fce"><div class="ttname"><a href="classadc.html#a58f1030fe64d3dea4ccd8a2687dd6fce">adc::read_oversampled</a></div><div class="ttdeci">uint16_t read_oversampled(uint8_t, uint8_t)</div><div class="ttdoc">This method takes a set number of A/D readings from a given channel and averages them. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8cpp_source.html#l00106">adc.cpp:106</a></div></div>
+<div class="ttc" id="classpid_html_a6e4adafe020340b1d3630277db554c90"><div class="ttname"><a href="classpid.html#a6e4adafe020340b1d3630277db554c90">pid::get_input</a></div><div class="ttdeci">int16_t get_input()</div><div class="ttdoc">Gets the current value of the parameter being controlled by the PID. </div><div class="ttdef"><b>Definition:</b> <a href="pid_8cpp_source.html#l00164">pid.cpp:164</a></div></div>
 <div class="ttc" id="task__pid_8h_html"><div class="ttname"><a href="task__pid_8h.html">task_pid.h</a></div></div>
+<div class="ttc" id="classadc_html"><div class="ttname"><a href="classadc.html">adc</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="adc_8h_source.html#l00047">adc.h:47</a></div></div>
 <div class="ttc" id="shares_8h_html"><div class="ttname"><a href="shares_8h.html">shares.h</a></div></div>
 <div class="ttc" id="pid_8h_html"><div class="ttname"><a href="pid_8h.html">pid.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 8 2016 16:46:27 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 19 2016 14:34:55 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

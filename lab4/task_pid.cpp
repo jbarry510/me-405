@@ -8,12 +8,13 @@
 #include "taskshare.h"				// Header for thread-safe shared data
 #include "shares.h"				// Shared inter-task communications
 #include "pid.h"				// Header for pid functions
+#include "adc.h"
 
 #include "task_pid.h"				// Header for this task
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
- *  This constructor creates a task which controls the ouput of two encoders. The main job of this
+ *  This constructor creates a task which controls the ouput of two pid loops. The main job of this
  *  constructor is to call the constructor of parent class (\c frt_task ); the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
  *  @param a_priority The priority at which this task will initially run (default: 0)
@@ -37,6 +38,8 @@ task_pid::task_pid (const char* a_name, unsigned portBASE_TYPE a_priority, size_
 
 void task_pid::run (void)
 {	  
+     
+     adc* adc_1 = new adc(p_serial);
      
      // Make a variable which will hold times to use for precise task scheduling
      TickType_t previousTicks = xTaskGetTickCount ();
@@ -77,7 +80,10 @@ void task_pid::run (void)
 	  if (sh_PID_control->get() == 1)
 	  {
 	      // Set power for motor 1
-	      setpoint_1 = sh_setpoint_1->get();
+	      //setpoint_1 = sh_setpoint_1->get();
+	      
+	      setpoint_1 = adc_1->read_oversampled(0,10) / 16;
+	      setpoint_2 = setpoint_1;
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 1
 	      if(setpoint_1 >= -40 && setpoint_1 <= 40)
@@ -97,7 +103,7 @@ void task_pid::run (void)
 
 	      // Set power for motor 2
 	      // [power] = [ticks] * max power / max ticks [ticks]
-	      setpoint_2 = sh_setpoint_2->get();
+	      //setpoint_2 = sh_setpoint_2->get();
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
 	      if(setpoint_2 >= -40 && setpoint_2 <= 40)

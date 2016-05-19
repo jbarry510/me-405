@@ -10,6 +10,7 @@ var searchData=
   ['pid_2eh',['pid.h',['../pid_8h.html',1,'']]],
   ['print_5fmain_5fmenu',['print_main_menu',['../classtask__user.html#a36c99836d2ee036858d4a0ab61c2d5ec',1,'task_user']]],
   ['print_5fmotor_5fmenu',['print_motor_menu',['../classtask__user.html#ae4c8890b06e117f57095951eee64c64f',1,'task_user']]],
+  ['print_5fpid_5fmenu',['print_PID_menu',['../classtask__user.html#ad5cd567087263414af48c9bdfc655eba',1,'task_user']]],
   ['program_5fversion',['PROGRAM_VERSION',['../task__user_8h.html#a2f10abd650e471fae2d7e8c63d41206a',1,'task_user.h']]],
   ['ptr_5fto_5fserial',['ptr_to_serial',['../classadc.html#a14680b48b723bf1adddd2741ebb18a3e',1,'adc::ptr_to_serial()'],['../classencoder__drv.html#a9efa5138b331c06f0821b087168d2fda',1,'encoder_drv::ptr_to_serial()'],['../classmotor__drv.html#a9cd3052255589d1849217279b4b6e337',1,'motor_drv::ptr_to_serial()']]]
 ];

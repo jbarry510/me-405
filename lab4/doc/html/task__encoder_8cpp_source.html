@@ -126,58 +126,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"> *  the motor rotation.</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// TODO Use task encoder to compute RPM values and process encoder data. Then this information will be passed</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// to a task_pid?</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">   44</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">task_encoder::run</a> (<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="comment">// Construction of Encoder Drivers</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="comment">//encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="classencoder__drv.html">encoder_drv</a>* encoder_driver_1 = <span class="keyword">new</span> <a class="code" href="classencoder__drv.html">encoder_drv</a>(p_serial, 7);  <span class="comment">// 6 and 7 aliased</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <a class="code" href="classencoder__drv.html">encoder_drv</a>* encoder_driver_2 = <span class="keyword">new</span> <a class="code" href="classencoder__drv.html">encoder_drv</a>(p_serial, 5);  <span class="comment">// 4 and 5 alised (4 doesn&#39;t work?)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="comment">// maximum time for encoder to count 0 to 48 at max speed</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      uint8_t speed_period_ms = 5; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="comment">// Reminder: Make shared variables!!</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="comment">// counts before/after used to determine speed</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      uint16_t encoder_count_new_motor_1 = 0;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      uint16_t encoder_count_old_motor_1 = 0;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      uint16_t encoder_count_new_motor_2 = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      uint16_t encoder_count_old_motor_2 = 0;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">for</span>(;;)</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// Sets the new/old variables so speed can be calculated</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    encoder_count_old_motor_1 = encoder_count_new_motor_1;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    encoder_count_new_motor_1 = <a class="code" href="main_8cpp.html#a997260f75507d382d25524c0b6716b9c">sh_encoder_count_1</a>-&gt;get();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    encoder_count_old_motor_2 = encoder_count_new_motor_2;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    encoder_count_new_motor_2 = <a class="code" href="main_8cpp.html#a88f2240863fddb31a613dded6ad871f8">sh_encoder_count_2</a>-&gt;get();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="main_8cpp.html#a5e63825c91a8355dce1be62182669167">sh_motor_1_speed</a>-&gt;put(encoder_driver_1-&gt;calc_motor_speed(encoder_count_new_motor_1, </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                        encoder_count_old_motor_1,speed_period_ms));</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="main_8cpp.html#a6a429db733438657d6cda4d49a4d8eeb">sh_motor_2_speed</a>-&gt;put(encoder_driver_2-&gt;calc_motor_speed(encoder_count_new_motor_2,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        encoder_count_old_motor_2,speed_period_ms));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">//*p_serial &lt;&lt; PMS(&quot;Motor Speed_1 (rpm) = &quot;) &lt;&lt; dec &lt;&lt; sh_motor_1_speed-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//*p_serial &lt;&lt; PMS(&quot;Motor Speed_2 (rpm) = &quot;) &lt;&lt; dec &lt;&lt; sh_motor_2_speed-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//  *p_serial &lt;&lt; PMS(&quot;Encoder count 2 = &quot;) &lt;&lt; dec &lt;&lt; sh_encoder_count_2-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//  *p_serial &lt;&lt; PMS(&quot;OLD state 2 = &quot;) &lt;&lt; bin &lt;&lt; sh_encoder_old_state_2-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">//  *p_serial &lt;&lt; PMS(&quot;NEW state 2 = &quot;) &lt;&lt; bin &lt;&lt; sh_encoder_new_state_2-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//  *p_serial &lt;&lt; PMS(&quot;Error count 2 = &quot;) &lt;&lt; dec &lt;&lt; sh_encoder_error_count_2-&gt;get() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//  *p_serial &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    delay_ms(speed_period_ms);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
-<div class="ttc" id="classtask__encoder_html_a8380b1f111bf5d6b4256f16e355c0afc"><div class="ttname"><a href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">task_encoder::run</a></div><div class="ttdeci">void run(void)</div><div class="ttdoc">This method is called by the RTOS once to run the task loop indefinetly. </div><div class="ttdef"><b>Definition:</b> <a href="task__encoder_8cpp_source.html#l00044">task_encoder.cpp:44</a></div></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">   42</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">task_encoder::run</a> (<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;     <span class="comment">// Make a variable which will hold times to use for precise task scheduling</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;     TickType_t previousTicks = xTaskGetTickCount ();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;     </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;     <span class="comment">// Construction of Encoder Drivers</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;     <a class="code" href="classencoder__drv.html">encoder_drv</a>* encoder_driver_motor_1 = <span class="keyword">new</span> <a class="code" href="classencoder__drv.html">encoder_drv</a>(p_serial, 7);  <span class="comment">// 6 and 7 aliased</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;     <a class="code" href="classencoder__drv.html">encoder_drv</a>* encoder_driver_motor_2 = <span class="keyword">new</span> <a class="code" href="classencoder__drv.html">encoder_drv</a>(p_serial, 3);  <span class="comment">// 4 and 5 aliased</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;     </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;     <span class="comment">// Counts before/after used to determine speed</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;     uint16_t encoder_count_new_motor_1 = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;     uint16_t encoder_count_old_motor_1 = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;     </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;     uint16_t encoder_count_new_motor_2 = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;     uint16_t encoder_count_old_motor_2 = 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;     </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;     <a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;put(0);              <span class="comment">// Clear motor 1 speed</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;     <a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;put(0);              <span class="comment">// Clear motor 2 speed</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;     </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;     <span class="keywordflow">for</span>(;;)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;     {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="comment">// Sets the new/old variables so speed can be calculated</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      encoder_count_old_motor_1 = encoder_count_new_motor_1; <span class="comment">// Motor 1</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      encoder_count_new_motor_1 = <a class="code" href="main_8cpp.html#a997260f75507d382d25524c0b6716b9c">sh_encoder_count_1</a>-&gt;get();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      encoder_count_old_motor_2 = encoder_count_new_motor_2; <span class="comment">// Motor 2</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      encoder_count_new_motor_2 = <a class="code" href="main_8cpp.html#a88f2240863fddb31a613dded6ad871f8">sh_encoder_count_2</a>-&gt;get();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="comment">// Calculates new motor speed based on motor encoder counts</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <a class="code" href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a>-&gt;put(encoder_driver_motor_1-&gt;calc_motor(encoder_count_old_motor_1, encoder_count_new_motor_1));    </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <a class="code" href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a>-&gt;put(encoder_driver_motor_2-&gt;calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      delay_from_for_ms(previousTicks, 5); <span class="comment">// Task executes every 5 ms</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;     }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="ttc" id="main_8cpp_html_a18576963336ab004d4812a76f52629b9"><div class="ttname"><a href="main_8cpp.html#a18576963336ab004d4812a76f52629b9">sh_motor_2_speed</a></div><div class="ttdeci">TaskShare&lt; volatile int16_t &gt; * sh_motor_2_speed</div><div class="ttdoc">Motor 1. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00096">main.cpp:96</a></div></div>
+<div class="ttc" id="classtask__encoder_html_a8380b1f111bf5d6b4256f16e355c0afc"><div class="ttname"><a href="classtask__encoder.html#a8380b1f111bf5d6b4256f16e355c0afc">task_encoder::run</a></div><div class="ttdeci">void run(void)</div><div class="ttdoc">This method is called by the RTOS once to run the task loop indefinetly. </div><div class="ttdef"><b>Definition:</b> <a href="task__encoder_8cpp_source.html#l00042">task_encoder.cpp:42</a></div></div>
 <div class="ttc" id="classtask__encoder_html_aa05fce9c58c6e814ea85699eb2d790cf"><div class="ttname"><a href="classtask__encoder.html#aa05fce9c58c6e814ea85699eb2d790cf">task_encoder::task_encoder</a></div><div class="ttdeci">task_encoder(const char *, unsigned portBASE_TYPE, size_t, emstream *)</div><div class="ttdoc">No private variables or methods for this class. </div><div class="ttdef"><b>Definition:</b> <a href="task__encoder_8cpp_source.html#l00029">task_encoder.cpp:29</a></div></div>
-<div class="ttc" id="main_8cpp_html_a6a429db733438657d6cda4d49a4d8eeb"><div class="ttname"><a href="main_8cpp.html#a6a429db733438657d6cda4d49a4d8eeb">sh_motor_2_speed</a></div><div class="ttdeci">TaskShare&lt; volatile uint16_t &gt; * sh_motor_2_speed</div><div class="ttdoc">Motor 1. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00096">main.cpp:96</a></div></div>
 <div class="ttc" id="main_8cpp_html_a88f2240863fddb31a613dded6ad871f8"><div class="ttname"><a href="main_8cpp.html#a88f2240863fddb31a613dded6ad871f8">sh_encoder_count_2</a></div><div class="ttdeci">TaskShare&lt; volatile uint16_t &gt; * sh_encoder_count_2</div><div class="ttdoc">Motor 1. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00084">main.cpp:84</a></div></div>
-<div class="ttc" id="main_8cpp_html_a5e63825c91a8355dce1be62182669167"><div class="ttname"><a href="main_8cpp.html#a5e63825c91a8355dce1be62182669167">sh_motor_1_speed</a></div><div class="ttdeci">TaskShare&lt; volatile uint16_t &gt; * sh_motor_1_speed</div><div class="ttdoc">Next state. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00095">main.cpp:95</a></div></div>
+<div class="ttc" id="main_8cpp_html_aa090f3fc0fc26a4c180b84b4674216e9"><div class="ttname"><a href="main_8cpp.html#aa090f3fc0fc26a4c180b84b4674216e9">sh_motor_1_speed</a></div><div class="ttdeci">TaskShare&lt; volatile int16_t &gt; * sh_motor_1_speed</div><div class="ttdoc">Next state. </div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00095">main.cpp:95</a></div></div>
 <div class="ttc" id="task__encoder_8h_html"><div class="ttname"><a href="task__encoder_8h.html">task_encoder.h</a></div></div>
 <div class="ttc" id="classencoder__drv_html"><div class="ttname"><a href="classencoder__drv.html">encoder_drv</a></div><div class="ttdoc">This define prevents this .H file from being included multiple times in a .CPP file. </div><div class="ttdef"><b>Definition:</b> <a href="encoder__drv_8h_source.html#l00034">encoder_drv.h:34</a></div></div>
 <div class="ttc" id="encoder__drv_8h_html"><div class="ttname"><a href="encoder__drv_8h.html">encoder_drv.h</a></div></div>
@@ -186,7 +174,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 8 2016 16:46:27 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 19 2016 14:34:55 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

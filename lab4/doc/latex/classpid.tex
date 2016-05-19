@@ -241,7 +241,7 @@ References dinput, error, esum, input, pid\-::config\-::\-Kd, pid\-::config\-::\
 
 
 
-Referenced by compute().
+Referenced by compute(), and task\-\_\-pid\-::run().
 
 \hypertarget{classpid_a3b7a6f92486d7715fbc8c52bc7c51e7c}{\index{pid@{pid}!compute@{compute}}
 \index{compute@{compute}!pid@{pid}}
@@ -316,6 +316,10 @@ Definition at line 164 of file pid.\-cpp.
 
 
 References input.
+
+
+
+Referenced by task\-\_\-pid\-::run().
 
 \hypertarget{classpid_af02d787d3cb2dbb650a0c00235eb2cfd}{\index{pid@{pid}!get\-\_\-\-Kd@{get\-\_\-\-Kd}}
 \index{get\-\_\-\-Kd@{get\-\_\-\-Kd}!pid@{pid}}
@@ -469,6 +473,10 @@ Definition at line 173 of file pid.\-cpp.
 
 References output.
 
+
+
+Referenced by task\-\_\-pid\-::run().
+
 \hypertarget{classpid_afc073a6a9f5cbd1b01946b83d68a3a04}{\index{pid@{pid}!get\-\_\-saturator\-\_\-max@{get\-\_\-saturator\-\_\-max}}
 \index{get\-\_\-saturator\-\_\-max@{get\-\_\-saturator\-\_\-max}!pid@{pid}}
 \subsubsection[{get\-\_\-saturator\-\_\-max}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t pid\-::get\-\_\-saturator\-\_\-max (
@@ -567,6 +575,10 @@ Definition at line 92 of file pid.\-cpp.
 
 References esum.
 
+
+
+Referenced by task\-\_\-pid\-::run().
+
 \hypertarget{classpid_aed4673f6646f44b2ee10564ad03d5033}{\index{pid@{pid}!set\-\_\-input@{set\-\_\-input}}
 \index{set\-\_\-input@{set\-\_\-input}!pid@{pid}}
 \subsubsection[{set\-\_\-input}]{\setlength{\rightskip}{0pt plus 5cm}void pid\-::set\-\_\-input (
@@ -643,10 +655,6 @@ Definition at line 113 of file pid.\-cpp.
 
 References pid\-::config\-::\-Ki.
 
-
-
-Referenced by task\-\_\-pid\-::run().
-
 \hypertarget{classpid_adef385c61aa547f8cff8ec95c9a37b72}{\index{pid@{pid}!set\-\_\-\-Kp@{set\-\_\-\-Kp}}
 \index{set\-\_\-\-Kp@{set\-\_\-\-Kp}!pid@{pid}}
 \subsubsection[{set\-\_\-\-Kp}]{\setlength{\rightskip}{0pt plus 5cm}void pid\-::set\-\_\-\-Kp (
@@ -670,10 +678,6 @@ Definition at line 103 of file pid.\-cpp.
 
 
 References pid\-::config\-::\-Kp.
-
-
-
-Referenced by task\-\_\-pid\-::run().
 
 \hypertarget{classpid_ad125031ba4fe5b30657259689e726768}{\index{pid@{pid}!set\-\_\-\-Kw@{set\-\_\-\-Kw}}
 \index{set\-\_\-\-Kw@{set\-\_\-\-Kw}!pid@{pid}}

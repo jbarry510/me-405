@@ -154,8 +154,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>No private variables or methods for this class. </p>
-<p>No protected variables or methods for this class This constructor creates a generic pid task of which many copies can be made.</p>
-<p>TODO NEEDS CHANGE!!! This constructor creates a task which controls the ouput of two encoders. The main job of this constructor is to call the constructor of parent class (<code>frt_task</code> ); the parent's constructor the work. </p>
+<p>No protected variables or methods for this class This constructor creates a generic PID task of which many copies can be made.</p>
+<p>This constructor creates a task which controls the ouput of two pid loops. The main job of this constructor is to call the constructor of parent class (<code>frt_task</code> ); the parent's constructor the work. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">a_name</td><td>A character string which will be the name of this task </td></tr>
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="task__pid_8cpp_source.html#l00039">39</a> of file <a class="el" href="task__pid_8cpp_source.html">task_pid.cpp</a>.</p>
 
-<p>References <a class="el" href="pid_8h_source.html#l00092">pid::PI</a>, <a class="el" href="pid_8cpp_source.html#l00113">pid::set_Ki()</a>, and <a class="el" href="pid_8cpp_source.html#l00103">pid::set_Kp()</a>.</p>
+<p>References <a class="el" href="pid_8cpp_source.html#l00269">pid::compute()</a>, <a class="el" href="pid_8cpp_source.html#l00164">pid::get_input()</a>, <a class="el" href="pid_8cpp_source.html#l00173">pid::get_output()</a>, <a class="el" href="pid_8h_source.html#l00092">pid::PI</a>, <a class="el" href="adc_8cpp_source.html#l00106">adc::read_oversampled()</a>, <a class="el" href="pid_8cpp_source.html#l00092">pid::set_config()</a>, <a class="el" href="main_8cpp_source.html#l00095">sh_motor_1_speed</a>, and <a class="el" href="main_8cpp_source.html#l00096">sh_motor_2_speed</a>.</p>
 
 </div>
 </div>
@@ -201,7 +201,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 8 2016 16:46:28 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 19 2016 14:34:55 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

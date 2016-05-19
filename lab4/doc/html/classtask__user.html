@@ -114,15 +114,19 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a36c99836d2ee036858d4a0ab61c2d5ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36c99836d2ee036858d4a0ab61c2d5ec"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtask__user.html#a36c99836d2ee036858d4a0ab61c2d5ec">print_main_menu</a> (void)</td></tr>
-<tr class="memdesc:a36c99836d2ee036858d4a0ab61c2d5ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays the Main Menu message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it. <br/></td></tr>
+<tr class="memdesc:a36c99836d2ee036858d4a0ab61c2d5ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays the Main Menu message telling the user what to do. <br/></td></tr>
 <tr class="separator:a36c99836d2ee036858d4a0ab61c2d5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4c8890b06e117f57095951eee64c64f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4c8890b06e117f57095951eee64c64f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtask__user.html#ae4c8890b06e117f57095951eee64c64f">print_motor_menu</a> (void)</td></tr>
-<tr class="memdesc:ae4c8890b06e117f57095951eee64c64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays the Motor Menu message for motor control. It's protected so that only methods of this class or possibly descendents can use it. <br/></td></tr>
+<tr class="memdesc:ae4c8890b06e117f57095951eee64c64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays the Motor Menu message for motor control. <br/></td></tr>
 <tr class="separator:ae4c8890b06e117f57095951eee64c64f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a105bebbd9cb1031154c3dfc3662db4a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtask__user.html#a105bebbd9cb1031154c3dfc3662db4a0">show_status</a> (void)</td></tr>
 <tr class="memdesc:a105bebbd9cb1031154c3dfc3662db4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays information about the status of the system.  <a href="#a105bebbd9cb1031154c3dfc3662db4a0">More...</a><br/></td></tr>
 <tr class="separator:a105bebbd9cb1031154c3dfc3662db4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5cd567087263414af48c9bdfc655eba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5cd567087263414af48c9bdfc655eba"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtask__user.html#ad5cd567087263414af48c9bdfc655eba">print_PID_menu</a> (void)</td></tr>
+<tr class="memdesc:ad5cd567087263414af48c9bdfc655eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method displays the autonomous Menu message for PID control. <br/></td></tr>
+<tr class="separator:ad5cd567087263414af48c9bdfc655eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This task interacts with the user for force him/her to do what he/she is told. What a rude task this is. Then again, computers tend to be that way; if they're polite with you, they're probably spying on you. </p>
@@ -177,7 +181,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00058">58</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
+<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00059">59</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
 
 </div>
 </div>
@@ -199,9 +203,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>This method is called by the RTOS once to run the task loop for ever and ever. </p>
 <p>This task interacts with the user so that a motor may be selected, the power for that motor may be set, the intensity of braking may also be set, along with a full braking option. It includes two help messages: Initial menu to choose global options, a motor menu to select power or braking intensity. TODO: Add a increment and decrement for power increase Add a kill button to turn everything off if necessary </p>
 
-<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00074">74</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
+<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00075">75</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
 
-<p>References <a class="el" href="main_8cpp_source.html#l00070">p_print_ser_queue</a>, <a class="el" href="task__user_8cpp_source.html#l00349">print_main_menu()</a>, <a class="el" href="task__user_8cpp_source.html#l00365">print_motor_menu()</a>, <a class="el" href="main_8cpp_source.html#l00078">sh_braking_entry</a>, <a class="el" href="main_8cpp_source.html#l00081">sh_braking_full_flag</a>, <a class="el" href="main_8cpp_source.html#l00079">sh_braking_set_flag</a>, <a class="el" href="main_8cpp_source.html#l00073">sh_motor_select</a>, <a class="el" href="main_8cpp_source.html#l00075">sh_power_entry</a>, <a class="el" href="main_8cpp_source.html#l00076">sh_power_set_flag</a>, and <a class="el" href="task__user_8cpp_source.html#l00386">show_status()</a>.</p>
+<p>References <a class="el" href="main_8cpp_source.html#l00070">p_print_ser_queue</a>, <a class="el" href="task__user_8cpp_source.html#l00434">print_main_menu()</a>, <a class="el" href="task__user_8cpp_source.html#l00451">print_motor_menu()</a>, <a class="el" href="task__user_8cpp_source.html#l00466">print_PID_menu()</a>, <a class="el" href="main_8cpp_source.html#l00078">sh_braking_entry</a>, <a class="el" href="main_8cpp_source.html#l00081">sh_braking_full_flag</a>, <a class="el" href="main_8cpp_source.html#l00079">sh_braking_set_flag</a>, <a class="el" href="main_8cpp_source.html#l00073">sh_motor_select</a>, <a class="el" href="main_8cpp_source.html#l00075">sh_power_entry</a>, <a class="el" href="main_8cpp_source.html#l00076">sh_power_set_flag</a>, and <a class="el" href="task__user_8cpp_source.html#l00485">show_status()</a>.</p>
 
 </div>
 </div>
@@ -236,11 +240,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <li>Amount of heap space free and setting of RTOS tick timer </li>
 </ul>
 
-<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00386">386</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
+<p>Definition at line <a class="el" href="task__user_8cpp_source.html#l00485">485</a> of file <a class="el" href="task__user_8cpp_source.html">task_user.cpp</a>.</p>
 
 <p>References <a class="el" href="task__user_8h_source.html#l00047">PROGRAM_VERSION</a>.</p>
 
-<p>Referenced by <a class="el" href="task__user_8cpp_source.html#l00074">run()</a>.</p>
+<p>Referenced by <a class="el" href="task__user_8cpp_source.html#l00075">run()</a>.</p>
 
 </div>
 </div>
@@ -251,7 +255,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 8 2016 16:46:28 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 19 2016 14:34:56 for Lab 2 - Task Motor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

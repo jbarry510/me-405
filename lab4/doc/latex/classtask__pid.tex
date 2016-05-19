@@ -47,9 +47,9 @@ Definition at line 31 of file task\-\_\-pid.\-h.
 
 No private variables or methods for this class. 
 
-No protected variables or methods for this class This constructor creates a generic pid task of which many copies can be made.
+No protected variables or methods for this class This constructor creates a generic P\-I\-D task of which many copies can be made.
 
-T\-O\-D\-O N\-E\-E\-D\-S C\-H\-A\-N\-G\-E!!! This constructor creates a task which controls the ouput of two encoders. The main job of this constructor is to call the constructor of parent class ({\ttfamily frt\-\_\-task} ); the parent's constructor the work. 
+This constructor creates a task which controls the ouput of two pid loops. The main job of this constructor is to call the constructor of parent class ({\ttfamily frt\-\_\-task} ); the parent's constructor the work. 
 \begin{DoxyParams}{Parameters}
 {\em a\-\_\-name} & A character string which will be the name of this task \\
 \hline
@@ -84,7 +84,7 @@ Definition at line 39 of file task\-\_\-pid.\-cpp.
 
 
 
-References pid\-::\-P\-I, pid\-::set\-\_\-\-Ki(), and pid\-::set\-\_\-\-Kp().
+References pid\-::compute(), pid\-::get\-\_\-input(), pid\-::get\-\_\-output(), pid\-::\-P\-I, adc\-::read\-\_\-oversampled(), pid\-::set\-\_\-config(), sh\-\_\-motor\-\_\-1\-\_\-speed, and sh\-\_\-motor\-\_\-2\-\_\-speed.
 
 
 

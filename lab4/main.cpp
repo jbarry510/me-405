@@ -103,6 +103,8 @@ TaskShare<int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
 
 TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
 
+//TaskShare<uint16_t>* sh_adc_setpoint;
+
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the
  *  scheduler runs until power is turned off or there's a reset.
@@ -168,6 +170,8 @@ int main (void)
      
      // Flag to indicate PID control enabled
      sh_PID_control = new TaskShare<uint8_t> ("sh_PID_control");
+     
+     //sh_adc_setpoint = new TaskShare<uint16_t>* ("sh_adc_setpoint");
      
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program

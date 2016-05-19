@@ -46,6 +46,8 @@ void task_motor::run (void)
      motor_drv* p_motor_2 = new motor_drv (p_serial, 2);
      sh_power_set_flag->put(0);		// Flag used to only set power when it has changed
      
+     
+     
      for(;;)
      {
 	  if (sh_PID_control->get() == 1)
