@@ -70,4 +70,10 @@ extern TaskShare<volatile uint16_t>* sh_motor_2_speed;		/// Motor 2
 extern TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1
 extern TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2
 
+/// PID powers and selector
+extern TaskShare<volatile int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
+extern TaskShare<volatile int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
+
+extern TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
+
 #endif /// _SHARES_H_

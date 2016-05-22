@@ -65,7 +65,18 @@ protected:
 	
 	/// This method displays the Motor Menu message for motor control. It's protected so that only methods of this class or possibly descendents can use it
 	void print_motor_menu (void);
-
+	
+	/// This method displays the Servo Menu message for servo control. It's protected so only methods  of this class or possibly decsendents can use it
+	void print_servo_menu (void);
+	
+	/// This method displays the Class Task Menu message for class tasks. It's protected so only methods of this class or possibly descendents can use it
+	void print_class_menu (void);
+	
+	/// This method displays the Highway Task Menu message for class tasks. It's protected so only methods of this class or possibly descendents can use it
+	void print_highway_menu (void);
+	
+	/// This method displays the PID Menu message for class tasks. It's protected so only methods of this class and possibly descendents can use it.
+	void print_PID_menu (void);
 	/// This method displays information about the status of the system
 	void show_status (void);
 

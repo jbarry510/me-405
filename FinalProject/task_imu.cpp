@@ -57,9 +57,9 @@ void task_imu::run (void)
 	  pitch = imu_sensor->getEulerAng(3);
 	  
 	  /// Prints the Euler angle variables to the serial port
-	  *p_serial << PMS("Euler Heading: ") << heading << endl;
-	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
-	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
+// 	  *p_serial << PMS("Euler Heading: ") << heading << endl;
+// 	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
+// 	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
 	  
 	  // Time that the task waits before looping
 	  delay_ms(2000);
