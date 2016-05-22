@@ -24,12 +24,11 @@
 #include "taskqueue.h"                      // Header of wrapper for FreeRTOS queues
 #include "queue.h"                          // Header for FreeRTOS queues
 
-#include "servo_drv.h"                      // Include header for the servo class
-
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "textqueue.h"                      // Header for text queue class
 #include "shares.h"                         // Shared inter-task communications
 
+#include "servo_drv.h"                      // Include header for the servo class
 
 class task_servo : public TaskBase
 {
@@ -40,7 +39,7 @@ protected:
 	/// No protected variables or methods for this class
   
 public:
-	/// This constructor creates a generic encoder task of which many copies can be made.
+	/// This constructor creates a generic servo task of which many copies can be made.
 	task_servo (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	/// This method is called by the RTOS once to run the task loop indefinetly.

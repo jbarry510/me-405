@@ -26,11 +26,11 @@
 
 # The name of the program you're building, usually the file which contains main(). 
 # The name without its extension (.c or .cpp or whatever) must be given here. 
-PROJECT_NAME = lab5
+PROJECT_NAME = Final Project
 
 # A list of the source (.c, .cc, .cpp) files in the project. Files in library 
 # subdirectories do not go in this list; they're included automatically
-SOURCES = main.cpp task_user.cpp adc.cpp motor_drv.cpp task_motor.cpp task_encoder.cpp encoder_drv.cpp pid.cpp satmath.cpp task_pid.cpp imu_drv.cpp task_imu.cpp i2c_master.cpp 
+SOURCES = task_user.cpp task_motor.cpp task_encoder.cpp task_pid.cpp task_imu.cpp task_servo.cpp motor_drv.cpp encoder_drv.cpp imu_drv.cpp servo_drv.cpp adc.cpp pid.cpp main.cpp satmath.cpp i2c_master.cpp 
 
 # Clock frequency of the CPU, in Hz. This number should be an unsigned long integer.
 # For example, 16 MHz would be represented as 16000000UL. 

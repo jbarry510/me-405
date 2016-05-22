@@ -1,6 +1,6 @@
 //======================================================================================
 /** @file servo_drv.h
- *    TODO This file contains a simple servo motor...
+ *    TODO This file contains a simple servo motor driver.
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file.
@@ -20,31 +20,26 @@
 
 
 //-------------------------------------------------------------------------------------
-/** @brief   This class will enable the H-bridge motor driver chips on the ME 405 board.
+/** @brief   This class will enable a servo to be used with the ME 405 board.
  *       
- *  @details The class has two protected variables...
+ *  @details TODO The class has two protected variables...
  */
 
-class motor_drv
+class servo_drv
 {
 	protected:
-	/// The motor class uses this pointer to print debug messages via the serial port
+	/// The servo class uses this pointer to print debug messages via the serial port
 	emstream* ptr_to_serial;
-	
-	/// The motor class uses this variable to keep track of which registers to modify for the two H-bridge chips on the ME405 board
-	uint8_t select;
 
 	public:
-	/// The constructor sets up the motor driver for use. The "= NULL" part is a
+	/// The constructor sets up the servo driver for use. The "= NULL" part is a
 	/// default parameter, meaning that if that parameter isn't given on the line
 	/// where this constructor is called, the compiler will just fill in "NULL".
 	/// In this case that has the effect of turning off diagnostic printouts.
-	/// The "uint8_t = 0" fills in a zero for the motor select variable which will give an
-	/// error message when the constructor is done executing.
 	
-	motor_drv (emstream* = NULL, uint8_t = 0);
-
-
+	servo_drv (emstream* = NULL);
+	
+	void set_Pos(uint8_t pos);
 
 }; /// end of class servo_drv
 

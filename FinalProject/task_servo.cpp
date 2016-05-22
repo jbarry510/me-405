@@ -27,7 +27,6 @@ task_servo::task_servo (const char* a_name, unsigned portBASE_TYPE a_priority, s
 			emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. 
-        // This new task just waits for encoder_drv to share encoder data: state, direction, etc...
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -37,17 +36,15 @@ task_servo::task_servo (const char* a_name, unsigned portBASE_TYPE a_priority, s
 
 void task_servo::run (void)
 {
-      // Construction of Encoder Drivers
-      encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
-      
-      // maximum time for encoder to count 0 to 48 at max speed
-      uint16_t speed_period_ms = 5; 
-      
+      // Declaration of servo object
+      servo_drv* steer_servo = new servo_drv(p_serial);
       
       for(;;)
       {
-
+	// Sets the servo in the neutral position (straight).
+	steer_servo -> set_Pos(25);
 	
-	delay_ms(speed_period_ms);
+	// Delay so that other tasks can run
+	delay_ms(10);
       }
 }

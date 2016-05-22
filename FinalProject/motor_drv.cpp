@@ -33,9 +33,9 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	
 	// Timing channel 1 setup (Fast PWM, Clock prescaler of 8) 
 	TCCR1A |= (1 << WGM10) | (1 << COM1B1) | (1 << COM1A1);
-	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0);
+	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0) | ~(1 << WGM11);
 	TCCR1B |= (1 << WGM12) | (1 << CS11);
-	TCCR1B &= ~(1 << CS12) | ~(1 << CS10);
+	TCCR1B &= ~(1 << CS12) | ~(1 << CS10) | ~(1 << WGM13);
 	
 	// If object is motor 1 then this block is used
 	if(select == 1)
@@ -49,8 +49,6 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	  // Sets direction of port B pin 6 to output (PWM control)
 	  DDRB |= (1<<DDB6);
 	
-	  // Prints a message if motor 1 construction was sucessful
-	  //DBG(ptr_to_serial, "motor 1 constructor OK" << endl);
 	}
 	
 	// If object is motor 2 then this block is used
@@ -64,9 +62,7 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	
 	  // Sets direction of port B pin 5 to output (PWM control)
 	  DDRB |= (1<<DDB5);
-	
-	  // Prints a message if motor 2 construction was sucessful
-	  //DBG(ptr_to_serial, "motor 2 constructor OK" << endl);
+
 	}
 	
 	// If object is not motor 1 or 2 then this block is used

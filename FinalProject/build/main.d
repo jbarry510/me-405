@@ -12,7 +12,7 @@ build/main.o: main.cpp ../lib/freertos/FreeRTOS.h \
  ../lib/frtcpp/taskshare.h shares.h task_user.h adc.h \
  ../lib/freertos/semphr.h ../lib/freertos/queue.h task_motor.h \
  motor_drv.h task_encoder.h encoder_drv.h task_pid.h task_imu.h imu_drv.h \
- i2c_master.h
+ i2c_master.h task_servo.h servo_drv.h
 
 ../lib/freertos/FreeRTOS.h:
 
@@ -83,3 +83,7 @@ task_imu.h:
 imu_drv.h:
 
 i2c_master.h:
+
+task_servo.h:
+
+servo_drv.h:
