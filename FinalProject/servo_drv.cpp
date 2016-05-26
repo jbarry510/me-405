@@ -50,14 +50,10 @@ void servo_drv::set_Pos(uint8_t pos)
 {
      /// Checks if the servo position input is in the correct range, if outside the range
      /// the position input is saturated.
-     if (pos < 20)
-     {
-	  pos = 20;
-     }
-     else if (pos > 30)
-     {
-	  pos = 30;
-     }
+     if (pos < 15)
+	  pos = 15;
+     else if (pos > 29)
+	  pos = 29;
      
      /// Sets the position input to the output compare register used to generate the 
      /// PWM signal.

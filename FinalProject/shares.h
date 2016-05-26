@@ -64,16 +64,26 @@ extern TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	/// Previous state
 extern TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	/// Next state
 
 // Motor speeds
-extern TaskShare<volatile uint16_t>* sh_motor_1_speed;		/// Motor 1
-extern TaskShare<volatile uint16_t>* sh_motor_2_speed;		/// Motor 2
+extern TaskShare<volatile int16_t>* sh_motor_1_speed;		/// Motor 1
+extern TaskShare<volatile int16_t>* sh_motor_2_speed;		/// Motor 2
 /// Tick jump error count
 extern TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1
 extern TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2
 
-/// PID powers and selector
-extern TaskShare<volatile int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
-extern TaskShare<volatile int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
+// Motor PID setpoints
+extern TaskShare<int32_t>* sh_setpoint_1;			// Motor 1
+extern TaskShare<int32_t>* sh_setpoint_2;			// Motor 2
 
-extern TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
+// Motor Power values from PID control
+extern TaskShare<int16_t>* sh_PID_1_power;			// Motor 1
+extern TaskShare<int16_t>* sh_PID_2_power;			// Motor 2
+
+// Flag to indicate PID control enabled
+extern TaskShare<uint8_t>* sh_PID_control;
+
+extern TaskShare<uint16_t>* sh_adc_setpoint;
+
+// Servo motor position setpoint
+extern TaskShare<uint8_t>* sh_servo_setpoint;
 
 #endif /// _SHARES_H_

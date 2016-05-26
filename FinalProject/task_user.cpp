@@ -40,6 +40,15 @@
 #define ASCII_NEWLINE 10		// Carriage Return
 #define ASCII_ESCAPE 27			// Escape
 
+// Menu descriptors
+#define MAIN    0
+#define HELP    1
+#define NUMBER  2
+#define MOTOR   3
+#define SERVO   4
+#define ROUTES  5
+#define HIGHWAY 6
+
 // This constant sets how many RTOS ticks the task delays if the user's not talking. 
 // The duration is calculated to be about 5 ms.
 const TickType_t ticks_to_delay = ((configTICK_RATE_HZ / 1000) * 5);
@@ -79,7 +88,8 @@ void task_user::run (void)
      int16_t number_entered = 0;             	// Holds a number being entered by user
      uint8_t number_state = 0;			// State of of what type of number is inputted
      bool negative_number_entered = false;	// Flag to indicate a negative number has been inputted
-     uint8_t char_num_count = 0;		// Counts characters so backspace will delete accordingly 
+     uint8_t char_num_count = 0;		// Counts characters so backspace will delete accordingly
+     
 
      sh_motor_select -> put(0);			// Motor select share
 
@@ -93,8 +103,90 @@ void task_user::run (void)
 	  switch (state)
 	  {
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	       // In state 0 the user types characters, which are interpreted as commands.
-	       case (0):
+	       // In state MAIN the user types characters, which are interpreted as commands.
+	       case (MAIN):
+		    if (p_serial->check_for_char ())		// Wait for character and read
+		    {
+			 char_in = p_serial -> getchar ();
+
+			 // Switch statement that responds user command characters
+			 switch (char_in)
+			 {
+			      case ('a'):
+				   if(sh_PID_control->get() == 0)
+				   {
+					sh_PID_control->put(1);		// Set PID flag high
+					*p_serial << PMS ("Autonomous Mode: ACTIVE") << endl;
+					print_PID_menu();
+					transition_to (SERVO);
+				   }
+				   else if(sh_PID_control->get() == 1)
+				   {
+					sh_PID_control->put(0);
+					*p_serial << PMS ("Autonomous Mode: HALTED") << endl;
+					print_main_menu();
+					transition_to (MAIN);
+				   }
+				   break;
+				   
+			      // The 'm' command: allows for manual motor manipulation
+			      case ('m'):
+				   *p_serial << PMS ("Enter number, 1 or 2, for motor selection: ") << endl;
+				   number_entered = 0;		// Clears number_entered
+				   sh_motor_select -> put(0);	// Clears shared sh_motor_select
+				   number_state = 0;		// Clears number state
+				   transition_to (NUMBER);
+				   break;
+				   
+			      // The 's' command: allows for manual servo manipulation
+			      case ('s'):
+				   print_servo_menu();
+				   transition_to (SERVO);
+				   break;
+				   
+			      // The 'c' command: transitions to the class required task list
+			      case ('c'):
+				   print_class_menu();
+				   transition_to (ROUTES);
+				   break;
+				   
+			      // The 'h' command: transitions to the highway maintenance task list
+			      case ('h'):
+				   print_highway_menu();
+				   transition_to (HIGHWAY);
+				   break;
+				   
+			      // The '?' command: move to system/microcontroller help menu
+			      case ('?'):
+				   print_help_menu();
+				   transition_to (HELP);
+				   break;
+				   
+			      // A Ctrl-C character causes the CPU to restart
+			      case (3):
+				   *p_serial << PMS ("Resetting AVR") << endl;
+				   wdt_enable (WDTO_120MS);
+				   for (;;);
+				   break;
+
+			      // The 'r' command: return to Main Menu
+			      case ('r'):
+				   print_main_menu ();
+				   transition_to (MAIN);
+				   break;
+
+			      // Unrecognized character: return typed character and prompt user for a retype
+			      default:
+				   *p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
+				   break;
+			 } // End switch for characters
+		    } // End if a character was received
+
+	       break; // End of state MAIN
+	       
+	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	       // In state HELP the user types characters, which are interpreted as commands.
+	       case (HELP):
 		    if (p_serial->check_for_char ())		// Wait for character and read
 		    {
 			 char_in = p_serial -> getchar ();
@@ -116,47 +208,7 @@ void task_user::run (void)
 			      case ('d'):
 				   print_task_stacks (p_serial);
 				   break;
-
-			      case ('a'):
-				   if(sh_PID_control->get() == 0)
-				   {
-					sh_PID_control->put(1);		// Set PID flag high
-					*p_serial << PMS ("Autonomous Mode: ACTIVE") << endl;
-					print_PID_menu();
-					transition_to (3);
-
-				   }
-				   else if(sh_PID_control->get() == 1)
-				   {
-					sh_PID_control->put(0);
-					*p_serial << PMS ("Autonomous Mode: HALTED") << endl;
-					print_main_menu();
-					transition_to (0);
-				   }
-				   break;
-			      // The 'm' command: allows for manual motor manipulation
-			      case ('m'):
-				   *p_serial << PMS ("Enter number, 1 or 2, for motor selection: ") << endl;
-				   number_entered = 0;		// Clears number_entered
-				   sh_motor_select -> put(0);	// Clears shared sh_motor_select
-				   number_state = 0;		// Clears number state
-				   transition_to (1);
-				   break;
-			      // The 'v' command: allows for manual servo manipulation
-			      case ('v'):
-				   print_servo_menu();
-				   transition_to (3);
-				   break;
-			      // The 'c' command: transitions to the class required task list
-			      case ('c'):
-				   print_class_menu();
-				   transition_to (4);
-				   break;
-			      // The 'h' command: transitions to the highway maintenance task list
-			      case ('h'):
-				   print_highway_menu();
-				   transition_to (5);
-				   break;
+				   
 			      // A Ctrl-C character causes the CPU to restart
 			      case (3):
 				   *p_serial << PMS ("Resetting AVR") << endl;
@@ -167,20 +219,21 @@ void task_user::run (void)
 			      // The 'r' command: return to Main Menu
 			      case ('r'):
 				   print_main_menu ();
+				   transition_to (MAIN);
 				   break;
 
 			      // Unrecognized character: return typed character and prompt user for a retype
 			      default:
 				   *p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
 				   break;
-			 }; // End switch for characters
+			 } // End switch for characters
 		    } // End if a character was received
+	       break; // End of state HELP
 
-	       break; // End of state 0
 
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	       // In state 1, wait for user to enter digits and build into a number
-	       case (1):
+	       case (NUMBER):
 		    if (p_serial->check_for_char ())		// Wait for character and read
 		    {
 			 char_in = p_serial -> getchar ();
@@ -233,7 +286,7 @@ void task_user::run (void)
 					sh_motor_select -> put(number_entered);	// Set to motor selected
 					print_motor_menu ();		// Print motor menu
 					number_entered = 0;		// Clear number_entered
-					transition_to (2);		// Transition to motor control case
+					transition_to (MOTOR);		// Transition to motor control case
 				   }
 				   else
 				   {
@@ -259,9 +312,8 @@ void task_user::run (void)
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
 					print_main_menu ();
-					transition_to (0);			// Transition to main case
+					transition_to (MAIN);			// Transition to main case
 				   }
-    
 				   else
 				   {
 					*p_serial << PMS ("Please type a number between -255 to 255, then ENTER") << endl;	// Display error message for out of range
@@ -280,12 +332,29 @@ void task_user::run (void)
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
 					print_main_menu ();
-					transition_to (0);			// Transition to main case
+					transition_to (MAIN);			// Transition to main case
 				   }
-    
 				   else
 				   {
 					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					number_entered = 0;			// Clear number entered
+				   }	
+			      }
+			      
+			      // Servo position State
+			      else if (number_state == 3)
+			      {
+				   if (number_entered >= 15 && number_entered <= 29)
+				   {
+					sh_servo_setpoint->put(number_entered);	// Set servo position to number_entered
+					number_entered = 0;			// Clear number_entered
+					number_state = 0;			// Clear number_state
+					print_main_menu();
+					transition_to (MAIN);
+				   }
+				   else
+				   {
+					*p_serial << PMS ("Please type a number between 20 to 30, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
@@ -306,7 +375,7 @@ void task_user::run (void)
 
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	       // Motor control case
-	       case (2):
+	       case (MOTOR):
 		    if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
 			 char_in = p_serial -> getchar ();  
@@ -318,14 +387,14 @@ void task_user::run (void)
 			      case ('p'):
 				   *p_serial << PMS ("Enter number for Motor ") << sh_motor_select->get() << (" power:") << endl;
 				   number_state = 1;
-				   transition_to (1);
+				   transition_to (NUMBER);
 				   break;
 
 			      // The 'b' command allows for motor breaking intensity
 			      case ('b'):
 				   *p_serial << PMS ("Enter number for Motor ") << sh_motor_select->get() << (" breaking:") << endl;
 				   number_state = 2;
-				   transition_to (1);
+				   transition_to (NUMBER);
 				   break;
 
 			      // The 's' command stops the motor (enables full brake)
@@ -333,7 +402,7 @@ void task_user::run (void)
 				   sh_braking_full_flag-> put(1);	// Set braking_full_flag high		
 				   *p_serial << PMS ("Motor ") << sh_motor_select->get() << PMS (" HALTED!") << endl;
 				   print_main_menu ();
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // A control-C character causes the CPU to restart
@@ -346,7 +415,7 @@ void task_user::run (void)
 			      // The 'r' command returns user to Main Menu
 			      case ('r'):
 				   print_main_menu ();
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // If character isn't recognized, ask What's That Function?
@@ -357,8 +426,9 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 2
+		    
 	       // Servo control case
-	       case (3):
+	       case (SERVO):
 		    if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
 			 char_in = p_serial -> getchar ();  
@@ -369,13 +439,14 @@ void task_user::run (void)
 			      // The 'p' command allows for manual servo position setting
 			      case ('p'):
 				   *p_serial << PMS ("Enter position for Servo") << endl;
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // The 's' command allows for manual servo position setpoint setting
 			      case ('s'):
 				   *p_serial << PMS ("Enter position setpoint for Servo") << endl;
- 				   transition_to (0);
+				   number_state = 3;
+ 				   transition_to (NUMBER);
 				   break;
 
 			      // A control-C character causes the CPU to restart
@@ -388,7 +459,7 @@ void task_user::run (void)
 			      // The 'r' command returns user to Main Menu
 			      case ('r'):
 				   print_main_menu ();
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // If character isn't recognized, ask What's That Function?
@@ -399,8 +470,9 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 3
-	       // Class task case
-	       case (4):
+		    
+	       // ME-405 task case
+	       case (ROUTES):
 		    if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
 			 char_in = p_serial -> getchar ();  
@@ -411,13 +483,13 @@ void task_user::run (void)
 			      // The 'l' command activates linear heading adherance
 			      case ('l'):
 				   *p_serial << PMS ("Enter linear heading") << endl;
- 				   transition_to (0);
+ 				   transition_to (MAIN);
 				   break;
 
 			      // The 'c' command activates circular path routing
 			      case ('c'):
 				   *p_serial << PMS ("Enter radius of circular path [0,255]") << endl;
- 				   transition_to (0);
+ 				   transition_to (MAIN);
 				   break;
 
 			      // A control-C character causes the CPU to restart
@@ -430,7 +502,7 @@ void task_user::run (void)
 			      // The 'r' command returns user to Main Menu
 			      case ('r'):
 				   print_main_menu ();
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // If character isn't recognized, ask What's That Function?
@@ -441,8 +513,9 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 4
+		    
 	       // Highway task case
-	       case (5):
+	       case (HIGHWAY):
 		    if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
 			 char_in = p_serial -> getchar ();  
@@ -452,17 +525,17 @@ void task_user::run (void)
 			 {
 			      // The 'l' command activates lane keeping
 			      case ('l'):
- 				   transition_to (0);
+ 				   transition_to (MAIN);
 				   break;
 
 			      // The 'c' command activates car avoidance
 			      case ('c'):
- 				   transition_to (0);
+ 				   transition_to (MAIN);
 				   break;
 				   
 			      // The 'p' command activates car passing
 			      case ('p'):
- 				   transition_to (0);
+ 				   transition_to (MAIN);
 				   break;
 
 			      // A control-C character causes the CPU to restart
@@ -475,7 +548,7 @@ void task_user::run (void)
 			      // The 'r' command returns user to Main Menu
 			      case ('r'):
 				   print_main_menu ();
-				   transition_to (0);
+				   transition_to (MAIN);
 				   break;
 
 			      // If character isn't recognized, ask What's That Function?
@@ -497,7 +570,6 @@ void task_user::run (void)
 	  } // End switch state
 
 	  runs++;			// Increment counter for debugging
-
 	  delay_ms (1);			// Delay 1 millisecond to all lower priority tasks to run
      }
 }
@@ -509,18 +581,28 @@ void task_user::print_main_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("----------------- MAIN MENU -----------------") << endl;
-     *p_serial << PMS ("    t:      Show the current time") << endl;
-     *p_serial << PMS ("    s:      Version/Setup information") << endl;
-     *p_serial << PMS ("    d:      Stack dump for tasks") << endl;
      *p_serial << PMS ("    m:      Motor manual manipulation") << endl;
-     *p_serial << PMS ("    v:      Servo manual manipulation") << endl;
+     *p_serial << PMS ("    s:      Servo manual manipulation") << endl;
      *p_serial << PMS ("    c:      Class required tasks") << endl;
      *p_serial << PMS ("    h:      Highway maintenance") << endl;
+     *p_serial << PMS ("    ?:      Help Menu") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
 }
 
+// This method prints the Help Menu message.
+void task_user::print_help_menu (void)
+{
+     *p_serial << endl;
+     *p_serial << PMS ("----------------- HELP MENU -----------------") << endl;
+     *p_serial << PMS ("    t:      Show the current time") << endl;
+     *p_serial << PMS ("    s:      Version/Setup information") << endl;
+     *p_serial << PMS ("    d:      Stack dump for tasks") << endl;
+     *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
+     *p_serial << PMS ("    r:      Return to Main Menu") << endl;
+     *p_serial << endl;
+}
 
 //-----------------------------------------------------------------------------------------------------------
 // This method prints the Motor Menu message.
@@ -536,17 +618,19 @@ void task_user::print_motor_menu (void)
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
 }
+
 // This method prints the Servo Menu message.
 void task_user::print_servo_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("----------------- SERVO MENU -----------------") << endl;
-     *p_serial << PMS ("    p:      Servo position with PWM [20, 30]") << endl;
+     *p_serial << PMS ("    p:      Servo position with PWM [29 [L], 22 [C], 15 [R]]") << endl;
      *p_serial << PMS ("    s:      Position setpoint") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
 }
+
 // This method prints the Class Menu message.
 void task_user::print_class_menu (void)
 {
@@ -558,6 +642,7 @@ void task_user::print_class_menu (void)
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
 }
+
 // This method prints the Highway Menu message.
 void task_user::print_highway_menu (void)
 {
@@ -570,6 +655,7 @@ void task_user::print_highway_menu (void)
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
 }
+
 // This method prints the Motor Menu message.
 void task_user::print_PID_menu (void)
 {

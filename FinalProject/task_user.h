@@ -61,7 +61,10 @@ private:
 
 protected:
 	/// This method displays the Main Menu message telling the user what to do. It's protected so that only methods of this class or possibly descendents can use it
-	void print_main_menu (void);	
+	void print_main_menu (void);
+	
+	/// This method displays the system/microprocessor help menu 
+	void print_help_menu (void);
 	
 	/// This method displays the Motor Menu message for motor control. It's protected so that only methods of this class or possibly descendents can use it
 	void print_motor_menu (void);

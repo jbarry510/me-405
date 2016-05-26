@@ -68,11 +68,9 @@ void task_encoder::run (void)
 	encoder_count_old_motor_2 = encoder_count_new_motor_2;
 	encoder_count_new_motor_2 = sh_encoder_count_2->get();
 	
-	sh_motor_1_speed->put(encoder_driver_1->calc_motor_speed(encoder_count_new_motor_1, encoder_count_old_motor_1,
-			   speed_period_ms));
+	sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_new_motor_1, encoder_count_old_motor_1));
 	
-	sh_motor_2_speed->put(encoder_driver_2->calc_motor_speed(encoder_count_new_motor_2, encoder_count_old_motor_2,
-			   speed_period_ms));
+	sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_new_motor_2, encoder_count_old_motor_2));
 	
 //  	*p_serial << PMS("Motor Speed_1 (rpm) = ") << dec << sh_motor_1_speed->get() << endl;
 // 	*p_serial << PMS("Motor Speed_2 (rpm) = ") << dec << sh_motor_2_speed->get() << endl;
