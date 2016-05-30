@@ -358,6 +358,23 @@ void task_user::run (void)
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
+			      // Circular path radius State
+			      else if (number_state == 4)
+			      {
+				   if (number_entered >= 0 && number_entered <= 225)
+				   {
+					sh_path_radius->put(number_entered);	// Set servo position to number_entered
+					number_entered = 0;			// Clear number_entered
+					number_state = 5;			// Clear number_state
+					*p_serial << PMS ("Please enter a path velocity [0,255]") << endl;		// Display error message for out of range
+					transition_to (MAIN);
+				   }
+				   else
+				   {
+					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					number_entered = 0;			// Clear number entered
+				   }	
+			      }
 			 }
 				
 			 else
@@ -482,14 +499,14 @@ void task_user::run (void)
 			 {
 			      // The 'l' command activates linear heading adherance
 			      case ('l'):
-				   *p_serial << PMS ("Enter linear heading") << endl;
  				   transition_to (MAIN);
 				   break;
 
 			      // The 'c' command activates circular path routing
 			      case ('c'):
 				   *p_serial << PMS ("Enter radius of circular path [0,255]") << endl;
- 				   transition_to (MAIN);
+				   number_state = 4;
+ 				   transition_to (NUMBER);
 				   break;
 
 			      // A control-C character causes the CPU to restart

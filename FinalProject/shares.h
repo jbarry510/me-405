@@ -86,4 +86,7 @@ extern TaskShare<uint16_t>* sh_adc_setpoint;
 // Servo motor position setpoint
 extern TaskShare<uint8_t>* sh_servo_setpoint;
 
+// Circular path radius
+extern TaskShare<uint8_t>* sh_path_radius;
+
 #endif /// _SHARES_H_

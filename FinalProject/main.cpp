@@ -104,6 +104,8 @@ TaskShare<uint16_t>* sh_adc_setpoint;			// Servo ADC potentiometer inputted setp
 
 TaskShare<uint8_t>* sh_servo_setpoint;			// Servo motor position setpoint
 
+TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
+
 
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the
@@ -175,7 +177,9 @@ int main (void)
      
      sh_servo_setpoint = new TaskShare<uint8_t> ("sh_servo_setpoint");		// Servo motor position setpoint
 
+     // Circular path radius value
      
+     sh_path_radius = new TaskShare<uint8_t> ("sh_path_radius");
 
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
