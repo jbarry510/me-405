@@ -49,6 +49,7 @@
 #define ROUTES  5
 #define HIGHWAY 6
 #define DRIVE	7
+#define CLASS	8
 
 // This constant sets how many RTOS ticks the task delays if the user's not talking. 
 // The duration is calculated to be about 5 ms.
@@ -376,14 +377,30 @@ void task_user::run (void)
 					sh_path_radius->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
 					number_state = 5;			// Clear number_state
-					*p_serial << PMS ("Please enter a path velocity [0,255]") << endl;		// Display error message for out of range
-					transition_to (MAIN);
+					*p_serial << PMS ("Please enter a circular path velocity [0,255]") << endl;		// Display error message for out of range
+					transition_to (NUMBER);
 				   }
 				   else
 				   {
 					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
+			      }
+			      // Route path velocity
+			      else if (number_state == 5)
+			      {
+				   if (number_entered >= 0 && number_entered <= 225)
+				   {
+					sh_path_velocity->put(number_entered);	// Set servo position to number_entered
+					number_entered = 0;			// Clear number_entered
+					number_state = 0;			// Clear number_state		// Display error message for out of range
+					transition_to (ROUTES);
+				   }
+				   else
+				   {
+					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					number_entered = 0;			// Clear number entered
+				   }	   
 			      }
 			 }
 				
@@ -510,7 +527,9 @@ void task_user::run (void)
 			 {
 			      // The 'l' command activates linear heading adherance
 			      case ('l'):
- 				   transition_to (MAIN);
+ 				   *p_serial << PMS ("Enter velocity of linear path [0,255]") << endl;
+				   number_state = 5;
+ 				   transition_to (NUMBER);
 				   break;
 
 			      // The 'c' command activates circular path routing
@@ -657,6 +676,7 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 6
+		    
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	       // If ever sent to default state, restart since obvious error
 	       default:
@@ -747,7 +767,7 @@ void task_user::print_servo_menu (void)
 void task_user::print_class_menu (void)
 {
      *p_serial << endl;
-     *p_serial << PMS ("----------------- CLASS TASK MENU -----------------") << endl;
+     *p_serial << PMS ("----------------- CLASS TASK MENU ------------") << endl;
      *p_serial << PMS ("    l:      Linear heading adherance") << endl;
      *p_serial << PMS ("    c:      Circular path") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;

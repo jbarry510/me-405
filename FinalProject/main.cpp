@@ -108,6 +108,8 @@ TaskShare<uint8_t>* sh_servo_set_flag;			// Servo update flag
 
 TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
 
+TaskShare <uint8_t>* sh_path_velocity;			// Route path velocity
+
 
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the

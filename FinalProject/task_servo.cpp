@@ -41,7 +41,7 @@ void task_servo::run (void)
       sh_servo_setpoint->put(22);		// Straight position for servo at start up
       
       //max servo PWM = 29, 15
-      for(;;)
+      for(;;) 
       {
 	if (sh_servo_set_flag->get()==1)
 	{
