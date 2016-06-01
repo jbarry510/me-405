@@ -104,6 +104,8 @@ TaskShare<uint16_t>* sh_adc_setpoint;			// Servo ADC potentiometer inputted setp
 
 TaskShare<uint8_t>* sh_servo_setpoint;			// Servo motor position setpoint
 
+TaskShare<uint8_t>* sh_servo_set_flag;			// Servo update flag
+
 TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
 
 

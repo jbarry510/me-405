@@ -60,6 +60,16 @@ void task_motor::run (void)
 	      sh_power_set_flag->put(0);		// Make power_set_flag low when succesful power set
 
 	  }
+	  else if (sh_power_set_flag->get() == 2)
+	  {
+	    p_motor_1 -> set_power(sh_power_entry->get());
+	    p_motor_2 -> set_power(sh_power_entry->get());
+	  }
+	  else if (sh_power_set_flag ->get() == 3)
+	  {
+	    p_motor_1 -> set_power(0);
+	    p_motor_2 -> set_power(0);
+	  }
 	  
 	  // Check if braking variable has changed, power flag = high, if not skip
 	  if (sh_braking_set_flag->get() == 1)

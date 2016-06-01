@@ -80,6 +80,10 @@ protected:
 	
 	/// This method displays the PID Menu message for class tasks. It's protected so only methods of this class and possibly descendents can use it.
 	void print_PID_menu (void);
+	
+	/// This method displays the Drive Menu message for class tasks. It's protected so only methods of this class and possibly descendents can use it.
+	void print_drive_menu (void);
+	
 	/// This method displays information about the status of the system
 	void show_status (void);
 

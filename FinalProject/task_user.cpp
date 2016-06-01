@@ -48,6 +48,7 @@
 #define SERVO   4
 #define ROUTES  5
 #define HIGHWAY 6
+#define DRIVE	7
 
 // This constant sets how many RTOS ticks the task delays if the user's not talking. 
 // The duration is calculated to be about 5 ms.
@@ -136,6 +137,14 @@ void task_user::run (void)
 				   sh_motor_select -> put(0);	// Clears shared sh_motor_select
 				   number_state = 0;		// Clears number state
 				   transition_to (NUMBER);
+				   break;
+			      
+			      // The 'd' command: allows for manual driving
+			      case ('d'):
+				   print_drive_menu();
+				   sh_power_set_flag -> put(3);
+				   sh_servo_set_flag -> put(2);
+				   transition_to (DRIVE);
 				   break;
 				   
 			      // The 's' command: allows for manual servo manipulation
@@ -347,6 +356,7 @@ void task_user::run (void)
 				   if (number_entered >= 15 && number_entered <= 29)
 				   {
 					sh_servo_setpoint->put(number_entered);	// Set servo position to number_entered
+					sh_servo_set_flag->put(1);		// Update servo position
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
 					print_main_menu();
@@ -456,7 +466,8 @@ void task_user::run (void)
 			      // The 'p' command allows for manual servo position setting
 			      case ('p'):
 				   *p_serial << PMS ("Enter position for Servo") << endl;
-				   transition_to (MAIN);
+				   number_state = 3;
+				   transition_to (NUMBER);
 				   break;
 
 			      // The 's' command allows for manual servo position setpoint setting
@@ -576,6 +587,76 @@ void task_user::run (void)
 		    } // End if a character was received
 
 		    break; // End of state 5
+		    
+	       // Drive Case
+	       case (DRIVE):
+		 if (p_serial->check_for_char ())	// Wait for character and read
+		    {    
+			 char_in = p_serial -> getchar ();
+			 *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
+			 *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
+			 *p_serial << endl;
+
+			 // Switch statement to respond to commands typed in by user
+			 switch (char_in)
+			 {
+			      // The 'w' command increments the motor power by 20
+			      case ('w'):
+				   sh_power_entry -> put(sh_power_entry->get()+20); // Saturates max power to 255
+				   if (sh_power_entry -> get() >= 255)
+				     sh_power_entry -> put(255);
+				   sh_power_set_flag->put(2); // Activates motor power update
+				   transition_to (DRIVE);
+				   break;
+
+			      // The 's' command decrements the motor power by 20
+			      case ('s'):
+				   sh_power_entry -> put(sh_power_entry->get()-20); // Saturates min power to -255
+				    if (sh_power_entry -> get() <= -255)
+				     sh_power_entry -> put(-255);
+				   sh_power_set_flag->put(2); // Activates motor power update
+ 				   transition_to (DRIVE);
+				   break;
+				   
+			      // The 'a' command turns steering servo to the left by 1
+			      case ('a'):
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+1);
+				   if (sh_servo_setpoint -> get() >= 29) // Saturates max angle to 29
+				     sh_servo_setpoint -> put(29);
+				   sh_servo_set_flag -> put(1);
+ 				   transition_to (DRIVE);
+				   break;
+				   
+			      // The 'd' command turns steering servo to the right by 1
+			      case ('d'):
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-1); // Saturates min angle to 15
+				   if (sh_servo_setpoint -> get() <= 15)
+				     sh_servo_setpoint -> put(15);
+				   sh_servo_set_flag -> put(1);
+ 				   transition_to (DRIVE);
+				   break;
+
+			      // A control-C character causes the CPU to restart
+			      case (3):
+				   *p_serial << PMS ("Resetting AVR") << endl;
+				   wdt_enable (WDTO_120MS);
+				   for (;;);
+				   break;
+				   
+			      // The 'r' command returns user to Main Menu
+			      case ('r'):
+				   print_main_menu ();
+				   transition_to (MAIN);
+				   break;
+
+			      // If character isn't recognized, ask What's That Function?
+			      default:
+				   *p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
+				   break;
+			 }; // End switch for characters
+		    } // End if a character was received
+
+		    break; // End of state 6
 	       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	       // If ever sent to default state, restart since obvious error
 	       default:
@@ -600,6 +681,7 @@ void task_user::print_main_menu (void)
      *p_serial << PMS ("----------------- MAIN MENU -----------------") << endl;
      *p_serial << PMS ("    m:      Motor manual manipulation") << endl;
      *p_serial << PMS ("    s:      Servo manual manipulation") << endl;
+     *p_serial << PMS ("    d:      Drive the car!") << endl;
      *p_serial << PMS ("    c:      Class required tasks") << endl;
      *p_serial << PMS ("    h:      Highway maintenance") << endl;
      *p_serial << PMS ("    ?:      Help Menu") << endl;
@@ -608,6 +690,19 @@ void task_user::print_main_menu (void)
      *p_serial << endl;
 }
 
+// This method prints the Drive Car message.
+void task_user::print_drive_menu (void)
+{
+     *p_serial << endl;
+     *p_serial << PMS ("--------------CAR DRIVE MENU -----------------") << endl;
+     *p_serial << PMS ("    w:      Increment motor velocity +20") << endl;
+     *p_serial << PMS ("    s:      Decrement motor velocity -20") << endl;
+     *p_serial << PMS ("    a:      Rotate steering to the left -1") << endl;
+     *p_serial << PMS ("    d:      Rotate steering to the right +1") << endl;
+     *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
+     *p_serial << PMS ("    r:      Return to Main Menu") << endl;
+     *p_serial << endl;
+}
 // This method prints the Help Menu message.
 void task_user::print_help_menu (void)
 {

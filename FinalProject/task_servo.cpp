@@ -43,9 +43,15 @@ void task_servo::run (void)
       //max servo PWM = 29, 15
       for(;;)
       {
-	// Sets the servo in the neutral position (straight).
-	steer_servo -> set_Pos(sh_servo_setpoint->get());
-	
+	if (sh_servo_set_flag->get()==1)
+	{
+	  steer_servo -> set_Pos(sh_servo_setpoint->get());
+	}
+	else if (sh_servo_set_flag ->get() ==2)
+	{
+	  steer_servo -> set_Pos(22);
+	}
+	sh_servo_set_flag ->put(0);
 	// Delay so that other tasks can run
 	delay_ms(10);
       }
