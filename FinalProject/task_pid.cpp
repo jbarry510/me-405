@@ -120,7 +120,6 @@ void task_pid::run (void)
 	      }
 	      else
 		  *p_serial << PMS ("PID error") << endl; // Debugs error message
-		
 	      // Timer for serial print (about 1 second)
 	      if(runs % 167 == 0)
 	      {
@@ -134,6 +133,7 @@ void task_pid::run (void)
 		  *p_serial << PMS ("Feedback        : ") << pid_2->get_input() << endl;
 		  *p_serial << PMS ("Ouput           : ") << pid_2->get_output() << endl << endl;
 	      }
+	      
 	  }
      runs++;					// Increment the timer run counter.
      delay_from_for_ms (previousTicks, 5);	// Task runs every 5 ms

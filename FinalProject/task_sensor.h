@@ -1,13 +1,13 @@
 //===========================================================================================================
-/** @file task_imu.h
+/** @file task_sensor.h
  *  This file contains the header for a task class that creates and tests the IMU object.
  *
  */
 //===========================================================================================================
 
 /// This define prevents this .H file from being included multiple times in a .CPP file
-#ifndef _TASK_IMU_H_
-#define _TASK_IMU_H_
+#ifndef _TASK_SENSOR_H_
+#define _TASK_SENSOR_H_
 
 #include <stdlib.h>                         // Prototype declarations for I/O functions
 #include <avr/io.h>                         // Header for special function registers
@@ -27,7 +27,7 @@
 
 #include "imu_drv.h"                        // Include header for the IMU driver class
 
-class task_imu : public TaskBase
+class task_sensor : public TaskBase
 {
 private:
 	/// No private variables or methods for this class
@@ -37,10 +37,10 @@ protected:
   
 public:
 	/// This constructor creates a generic IMU task of which many copies can be made.
-	task_imu (const char*, unsigned portBASE_TYPE, size_t, emstream*);
+	task_sensor (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	/// This method is called by the RTOS once to run the task loop indefinetly.
 	void run (void);
 };
 
-#endif /// _TASK_IMU_H__
+#endif /// _TASK_SENSOR_H__

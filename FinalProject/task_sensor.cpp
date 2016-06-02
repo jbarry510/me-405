@@ -1,5 +1,5 @@
 //***********************************************************************************************************
-/** @file task_imu.cpp
+/** @file task_sensor.cpp
  *  This file contains the header for a task class that creates and tests the IMU object. This task tells the
  *  controller to print out the Euler angles (heading, pitch, and roll) every two seconds.
  * 
@@ -8,12 +8,13 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
+#include "adc.h"
 
-#include "task_imu.h"                       // Header for this task
+#include "task_sensor.h"                       // Header for this task
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
- *  This constructor creates a task which creates an IMU object and has it print the system status and Euler
+ *  This constructor creates a task which creates a sensor object and has it print the system status and Euler
  *  angles for testing purposes. The main job of this constructor is to call the constructor of parent class 
  *  (\c frt_task ); the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
@@ -23,7 +24,7 @@
  *		     to communicate (default: NULL)
  */
 
-task_imu::task_imu (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
+task_sensor::task_sensor (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
 			emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. 
@@ -35,8 +36,19 @@ task_imu::task_imu (const char* a_name, unsigned portBASE_TYPE a_priority, size_
  *  IMU and return the Euler angles for printing.
  */
 
-void task_imu::run (void)
+void task_sensor::run (void)
 {
+  
+     //adc* pot_adc = new adc(p_serial);
+     
+     adc* side_IR_adc = new adc(p_serial);
+     
+     adc* front_IR_adc = new adc(p_serial);
+     
+     
+
+     
+     
      /// Creates a new IMU object
      imu_drv* imu_sensor = new imu_drv(p_serial);
      
@@ -44,10 +56,23 @@ void task_imu::run (void)
      int16_t heading = 0; 
      int16_t pitch = 0; 
      int16_t roll = 0;
+     int16_t side_IR_reading = 0;
+     int16_t front_IR_reading = 0;
      
      /// Main task loop 
      for(;;)
      {
+       
+	  // first paraemter is channel of ADC to read from
+	  // second parameter is number of samples to take
+	  side_IR_adc->read_oversampled(1,10);
+     
+	  front_IR_adc->read_oversampled(2,10);
+	  
+	  *p_serial << PMS("Front IR: ") << front_IR_reading << endl;
+ 	  *p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
+	  
+	  
 	  /// Calls the system status method in the imu_drv which prints a message regarding the status
 	  imu_sensor->getSysStatus();
 	  

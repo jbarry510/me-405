@@ -51,7 +51,7 @@
 #include "task_motor.h"                     // Include header for motor task
 #include "task_encoder.h"		    // Include header for encoder task
 #include "task_pid.h"			    // Include header for pid task
-#include "task_imu.h"			    // Include header for imu task
+#include "task_sensor.h"			    // Include header for imu task
 #include "task_servo.h"			    // Include header for servo task
 
 // Declare the queues which are used by tasks to communicate with each other here. Each queue must also be
@@ -124,7 +124,7 @@ int main (void)
      wdt_disable ();
 
      // Configure a serial port.
-     rs232* p_ser_port = new rs232 (9600, 1);
+     rs232* p_ser_port = new rs232 (9600, 0);
      
      // Print a starting line to display program information
      *p_ser_port << clrscr << PMS ("-------- ME405 Lab 5 Starting Program --------") << endl;
@@ -199,7 +199,7 @@ int main (void)
      new task_pid     ("Pid          ", task_priority(3), 280, p_ser_port);
      
      // Creating a task that sets up the IMU sensor and reads the Euler angles
-     new task_imu     ("IMU          ", task_priority(3), 280, p_ser_port);
+     new task_sensor     ("IMU          ", task_priority(3), 280, p_ser_port);
      
      // Creating a task that sets up ther servo steering motor and runs a defined program
      new task_servo   ("Servo Motor  ", task_priority(4), 280, p_ser_port);
