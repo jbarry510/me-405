@@ -39,6 +39,7 @@ void task_servo::run (void)
       // Declaration of servo object
       servo_drv* steer_servo = new servo_drv(p_serial);
       sh_servo_setpoint->put(22);		// Straight position for servo at start up
+      steer_servo -> set_Pos(sh_servo_setpoint->get());
       
       //max servo PWM = 29, 15
       for(;;) 

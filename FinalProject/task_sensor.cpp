@@ -65,9 +65,9 @@ void task_sensor::run (void)
        
 	  // first paraemter is channel of ADC to read from
 	  // second parameter is number of samples to take
-	  side_IR_adc->read_oversampled(1,10);
+	  side_IR_reading = side_IR_adc->read_oversampled(1,10);
      
-	  front_IR_adc->read_oversampled(2,10);
+	  front_IR_reading = front_IR_adc->read_oversampled(2,10);
 	  
 	  *p_serial << PMS("Front IR: ") << front_IR_reading << endl;
  	  *p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
