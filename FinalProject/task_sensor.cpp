@@ -56,6 +56,7 @@ void task_sensor::run (void)
      int16_t heading = 0; 
      int16_t pitch = 0; 
      int16_t roll = 0;
+     int16_t old_heading = 0;
      int16_t side_IR_reading = 0;
      int16_t front_IR_reading = 0;
      
@@ -81,12 +82,17 @@ void task_sensor::run (void)
 	  roll = imu_sensor->getEulerAng(2);
 	  pitch = imu_sensor->getEulerAng(3);
 	  
+	  old_heading = sh_euler_heading -> get();
+	  sh_euler_heading -> put(heading);
+	  
+	  sh_euler_heading_change ->put(sh_euler_heading ->get()-old_heading);
+	  
 	  /// Prints the Euler angle variables to the serial port
 // 	  *p_serial << PMS("Euler Heading: ") << heading << endl;
 // 	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
 // 	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
 	  
 	  // Time that the task waits before looping
-	  delay_ms(2000);
+	  delay_ms(20);
      }
 }

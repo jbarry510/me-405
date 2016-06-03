@@ -47,6 +47,7 @@ void task_pid::run (void)
      // Creating the PID objects for Motor 1 and Motor 2
      pid* pid_1 = new pid(p_serial);
      pid* pid_2 = new pid(p_serial);
+     pid* pid_3 = new pid(p_serial);
      
      // Motor 1 PID Constants
      int16_t Kp_1 = 1 * 1024;					// K_p Proportional gain
@@ -72,18 +73,31 @@ void task_pid::run (void)
      //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
      pid_2->set_config(pid::config_t{pid::PI, Kp_2, Ki_2, 0, Kw_2, min_2, max_2});
      
+     // Servo PID Constants
+     int16_t Kp_3 = 1 * 1024;					// K_p Proportional gain
+     int16_t Ki_3 = 1 * 256;					// K_i Integral gain
+     int16_t Kw_3 = 1 * 256;					// K_w Anti-windup gain
+     int16_t min_3 = 15;					// Minimum saturation limit
+     int16_t max_3 = 29;					// Maximum saturation limit
+     int16_t euler_coefficient = 12;				// Euler heading to servo position conversion
+     int16_t euler_constant = 15;				// Euler heading to servo position conversion
+     int8_t servo_position = 0;					// Current servo position
+     //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
+     pid_3->set_config(pid::config_t{pid::PI, Kp_3, Ki_3, 0, Kw_3, min_3, max_3});
+     
      int8_t setpoint_1 = 0;					// Velocity set point Motor 1
      int8_t setpoint_2 = 0;					// Velocity set point Motor 2
+     int8_t setpoint_3 = 22;					// Position set point Servo
      
      for(;;)
      {
 	  if (sh_PID_control->get() == 1)
 	  {
 	      // Set power for motor 1
-	      //setpoint_1 = sh_setpoint_1->get();
+	      setpoint_1 = sh_setpoint_1->get();
 	      
-	      setpoint_1 = adc_1->read_oversampled(0,10) / 16;
-	      setpoint_2 = setpoint_1;
+	      //setpoint_1 = adc_1->read_oversampled(0,10) / 16;
+	      //setpoint_2 = setpoint_1;
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 1
 	      if(setpoint_1 >= -40 && setpoint_1 <= 40)
@@ -99,11 +113,11 @@ void task_pid::run (void)
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
 	      }
 	      else
-		  *p_serial << PMS ("PID error") << endl;
+		  *p_serial << PMS ("PID 1 error") << endl;
 
 	      // Set power for motor 2
 	      // [power] = [ticks] * max power / max ticks [ticks]
-	      //setpoint_2 = sh_setpoint_2->get();
+	      setpoint_2 = sh_setpoint_2->get();
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
 	      if(setpoint_2 >= -40 && setpoint_2 <= 40)
@@ -119,19 +133,44 @@ void task_pid::run (void)
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 	      }
 	      else
-		  *p_serial << PMS ("PID error") << endl; // Debugs error message
+		  *p_serial << PMS ("PID 2 error") << endl; // Debugs error message
+		  
+	      // Set position setpoint for steering servo (new heading - old heading)
+	      setpoint_3 = sh_servo_setpoint->get();
+	      servo_position = (sh_euler_heading->get() / euler_coefficient) + euler_constant; 
+	      
+	      // Saturates maximum and minimum new power setting to +- 3 for Servo
+	      if(setpoint_3 >= -3 && setpoint_3 <= 3)
+		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+	      else if(setpoint_3 < 0) 
+	      {
+		  setpoint_3 = -3;
+		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+	      }
+	      else if(setpoint_3 > 0)
+	      {
+		  setpoint_3 = 3;
+		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+	      }
+	      else
+		  *p_serial << PMS ("PID 3 error") << endl; // Debugs error message
 	      // Timer for serial print (about 1 second)
 	      if(runs % 167 == 0)
 	      {
 		  *p_serial << PMS ("sh_motor_1_speed: ") << sh_motor_1_speed->get() << endl;
-		  *p_serial << PMS ("sh_setpoint_1   : ") << setpoint_1 << PMS (" [ticks]") << endl;
+		  *p_serial << PMS ("setpoint_1      : ") << setpoint_1 << PMS (" [ticks]") << endl;
 		  *p_serial << PMS ("Feedback        : ") << pid_1->get_input() << endl;
-		  *p_serial << PMS ("Ouput           : ") << pid_1->get_output() << endl << endl;
+		  *p_serial << PMS ("Output          : ") << pid_1->get_output() << endl << endl;
 		  
 		  *p_serial << PMS ("sh_motor_2_speed: ") << sh_motor_2_speed->get() << endl;
-		  *p_serial << PMS ("sh_setpoint_2   : ") << setpoint_2 << PMS (" [ticks]") << endl;
+		  *p_serial << PMS ("setpoint_2      : ") << setpoint_2 << PMS (" [ticks]") << endl;
 		  *p_serial << PMS ("Feedback        : ") << pid_2->get_input() << endl;
-		  *p_serial << PMS ("Ouput           : ") << pid_2->get_output() << endl << endl;
+		  *p_serial << PMS ("Output          : ") << pid_2->get_output() << endl << endl;
+		  
+		  *p_serial << PMS ("servo_position  : ") << servo_position << endl;
+		  *p_serial << PMS ("setpoint_3      : ") << setpoint_3 << endl;
+		  *p_serial << PMS ("Feedback        : ") << pid_3->get_input() << endl;
+		  *p_serial << PMS ("Output          : ") << pid_3->get_output() << endl << endl;
 	      }
 	      
 	  }

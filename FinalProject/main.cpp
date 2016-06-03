@@ -97,6 +97,7 @@ TaskShare<int32_t>* sh_setpoint_2;			// Motor 2
 
 TaskShare<int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
 TaskShare<int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
+TaskShare<int16_t>* sh_PID_3_power;			// Servo Power values from PID control
 
 TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
 
@@ -109,6 +110,10 @@ TaskShare<uint8_t>* sh_servo_set_flag;			// Servo update flag
 TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
 
 TaskShare <uint8_t>* sh_path_velocity;			// Route path velocity
+
+TaskShare <uint8_t>* sh_euler_heading;			// Euler heading
+
+TaskShare <uint8_t>* sh_euler_heading_change;		// Euler heading change
 
 
 //===========================================================================================================

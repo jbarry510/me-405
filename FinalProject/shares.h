@@ -74,9 +74,10 @@ extern TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2
 extern TaskShare<int32_t>* sh_setpoint_1;			// Motor 1
 extern TaskShare<int32_t>* sh_setpoint_2;			// Motor 2
 
-// Motor Power values from PID control
+// Power values from PID control
 extern TaskShare<int16_t>* sh_PID_1_power;			// Motor 1
 extern TaskShare<int16_t>* sh_PID_2_power;			// Motor 2
+extern TaskShare<int16_t>* sh_PID_3_power;			// Servo
 
 // Flag to indicate PID control enabled
 extern TaskShare<uint8_t>* sh_PID_control;
@@ -94,5 +95,11 @@ extern TaskShare<uint8_t>* sh_path_radius;
 
 // Route path velocity
 extern TaskShare<uint8_t>* sh_path_velocity;
+
+// Euler heading
+extern TaskShare<uint8_t>* sh_euler_heading;
+
+// Euler heading change
+extern TaskShare<uint8_t>* sh_euler_heading_change;
 
 #endif /// _SHARES_H_

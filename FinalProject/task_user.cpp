@@ -621,19 +621,19 @@ void task_user::run (void)
 			 {
 			      // The 'w' command increments the motor power by 20
 			      case ('w'):
-				   sh_power_entry -> put(sh_power_entry->get()+20); // Saturates max power to 255
-				   if (sh_power_entry -> get() >= 255)
-				     sh_power_entry -> put(255);
-				   sh_power_set_flag->put(2); // Activates motor power update
+				   sh_setpoint_1 -> put(sh_setpoint_1->get()+20); // Saturates max power to 255
+				   if (sh_setpoint_1 -> get() >= 255)
+				     sh_setpoint_1 -> put(255);
+				   sh_PID_control->put(1); // Activates motor power update
 				   transition_to (DRIVE);
 				   break;
 
 			      // The 's' command decrements the motor power by 20
 			      case ('s'):
-				   sh_power_entry -> put(sh_power_entry->get()-20); // Saturates min power to -255
-				    if (sh_power_entry -> get() <= -255)
-				     sh_power_entry -> put(-255);
-				   sh_power_set_flag->put(2); // Activates motor power update
+				   sh_setpoint_2 -> put(sh_power_entry->get()-20); // Saturates min power to -255
+				    if (sh_setpoint_2-> get() <= -255)
+				     sh_setpoint_2 -> put(-255);
+				   sh_PID_control->put(2); // Activates motor power update
  				   transition_to (DRIVE);
 				   break;
 				   
