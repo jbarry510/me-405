@@ -137,7 +137,7 @@ void task_pid::run (void)
 		  
 	      // Set position setpoint for steering servo (new heading - old heading)
 	      setpoint_3 = sh_servo_setpoint->get();
-	      servo_position = (sh_euler_heading->get() / euler_coefficient) + euler_constant; 
+	      servo_position = (sh_euler_heading_change->get() / euler_coefficient) + euler_constant; 
 	      
 	      // Saturates maximum and minimum new power setting to +- 3 for Servo
 	      if(setpoint_3 >= -3 && setpoint_3 <= 3)
