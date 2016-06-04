@@ -358,6 +358,7 @@ void task_user::run (void)
 				   {
 					sh_servo_setpoint->put(number_entered);	// Set servo position to number_entered
 					sh_servo_set_flag->put(1);		// Update servo position
+					*p_serial << sh_servo_set_flag->get();
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state
 					print_main_menu();
@@ -365,7 +366,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 20 to 30, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 15 to 29, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
@@ -633,7 +634,7 @@ void task_user::run (void)
 				   sh_setpoint_2 -> put(sh_power_entry->get()-20); // Saturates min power to -255
 				    if (sh_setpoint_2-> get() <= -255)
 				     sh_setpoint_2 -> put(-255);
-				   sh_PID_control->put(2); // Activates motor power update
+				   sh_PID_control->put(1); // Activates motor power update
  				   transition_to (DRIVE);
 				   break;
 				   
@@ -688,7 +689,7 @@ void task_user::run (void)
 	  } // End switch state
 
 	  runs++;			// Increment counter for debugging
-	  delay_ms (1);			// Delay 1 millisecond to all lower priority tasks to run
+	  delay_ms (50);		// Delay 1 millisecond to all lower priority tasks to run
      }
 }
 

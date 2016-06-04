@@ -70,8 +70,8 @@ void task_sensor::run (void)
      
 	  front_IR_reading = front_IR_adc->read_oversampled(2,10);
 	  
-	  *p_serial << PMS("Front IR: ") << front_IR_reading << endl;
- 	  *p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
+	  //*p_serial << PMS("Front IR: ") << front_IR_reading << endl;
+ 	  //*p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
 	  
 	  
 	  /// Calls the system status method in the imu_drv which prints a message regarding the status

@@ -129,7 +129,7 @@ int main (void)
      wdt_disable ();
 
      // Configure a serial port.
-     rs232* p_ser_port = new rs232 (9600, 0);
+     rs232* p_ser_port = new rs232 (9600, 1);
      
      // Print a starting line to display program information
      *p_ser_port << clrscr << PMS ("-------- ME405 Lab 5 Starting Program --------") << endl;
@@ -192,19 +192,19 @@ int main (void)
 
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
-     new task_user    ("UserInterface", task_priority (1), 280, p_ser_port);
+     new task_user    ("UserInterface", task_priority(1), 280, p_ser_port);
      
      // Creating a task that operates the motor and runs a defined program
-     new task_motor   ("Motor        ", task_priority (2), 280, p_ser_port);
+     new task_motor   ("Motor        ", task_priority(2), 280, p_ser_port);
      
      // Creating a task that operates the encoder and runs a defined program
-     new task_encoder ("Encoder      ", task_priority (4), 280, p_ser_port);
+     new task_encoder ("Encoder      ", task_priority(4), 280, p_ser_port);
      
      // Creating a tastk that operates the PID and runs a defined program
      new task_pid     ("Pid          ", task_priority(3), 280, p_ser_port);
      
      // Creating a task that sets up the IMU sensor and reads the Euler angles
-     new task_sensor     ("IMU          ", task_priority(3), 280, p_ser_port);
+     new task_sensor  ("IMU          ", task_priority(3), 280, p_ser_port);
      
      // Creating a task that sets up ther servo steering motor and runs a defined program
      new task_servo   ("Servo Motor  ", task_priority(4), 280, p_ser_port);
