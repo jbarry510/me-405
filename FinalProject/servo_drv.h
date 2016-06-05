@@ -39,7 +39,7 @@ class servo_drv
 	
 	servo_drv (emstream* = NULL);
 	
-	void set_Pos(uint8_t pos);
+	void set_Pos(uint16_t pos);
 
 }; /// end of class servo_drv
 

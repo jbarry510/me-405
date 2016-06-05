@@ -103,7 +103,7 @@ TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
 
 TaskShare<uint16_t>* sh_adc_setpoint;			// Servo ADC potentiometer inputted setpoint
 
-TaskShare<uint8_t>* sh_servo_setpoint;			// Servo motor position setpoint
+TaskShare<uint16_t>* sh_servo_setpoint;			// Servo motor position setpoint
 
 TaskShare<uint8_t>* sh_servo_set_flag;			// Servo update flag
 
@@ -184,7 +184,7 @@ int main (void)
 
      sh_adc_setpoint = new TaskShare<uint16_t> ("sh_adc_setpoint");
      
-     sh_servo_setpoint = new TaskShare<uint8_t> ("sh_servo_setpoint");		// Servo motor position setpoint
+     sh_servo_setpoint = new TaskShare<uint16_t> ("sh_servo_setpoint");		// Servo motor position setpoint
 
      // Circular path radius value
      

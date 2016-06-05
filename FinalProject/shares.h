@@ -85,7 +85,7 @@ extern TaskShare<uint8_t>* sh_PID_control;
 extern TaskShare<uint16_t>* sh_adc_setpoint;
 
 // Servo motor position setpoint
-extern TaskShare<uint8_t>* sh_servo_setpoint;
+extern TaskShare<uint16_t>* sh_servo_setpoint;
 
 // Servo motor update flag
 extern TaskShare<uint8_t>* sh_servo_set_flag; 

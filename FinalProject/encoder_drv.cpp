@@ -76,7 +76,7 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 
 	    
 // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
-      DDRE &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
+      DDRE  &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
       PORTE |= 0b11110000;			// Activate pull up resistors for Port E
 }
 

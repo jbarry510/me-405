@@ -354,7 +354,7 @@ void task_user::run (void)
 			      // Servo position State
 			      else if (number_state == 3)
 			      {
-				   if (number_entered >= 15 && number_entered <= 29)
+				   if (number_entered >= 2100 && number_entered <= 3900)
 				   {
 					sh_servo_setpoint->put(number_entered);	// Set servo position to number_entered
 					sh_servo_set_flag->put(1);		// Update servo position
@@ -370,6 +370,7 @@ void task_user::run (void)
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
+			      
 			      // Circular path radius State
 			      else if (number_state == 4)
 			      {
@@ -640,18 +641,18 @@ void task_user::run (void)
 				   
 			      // The 'a' command turns steering servo to the left by 1
 			      case ('a'):
-				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+1);
-				   if (sh_servo_setpoint -> get() >= 29) // Saturates max angle to 29
-				     sh_servo_setpoint -> put(29);
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+50);
+				   if (sh_servo_setpoint -> get() >= 3900) // Saturates max angle to 29
+				     sh_servo_setpoint -> put(3900);
 				   sh_servo_set_flag -> put(1);
  				   transition_to (DRIVE);
 				   break;
 				   
 			      // The 'd' command turns steering servo to the right by 1
 			      case ('d'):
-				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-1); // Saturates min angle to 15
-				   if (sh_servo_setpoint -> get() <= 15)
-				     sh_servo_setpoint -> put(15);
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-50); // Saturates min angle to 15
+				   if (sh_servo_setpoint -> get() <= 2100)
+				     sh_servo_setpoint -> put(2100);
 				   sh_servo_set_flag -> put(1);
  				   transition_to (DRIVE);
 				   break;
