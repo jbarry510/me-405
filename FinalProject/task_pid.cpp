@@ -140,20 +140,20 @@ void task_pid::run (void)
 	      servo_position = (sh_euler_heading_change->get() / euler_coefficient) + euler_constant; 
 	      
 	      // Saturates maximum and minimum new power setting to +- 3 for Servo
-	      if(setpoint_3 >= -3 && setpoint_3 <= 3)
-		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
-	      else if(setpoint_3 < 0) 
-	      {
-		  setpoint_3 = -3;
-		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
-	      }
-	      else if(setpoint_3 > 0)
-	      {
-		  setpoint_3 = 3;
-		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
-	      }
-	      else
-		  *p_serial << PMS ("PID 3 error") << endl; // Debugs error message
+// 	      if(setpoint_3 >= -3 && setpoint_3 <= 3)
+// 		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+// 	      else if(setpoint_3 < 0) 
+// 	      {
+// 		  setpoint_3 = -3;
+// 		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+// 	      }
+// 	      else if(setpoint_3 > 0)
+// 	      {
+// 		  setpoint_3 = 3;
+// 		  sh_PID_3_power->put(pid_3->compute(servo_position, setpoint_3));
+// 	      }
+// 	      else
+// 		  *p_serial << PMS ("PID 3 error") << endl; // Debugs error message
 	      // Timer for serial print (about 1 second)
 	      if(runs % 167 == 0)
 	      {
@@ -167,10 +167,10 @@ void task_pid::run (void)
 		  *p_serial << PMS ("Feedback        : ") << pid_2->get_input() << endl;
 		  *p_serial << PMS ("Output          : ") << pid_2->get_output() << endl << endl;
 		  
-		  *p_serial << PMS ("servo_position  : ") << servo_position << endl;
-		  *p_serial << PMS ("setpoint_3      : ") << setpoint_3 << endl;
-		  *p_serial << PMS ("Feedback        : ") << pid_3->get_input() << endl;
-		  *p_serial << PMS ("Output          : ") << pid_3->get_output() << endl << endl;
+// 		  *p_serial << PMS ("servo_position  : ") << servo_position << endl;
+// 		  *p_serial << PMS ("setpoint_3      : ") << setpoint_3 << endl;
+// 		  *p_serial << PMS ("Feedback        : ") << pid_3->get_input() << endl;
+// 		  *p_serial << PMS ("Output          : ") << pid_3->get_output() << endl << endl;
 	      }
 	      
 	  }

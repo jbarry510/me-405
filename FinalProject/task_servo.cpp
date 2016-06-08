@@ -10,8 +10,8 @@
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
-
-#include "task_servo.h"                    // Header for this task
+#include "adc.h"			    // Header for ADC
+#include "task_servo.h"                     // Header for this task
 
 //-----------------------------------------------------------------------------------------------------------
 /** This constructor creates a task which controls the ouput of the steering servo. The main job of this
@@ -38,16 +38,19 @@ void task_servo::run (void)
 {
       // Declaration of servo object
       servo_drv* steer_servo = new servo_drv(p_serial);
-      sh_servo_setpoint->put(3000);		// Straight position for servo at start up
+      adc* adc_1 = new adc(p_serial);
+      int16_t steering_trim = (adc_1->read_oversampled(0,10) / 2) + -127;
+      sh_servo_setpoint->put(3000 + steering_trim);		// Straight position for servo at start up
       steer_servo->set_Pos(sh_servo_setpoint->get());
       
       //max servo PWM = 29, 15
       for(;;) 
       {
+	steering_trim = (adc_1->read_oversampled(0,10) / 2) + -127;
 // 	if (sh_servo_set_flag->get() == 1)
 // 	{
-	
-	  steer_servo->set_Pos(sh_servo_setpoint->get());
+	  steer_servo->set_Pos(sh_servo_setpoint->get()+ steering_trim);
+// 	  *p_serial << PMS ("Steering trim: ") << steering_trim << endl << endl;
 // 	}
 
 	

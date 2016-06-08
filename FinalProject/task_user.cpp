@@ -614,47 +614,56 @@ void task_user::run (void)
 		 if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
 			 char_in = p_serial -> getchar ();
-			 *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
-			 *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
-			 *p_serial << endl;
 
 			 // Switch statement to respond to commands typed in by user
 			 switch (char_in)
 			 {
 			      // The 'w' command increments the motor power by 20
 			      case ('w'):
-				   sh_setpoint_1 -> put(sh_setpoint_1->get()+20); // Saturates max power to 255
-				   if (sh_setpoint_1 -> get() >= 255)
-				     sh_setpoint_1 -> put(255);
-				   sh_PID_control->put(1); // Activates motor power update
+				   sh_power_entry -> put(sh_power_entry -> get() +20); // Saturates max power to 255
+				   if (sh_power_entry -> get() >= 255)
+				     sh_power_entry -> put(255);
+					sh_power_set_flag-> put(2);		// Set flag high to indicate a changed power value
+				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
+				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
+				   *p_serial << endl;
 				   transition_to (DRIVE);
 				   break;
 
 			      // The 's' command decrements the motor power by 20
 			      case ('s'):
-				   sh_setpoint_2 -> put(sh_power_entry->get()-20); // Saturates min power to -255
-				    if (sh_setpoint_2-> get() <= -255)
-				     sh_setpoint_2 -> put(-255);
-				   sh_PID_control->put(1); // Activates motor power update
- 				   transition_to (DRIVE);
+				   sh_power_entry -> put(sh_power_entry->get()-20); // Saturates min power to -255
+				    if (sh_power_entry-> get() <= -255)
+				     sh_power_entry -> put(-255);
+				   sh_power_set_flag-> put(2);		// Set flag high to indicate a changed power value
+				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
+				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
+				   *p_serial << endl;
+				   transition_to (DRIVE);
 				   break;
 				   
-			      // The 'a' command turns steering servo to the left by 1
+			      // The 'a' command turns steering servo to the left by -50
 			      case ('a'):
-				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+50);
-				   if (sh_servo_setpoint -> get() >= 3900) // Saturates max angle to 29
-				     sh_servo_setpoint -> put(3900);
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+100);
+				   if (sh_servo_setpoint -> get() >= 4000) // Saturates max angle to 29
+				     sh_servo_setpoint -> put(4000);
 				   sh_servo_set_flag -> put(1);
- 				   transition_to (DRIVE);
+				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
+				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
+				   *p_serial << endl;
+				   transition_to (DRIVE);
 				   break;
 				   
-			      // The 'd' command turns steering servo to the right by 1
+			      // The 'd' command turns steering servo to the right by 50
 			      case ('d'):
-				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-50); // Saturates min angle to 15
-				   if (sh_servo_setpoint -> get() <= 2100)
-				     sh_servo_setpoint -> put(2100);
+				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-100); // Saturates min angle to 15
+				   if (sh_servo_setpoint -> get() <= 2000)
+				     sh_servo_setpoint -> put(2000);
 				   sh_servo_set_flag -> put(1);
- 				   transition_to (DRIVE);
+				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
+				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
+				   *p_serial << endl;
+				   transition_to (DRIVE);
 				   break;
 
 			      // A control-C character causes the CPU to restart
@@ -719,8 +728,9 @@ void task_user::print_drive_menu (void)
      *p_serial << PMS ("--------------CAR DRIVE MENU -----------------") << endl;
      *p_serial << PMS ("    w:      Increment motor velocity +20") << endl;
      *p_serial << PMS ("    s:      Decrement motor velocity -20") << endl;
-     *p_serial << PMS ("    a:      Rotate steering to the left -1") << endl;
-     *p_serial << PMS ("    d:      Rotate steering to the right +1") << endl;
+     *p_serial << PMS ("    a:      Rotate steering to the left -50") << endl;
+     *p_serial << PMS ("    d:      Rotate steering to the right +50") << endl;
+     *p_serial << PMS ("    b:      Emergency break!") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
      *p_serial << endl;
