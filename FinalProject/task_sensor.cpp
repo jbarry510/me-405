@@ -45,10 +45,6 @@ void task_sensor::run (void)
      
      adc* front_IR_adc = new adc(p_serial);
      
-     
-
-     
-     
      /// Creates a new IMU object
      imu_drv* imu_sensor = new imu_drv(p_serial);
      

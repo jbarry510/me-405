@@ -86,8 +86,8 @@ TaskShare<volatile uint8_t>* sh_encoder_new_state_1;	// Motor 1 encoder next sta
 TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	// Motor 2 encoder previous state
 TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	// Motor 2 encoder next state
 
-TaskShare<volatile int16_t>* sh_motor_1_speed;		// Motor 1 speed
-TaskShare<volatile int16_t>* sh_motor_2_speed;		// Motor 2 speed
+TaskShare<volatile uint32_t>* sh_motor_1_speed;		// Motor 1 speed
+TaskShare<volatile uint32_t>* sh_motor_2_speed;		// Motor 2 speed
 
 TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1 tick jump error count
 TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2 tick jump error count
@@ -164,8 +164,8 @@ int main (void)
      sh_encoder_new_state_2 = new TaskShare<volatile uint8_t> ("sh_encoder_new_state_2");
      
      // Create motor 1 and 2 speed variables
-     sh_motor_1_speed = new TaskShare<volatile int16_t> ("sh_motor_1_speed"); // Motor 1
-     sh_motor_2_speed = new TaskShare<volatile int16_t> ("sh_motor_2_speed"); // Motor 2
+     sh_motor_1_speed = new TaskShare<volatile uint32_t> ("sh_motor_1_speed"); // Motor 1
+     sh_motor_2_speed = new TaskShare<volatile uint32_t> ("sh_motor_2_speed"); // Motor 2
      
      // Create encoder tick jump error counts for motor 1 and motor 2
      sh_encoder_error_count_1 = new TaskShare<uint16_t> ("sh_encoder_error_count_1");
@@ -187,7 +187,6 @@ int main (void)
      sh_servo_setpoint = new TaskShare<uint16_t> ("sh_servo_setpoint");		// Servo motor position setpoint
 
      // Circular path radius value
-     
      sh_path_radius = new TaskShare<uint8_t> ("sh_path_radius");
 
      // The user interface is at low priority; it could have been run in the idle task

@@ -77,6 +77,7 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
 	    
 // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
       DDRE  &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
+      DDRE  |= 0b00001111;
       PORTE |= 0b11110000;			// Activate pull up resistors for Port E
 }
 
@@ -99,13 +100,13 @@ uint32_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count)
 
 ISR (INT4_vect)
 {
-      // Saves old state of motor 1 (channels A and B)
+      // Saves old state of motor 2 (channels A and B)
       sh_encoder_old_state_1 -> put(sh_encoder_new_state_1->get());
       
-      // Stores new state of motor 1 (channels A and B)
-      sh_encoder_new_state_1 -> put(((PINE & _BV(PINE4)) | (PINE & _BV(PINE5))) >> 4);	
+      // Stores new state of motor 2 (channels A and B)
+      sh_encoder_new_state_1 -> put(((PINE & _BV(PINE4)) | (PINE & _BV(PINE5))) >> 4);
    
-// Compare motor 1 encoder state and determine direction, Yellow = A, 4, White = B, 5
+// Compare motor 2 encoder state and determine direction, Yellow = A, 4, White = B, 5
 // CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
 // CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
       switch(sh_encoder_old_state_1->ISR_get())
@@ -162,13 +163,13 @@ ISR_ALIAS(INT5_vect, INT4_vect);
 
 ISR (INT6_vect)
 {
-      // Saves old state of motor 2 (channels A and B)
+      // Saves old state of motor 1 (channels A and B)
       sh_encoder_old_state_2->ISR_put(sh_encoder_new_state_2->ISR_get());
       
-      // Stores new state of motor 2 (channels A and B)
+      // Stores new state of motor 1 (channels A and B)
       sh_encoder_new_state_2->ISR_put(((PINE & _BV(PINE6)) | (PINE & _BV(PINE7))) >> 6);
       
-// Compare motor 2 encoder state and determine direction, Yellow = A, 6, White = B, 7
+// Compare motor 1 encoder state and determine direction, Yellow = A, 6, White = B, 7
 // CW  direction (A:B) = -> 0b00 -> 0b10 -> 0b11 -> 0b01 ->
 // CCW direction (A:B) = -> 0b01 -> 0b11 -> 0b10 -> 0b00 ->
       switch(sh_encoder_old_state_2->ISR_get())

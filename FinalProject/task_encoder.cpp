@@ -43,10 +43,12 @@ task_encoder::task_encoder (const char* a_name, unsigned portBASE_TYPE a_priorit
 // to a task_pid?
 void task_encoder::run (void)
 {
-      // Construction of Encoder Drivers
-      //encoder_drv* p_enc_7 = new encoder_drv(p_serial, 7);
+     // Make a variable which will hold times to use for precise task scheduling
+     TickType_t previousTicks = xTaskGetTickCount ();
+     
+      // Construction of encoder drivers
       encoder_drv* encoder_driver_1 = new encoder_drv(p_serial, 7);  // 6 and 7 aliased
-      encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 5);  // 4 and 5 alised (4 doesn't work?)
+      encoder_drv* encoder_driver_2 = new encoder_drv(p_serial, 3);  // 4 and 5 aliased
       
       // maximum time for encoder to count 0 to 48 at max speed
       uint16_t speed_period_ms = 5; 
@@ -72,14 +74,15 @@ void task_encoder::run (void)
 	
 	sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_new_motor_2, encoder_count_old_motor_2));
 	
-//  	*p_serial << PMS("Motor Speed_1 (rpm) = ") << dec << sh_motor_1_speed->get() << endl;
-// 	*p_serial << PMS("Motor Speed_2 (rpm) = ") << dec << sh_motor_2_speed->get() << endl;
-	
-// 	*p_serial << PMS("Encoder count 2 = ") << dec << sh_encoder_count_2->get() << endl;
-// 	*p_serial << PMS("OLD state 2 = ") << bin << sh_encoder_old_state_2->get() << endl;
-// 	*p_serial << PMS("NEW state 2 = ") << bin << sh_encoder_new_state_2->get() << endl;
-// 	*p_serial << PMS("Error count 2 = ") << dec << sh_encoder_error_count_2->get() << endl;
-// 	*p_serial << endl;
-	delay_ms(speed_period_ms);
+// 	if(runs % 100 == 0)
+// 	{
+// 	     *p_serial << dec << PMS("sh_encoder_count_1: ") << sh_encoder_count_2->get() << endl;
+// 	     *p_serial << dec << sh_encoder_error_count_2->get() << endl;
+// 	     *p_serial << dec << sh_motor_2_speed->get() << endl;
+// 	     
+// 	}
+// // 	
+	runs++;							// Increment the timer run counter.
+	delay_from_for_ms (previousTicks, speed_period_ms);	// Task runs every speed_period
       }
 }

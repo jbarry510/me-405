@@ -308,7 +308,7 @@ void task_user::run (void)
 			      // Power Setting State
 			      else if (number_state == 1)
 			      {
-				   if (number_entered >= 0 && number_entered <= 255)
+				   if (number_entered >= 0 && number_entered <= 1600)
 				   {
 					if(negative_number_entered == true)	// Check if a negative number was entered
 					{
@@ -326,7 +326,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between -255 to 255, then ENTER") << endl;	// Display error message for out of range
+					*p_serial << PMS ("Please type a number between -1600 to 1600, then ENTER") << endl;	// Display error message for out of range
 					number_entered = 0;				// Clear number entered
 				   }
 			      }	
@@ -334,7 +334,7 @@ void task_user::run (void)
 			      // Braking State
 			      else if (number_state == 2)
 			      {
-				   if (number_entered >= 0 && number_entered <= 255)
+				   if (number_entered >= 0 && number_entered <= 1600)
 				   {
 					sh_braking_entry -> put(number_entered);	// Move number_entered into shared sh_braking_entry
 					sh_braking_set_flag-> put(1);		// Make braking_set_flag high to indicate a changed braking value
@@ -346,7 +346,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 0 to 1600, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
@@ -366,7 +366,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 15 to 29, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 2100 to 3900, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
@@ -374,24 +374,24 @@ void task_user::run (void)
 			      // Circular path radius State
 			      else if (number_state == 4)
 			      {
-				   if (number_entered >= 0 && number_entered <= 225)
+				   if (number_entered >= 0 && number_entered <= 1600)
 				   {
 					sh_path_radius->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
 					number_state = 5;			// Clear number_state
-					*p_serial << PMS ("Please enter a circular path velocity [0,255]") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please enter a circular path velocity [0,1600]") << endl;		// Display error message for out of range
 					transition_to (NUMBER);
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 0 to 1600, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	
 			      }
 			      // Route path velocity
 			      else if (number_state == 5)
 			      {
-				   if (number_entered >= 0 && number_entered <= 225)
+				   if (number_entered >= 0 && number_entered <= 1600)
 				   {
 					sh_path_velocity->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
@@ -400,7 +400,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 0 to 1600, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;			// Clear number entered
 				   }	   
 			      }
@@ -529,7 +529,7 @@ void task_user::run (void)
 			 {
 			      // The 'l' command activates linear heading adherance
 			      case ('l'):
- 				   *p_serial << PMS ("Enter velocity of linear path [0,255]") << endl;
+ 				   *p_serial << PMS ("Enter velocity of linear path [0,1600]") << endl;
 				   number_state = 5;
  				   transition_to (NUMBER);
 				   break;
@@ -620,9 +620,9 @@ void task_user::run (void)
 			 {
 			      // The 'w' command increments the motor power by 20
 			      case ('w'):
-				   sh_power_entry -> put(sh_power_entry -> get() +20); // Saturates max power to 255
-				   if (sh_power_entry -> get() >= 255)
-				     sh_power_entry -> put(255);
+				   sh_power_entry -> put(sh_power_entry -> get()+100); // Saturates max power to 255
+				   if (sh_power_entry -> get() >= 1600)
+				     sh_power_entry -> put(1600);
 					sh_power_set_flag-> put(2);		// Set flag high to indicate a changed power value
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
@@ -632,9 +632,9 @@ void task_user::run (void)
 
 			      // The 's' command decrements the motor power by 20
 			      case ('s'):
-				   sh_power_entry -> put(sh_power_entry->get()-20); // Saturates min power to -255
-				    if (sh_power_entry-> get() <= -255)
-				     sh_power_entry -> put(-255);
+				   sh_power_entry -> put(sh_power_entry->get()-100); // Saturates min power to -255
+				    if (sh_power_entry-> get() <= -1600)
+				     sh_power_entry -> put(-1600);
 				   sh_power_set_flag-> put(2);		// Set flag high to indicate a changed power value
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_power_entry->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
@@ -699,7 +699,7 @@ void task_user::run (void)
 	  } // End switch state
 
 	  runs++;			// Increment counter for debugging
-	  delay_ms (50);		// Delay 1 millisecond to all lower priority tasks to run
+	  delay_ms (50);		// Delay 50 millisecond to all lower priority tasks to run
      }
 }
 
@@ -726,10 +726,10 @@ void task_user::print_drive_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("--------------CAR DRIVE MENU -----------------") << endl;
-     *p_serial << PMS ("    w:      Increment motor velocity +20") << endl;
-     *p_serial << PMS ("    s:      Decrement motor velocity -20") << endl;
-     *p_serial << PMS ("    a:      Rotate steering to the left -50") << endl;
-     *p_serial << PMS ("    d:      Rotate steering to the right +50") << endl;
+     *p_serial << PMS ("    w:      Increment motor velocity +100") << endl;
+     *p_serial << PMS ("    s:      Decrement motor velocity -100") << endl;
+     *p_serial << PMS ("    a:      Rotate steering to the left -100") << endl;
+     *p_serial << PMS ("    d:      Rotate steering to the right +100") << endl;
      *p_serial << PMS ("    b:      Emergency break!") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;
@@ -754,8 +754,8 @@ void task_user::print_motor_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("----------------- MOTOR MENU -----------------") << endl;
-     *p_serial << PMS ("    p:      Motor POWER with PWM [-255, 255]") << endl;
-     *p_serial << PMS ("    b:      Motor BRAKE with PWM [-255, 255]") << endl;
+     *p_serial << PMS ("    p:      Motor POWER with PWM [-1600, 1600]") << endl;
+//      *p_serial << PMS ("    b:      Motor BRAKE with PWM [-1600, 1600]") << endl;
      *p_serial << PMS ("    f:      Full Brake") << endl;
      *p_serial << PMS ("    s:      Velocity setpoint [-40, 40]") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
@@ -768,7 +768,7 @@ void task_user::print_servo_menu (void)
 {
      *p_serial << endl;
      *p_serial << PMS ("----------------- SERVO MENU -----------------") << endl;
-     *p_serial << PMS ("    p:      Servo position with PWM [29 [L], 22 [C], 15 [R]]") << endl;
+     *p_serial << PMS ("    p:      Servo position with PWM [4000 [L], 3000 [C], 2000 [R]]") << endl;
      *p_serial << PMS ("    s:      Position setpoint") << endl;
      *p_serial << PMS ("  Ctl-C:    Reset AVR microcontroller") << endl;
      *p_serial << PMS ("    r:      Return to Main Menu") << endl;

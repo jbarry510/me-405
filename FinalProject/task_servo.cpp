@@ -49,7 +49,7 @@ void task_servo::run (void)
 	steering_trim = (adc_1->read_oversampled(0,10) / 2) + -127;
 // 	if (sh_servo_set_flag->get() == 1)
 // 	{
-	  steer_servo->set_Pos(sh_servo_setpoint->get()+ steering_trim);
+	steer_servo->set_Pos(sh_servo_setpoint->get()+ steering_trim);
 // 	  *p_serial << PMS ("Steering trim: ") << steering_trim << endl << endl;
 // 	}
 

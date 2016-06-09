@@ -27,7 +27,7 @@
  *    messages to the serial port and an select variable that is used to choose the appropriate 
  *    registers for controlling the motor. The driver has three methods available to the user. 
  *    The set_power method allows the user to set the power supplied to the motor on a scale of 
- *    -255 to 255 where the positive values turn the motor @b clockwise and negative values 
+ *    -1600 to 1600 where the positive values turn the motor @b clockwise and negative values 
  *    turn the motor @b counterclockwise. The brake_full method effectively stops power being 
  *    supplied to the motor. The brake method sets PWM controlled braking for motor.
  */
@@ -52,7 +52,7 @@ class motor_drv
 	motor_drv (emstream* = NULL, uint8_t = 0);
 
 	/// The set_power method allows the user to set the power supplied to the motor on a 
-	/// scale of -255 to 255 where the positive values turn the motor clockwise and negative 
+	/// scale of -1600 to 1600 where the positive values turn the motor clockwise and negative 
 	/// values turn the motor counterclockwise.
 	void set_power(int16_t power) ;
 	
@@ -60,9 +60,9 @@ class motor_drv
 	/// by enabling the brake to Vcc operating mode of the H-bridge chip.
         void brake_full();
 	
-	/// The brake method sets PWM controlled braking for motor. It does this by enabling the brake
-	/// to GND operating mode of the H-bridge chip.
-	void brake(uint8_t strength);
+// 	The brake method sets PWM controlled braking for motor. It does this by enabling the brake
+// 	to GND operating mode of the H-bridge chip.
+// 	void brake(uint8_t strength);
 
 }; /// end of class motor_drv
 

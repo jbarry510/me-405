@@ -64,8 +64,8 @@ extern TaskShare<volatile uint8_t>* sh_encoder_old_state_2;	/// Previous state
 extern TaskShare<volatile uint8_t>* sh_encoder_new_state_2;	/// Next state
 
 // Motor speeds
-extern TaskShare<volatile int16_t>* sh_motor_1_speed;		/// Motor 1
-extern TaskShare<volatile int16_t>* sh_motor_2_speed;		/// Motor 2
+extern TaskShare<volatile uint32_t>* sh_motor_1_speed;		/// Motor 1
+extern TaskShare<volatile uint32_t>* sh_motor_2_speed;		/// Motor 2
 /// Tick jump error count
 extern TaskShare<uint16_t>* sh_encoder_error_count_1;		// Motor 1
 extern TaskShare<uint16_t>* sh_encoder_error_count_2;		// Motor 2

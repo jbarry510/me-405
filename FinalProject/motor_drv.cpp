@@ -16,8 +16,8 @@
 
 //-------------------------------------------------------------------------------------
 /** \brief This constructor sets up the motor object.
- *  \details The timer for the PWM signal is set up in fast PWM 8-bit mode with a clock 
- *           prescaler of 8 which gives an operating frequency of approximately 8kHz. The 
+ *  \details The 16-bit timer for the PWM signal is set up in fast PWM mode with no clock 
+ *           prescaler which gives an operating frequency of 10 kHz. The 
  *           data direction registers and output enables are set for the appropriate
  *           motor based on the select variable. A debug message is printed stating if
  *           the motor constructor was sucessful or not.
@@ -31,11 +31,14 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
 	ptr_to_serial = p_serial_port;
 	select = motor_select;
 	
-	// Timing channel 1 setup (Fast PWM, Clock prescaler of 8) 
-	TCCR1A |= (1 << WGM10) | (1 << COM1B1) | (1 << COM1A1);
-	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0) | ~(1 << WGM11);
-	TCCR1B |= (1 << WGM12) | (1 << CS11);
-	TCCR1B &= ~(1 << CS12) | ~(1 << CS10) | ~(1 << WGM13);
+	// Timing channel 1 setup (Fast PWM, No clock prescaler) 
+	TCCR1A |=  (1 << WGM11) | (1 << COM1B1) | (1 << COM1A1);
+	TCCR1A &= ~(1 << COM1B0) | ~(1 << COM1A0) | ~(1 << WGM10);
+	TCCR1B |=  (1 << WGM12) | (1 << WGM13) | (1 << CS10);
+	TCCR1B &= ~(1 << CS12) | ~(1 << CS11);
+	
+	// Counter maximum value for timer PWM frequency of 10 kHz
+	ICR1 = 1600;
 	
 	// If object is motor 1 then this block is used
 	if(select == 1)
@@ -80,7 +83,8 @@ motor_drv::motor_drv(emstream* p_serial_port, uint8_t motor_select)
  *  the motor. The sign of the integer corresponds to the direction the motor turns.
  *  Negative values turn the motor @b clockwise and positive values turn the motor 
  *  @b counterclockwise.
- *  @param   power Variable that sets power output to motor (must be between -255 and 255).
+ *  @param   power Variable that sets power output to motor 
+ * 		   (must be between -1600 and 1600).
  *  @return  None
  */
 
@@ -135,7 +139,6 @@ void motor_drv::set_power(int16_t power)
       }
 }
 
-
 //-------------------------------------------------------------------------------------
 /** @brief   This method causes the motor to brake fully.
  *  \details The H-bridge chip for the corresponding motor is set to operating mode
@@ -160,30 +163,31 @@ void motor_drv::brake_full()
       PORTD |= (1<<PORTD5) | (1<<PORTD6);
     }
 }
-//-------------------------------------------------------------------------------------
-/** @brief   This method allows for the motor braking to be controlled.
- *  \details The H-bridge chip for the corresponding motor is set to operating mode
- *           brake to GND which allows for the use of the PWM signal to vary the braking
- *           strength.
- *  @param strength Variable that sets amount of motor braking (must be between -255 and 255).
- *  @return  None
- */
 
-void motor_drv::brake(uint8_t strength)
-{
-    // If object is motor 1 then this block is used
-    if(select == 1)
-    {
-      // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
-      PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
-      OCR1B = strength;
-    }
-    
-    // If object is motor 2 then this block is used
-    if(select == 2)
-    {
-      // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
-      PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
-      OCR1A = strength;
-    }
-}
+// //-------------------------------------------------------------------------------------
+// /** @brief   This method allows for the motor braking to be controlled.
+//  *  \details The H-bridge chip for the corresponding motor is set to operating mode
+//  *           brake to GND which allows for the use of the PWM signal to vary the braking
+//  *           strength.
+//  *  @param strength Variable that sets amount of motor braking (must be between -255 and 255).
+//  *  @return  None
+//  */
+// 
+// void motor_drv::brake(uint8_t strength)
+// {
+//     // If object is motor 1 then this block is used
+//     if(select == 1)
+//     {
+//       // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
+//       PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
+//       OCR1B = strength;
+//     }
+//     
+//     // If object is motor 2 then this block is used
+//     if(select == 2)
+//     {
+//       // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
+//       PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
+//       OCR1A = strength;
+//     }
+// }
