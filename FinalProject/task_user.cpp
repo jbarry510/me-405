@@ -116,8 +116,7 @@ void task_user::run (void)
 			      // The 'd' command: allows for manual driving
 			      case ('d'):
 				   print_drive_menu();
-				   sh_power_set_flag -> put(3);
-				   sh_servo_set_flag -> put(2);
+				   sh_power_set_flag -> put(2);
 				   transition_to (DRIVE);
 				   break;
 				   
@@ -252,7 +251,7 @@ void task_user::run (void)
 			      // Circular path radius State
 			      if (number_state == 1)
 			      {
-				   if (number_entered > 0 && number_entered <= 1600)
+				   if (number_entered > 15 && number_entered <= 30)
 				   {
 					sh_path_radius->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
@@ -262,7 +261,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 1600, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 15 and 30, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;
 				   }	
 			      }
@@ -333,7 +332,7 @@ void task_user::run (void)
 			 {
 			      // The 'l' command activates linear heading adherance
 			      case ('l'):
- 				   *p_serial << PMS ("Enter distance of linear path [0,180]") << endl;
+ 				   *p_serial << PMS ("Enter distance of linear path [0,180] inches") << endl;
 				   sh_heading_setpoint->put(sh_euler_heading->get());
 				   sh_linear_start ->put(1);
 				   number_state = 2;
@@ -342,7 +341,7 @@ void task_user::run (void)
 
 			      // The 'c' command activates circular path routing
 			      case ('c'):
-				   *p_serial << PMS ("Enter radius of circular path [0,255]") << endl;
+				   *p_serial << PMS ("Enter radius of circular path [15,30] inches") << endl;
 				   sh_PID_control->put(2);
 				   number_state = 1;
  				   transition_to (NUMBER);
@@ -385,7 +384,7 @@ void task_user::run (void)
 				   sh_setpoint_1-> put(sh_setpoint_1 -> get()+10); // Saturates max power to 255
 				   if (sh_setpoint_1 -> get() >= 80)
 				     sh_setpoint_1 -> put(80);
-				   sh_setpoint_2-> put(-sh_setpoint_1->get()); // Saturates max power to 255
+				   sh_setpoint_2-> put(sh_setpoint_1->get()); // Saturates max power to 255
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_setpoint_1->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
 				   *p_serial << endl;
@@ -397,7 +396,7 @@ void task_user::run (void)
 				   sh_setpoint_1-> put(sh_setpoint_1 -> get()-10); // Saturates max power to 255
 				   if (sh_setpoint_1 -> get() <= -80)
 				     sh_setpoint_1 -> put(-80);
-				   sh_setpoint_2-> put(-sh_setpoint_1->get()); // Saturates max power to 255
+				   sh_setpoint_2-> put(sh_setpoint_1->get()); // Saturates max power to 255
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_setpoint_1->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
 				   *p_serial << endl;

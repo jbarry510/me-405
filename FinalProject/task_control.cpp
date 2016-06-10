@@ -70,19 +70,21 @@ void task_control::run (void)
      
      // Servo PID Constants
      int16_t Kp_3 = 1 * 1024;					// K_p Proportional gain
-     int16_t Ki_3 = 1 * 256;					// K_i Integral gain
-     int16_t Kw_3 = 1 * 256;					// K_w Anti-windup gain
-     int16_t min_3 = 2000;					// Minimum saturation limit
-     int16_t max_3 = 4000;					// Maximum saturation limit
+     int16_t Kd_3 = 1 * 256;					// K_i Integral gain
+     int16_t min_3 = -20;					// Minimum saturation limit
+     int16_t max_3 = 20;					// Maximum saturation limit
      
      //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
-     pid_3->set_config(pid::config_t{pid::PD, Kp_3, Ki_3, 0, Kw_3, min_3, max_3});
+     pid_3->set_config(pid::config_t{pid::PD, Kp_2, 0, Kd_3, 0, min_2, max_2});
      
      int16_t setpoint_1 = 0;					// Velocity set point Motor 1
      int16_t setpoint_2 = 0;					// Velocity set point Motor 2
-     uint32_t distance = 0;
+     int32_t distance = 0;
      uint16_t encoder_count = 0;
      uint16_t inch_to_ticks = 356;
+     int8_t  counter = 0;
+     int16_t new_servo_error = 0;
+     int16_t new_servo_angle = 0;
      
      for(;;)
      {
@@ -90,20 +92,20 @@ void task_control::run (void)
 	      setpoint_1 = sh_setpoint_1->get();
 	      
 	      // Saturates maximum and minimum new power setting to +- 318 for Motor 1
-	      if(setpoint_1 >= -318 && setpoint_1 <= 318)
+	      if(setpoint_1 >= -80 && setpoint_1 <= 80)
 	      {
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
 		  sh_power_set_flag->put(1);
 	      }
-	      else if(setpoint_1 < 0) 
+	      else if(setpoint_1 < -80) 
 	      {
-		  setpoint_1 = -318;
+		  setpoint_1 = -80;
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
 		  sh_power_set_flag->put(1);
 	      }
-	      else if(setpoint_1 > 0)
+	      else if(setpoint_1 > 80)
 	      {
-		  setpoint_1 = 318;
+		  setpoint_1 = 80;
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
 		  sh_power_set_flag->put(1);
 	      }
@@ -112,23 +114,23 @@ void task_control::run (void)
 
 	      // Set power for motor 2
 	      // [power] = [ticks] * max power / max ticks [ticks]
-	      setpoint_2 = sh_setpoint_2->get();
+	      setpoint_2 = -sh_setpoint_2->get();
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
-	      if(setpoint_2 >= -318 && setpoint_2 <= 318)
+	      if(setpoint_2 >= -80 && setpoint_2 <= 80)
 	      {
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 	          sh_power_set_flag->put(1);
 	      }
-	      else if(setpoint_2 < 0) 
+	      else if(setpoint_2 < -80) 
 	      {
-		  setpoint_2 = -318;
+		  setpoint_2 = -80;
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 		  sh_power_set_flag->put(1);
 	      }
-	      else if(setpoint_2 > 0)
+	      else if(setpoint_2 > 80)
 	      {
-		  setpoint_2 = 318;
+		  setpoint_2 = 80;
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
 		  sh_power_set_flag->put(1);
 	      }
@@ -138,54 +140,89 @@ void task_control::run (void)
 	  if (sh_PID_control->get() == 1)				// Linear Path Adherance
 	  {
 	       sh_setpoint_1->put(sh_path_velocity->get());
-	       sh_setpoint_2->put(-sh_setpoint_1->get());
+	       sh_setpoint_2->put(sh_setpoint_1->get());
 	       encoder_count = sh_motor_1_speed->get();
 	       
 	       if (sh_linear_start->get() == 1)
 	       {
 		    sh_servo_setpoint->put(3000);
-		    sh_servo_set_flag->put(1);
 		    sh_setpoint_1->put(0);
 		    sh_setpoint_2 ->put(0);
 		    distance = inch_to_ticks * sh_linear_distance ->get();
 		    sh_linear_start ->put(0);
- 		    *p_serial << PMS ("Starting heading: ") <<  sh_euler_heading->get() << endl;
-		    *p_serial << PMS ("sh_linear_distance: ") <<  sh_linear_distance->get() << endl;
-		    *p_serial << PMS ("Distance: ") << distance << endl;
-		    *p_serial << PMS ("Finished Initialization ") << endl << endl;
 	       }
 	       
 	       if(distance >= 0)
 	       {    
- 		    sh_servo_setpoint -> put(pid_3->compute(routes::servo_fb(sh_euler_heading_change->get()),sh_heading_setpoint->get()));
-	            sh_servo_set_flag -> put(1); 
+		    new_servo_error = (sh_heading_setpoint->get() - sh_euler_heading->get())/4;
+		    new_servo_angle = new_servo_angle + new_servo_error;
+		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));
 		    distance -= encoder_count;
 	       }
 	       else
 	       {
 		   sh_PID_control->put(0);
 		   sh_braking_full_flag->put(1);
+		   sh_setpoint_1->put(0);
+		   sh_setpoint_2->put(0);
 		   distance = 0;
-		   sh_setpoint_1 ->put(0);
-		   sh_setpoint_2 ->put(0);
 		   encoder_count = 0;
 		   sh_servo_setpoint -> put(3000);
 		   sh_servo_set_flag ->put(1);
-		   *p_serial << PMS ("Finished Route! ") << endl << endl;
 	       }
 	       
-	       if(distance % 50 == 0)
-	       {
-		  *p_serial << PMS ("sh_servo_setpoint : ") << sh_servo_setpoint->get() << endl;
-		  *p_serial << PMS ("Velocity Setpoint : ") << sh_setpoint_1->get() << endl;
-		  *p_serial << PMS ("Distance          : ") << distance << PMS (" [ticks]") << endl;
-		  *p_serial << PMS ("Encoder Count     : ") << encoder_count << PMS (" [ticks]") << endl;
-		  *p_serial << PMS ("sh_euler_heading  : ") << sh_euler_heading->get() << PMS(" [degrees]")<< endl << endl;
-	       }
 	  }
 	  else if (sh_PID_control->get() == 2)				// Circular Path Adherance
 	  {
-	       sh_PID_control->put(0);
+// 	       sh_setpoint_1->put(sh_path_velocity->get());
+// 	       sh_setpoint_2->put(sh_setpoint_1->get());
+// 	       encoder_count = sh_motor_1_speed->get();
+// 	       
+// 	       if (sh_circular_start->get() == 1)
+// 	       {
+// 		    velocity_setpoint = routes::motor_velocity(sh_path_velocity->get());
+// 		    heading_change_setpoint = velocity_setpoint/sh_path_radius->get();
+// 		    sh_servo_setpoint->put(routes::servo_angle(9/sh_path_radius->get()));
+// 		    velocity_ratio = 
+// 		    sh_setpoint_1->put(0);
+// 		    sh_setpoint_2 ->put(0);
+// 		    distance = inch_to_ticks * sh_linear_distance ->get();
+// 		    sh_linear_start ->put(0);
+// 		    *p_serial << PMS ("Path velocity: ") << sh_path_velocity << endl;
+//  		    *p_serial << PMS ("Starting heading: ") <<  sh_euler_heading->get() << endl;
+// 		    *p_serial << PMS ("sh_linear_distance: ") <<  sh_linear_distance->get() << endl;
+// 		    *p_serial << PMS ("Distance: ") << distance << endl;
+// 		    *p_serial << PMS ("Finished Initialization ") << endl << endl;
+// 	       }
+// 	       
+// 	       if(distance >= 0)
+// 	       {    
+// 		    if(counter<=10)
+// 		    {
+// 			 *p_serial << PMS ("Old Servo Position : ") << sh_servo_setpoint->get() << endl;
+// 			 *p_serial << PMS ("Intended Heading   : ") << sh_heading_setpoint->get() << endl;
+// 			 *p_serial << PMS ("sh_euler_heading   : ") << sh_euler_heading->get() << endl << endl;
+// 			 *p_serial << PMS ("Heading Error      : ") << new_servo_error<< endl;
+// 			 *p_serial << PMS ("New Servo Angle    : ") << new_servo_angle << endl << endl;
+// 			 counter++;
+// 		    }
+// 		    new_servo_error = sh_heading_setpoint->get() - sh_euler_heading->get();
+// 		    new_servo_angle = new_servo_angle + new_servo_error;
+// 		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));
+// 		    distance -= encoder_count;
+// 	       }
+// 	       else
+// 	       {
+// 		   sh_PID_control->put(0);
+// // 		   sh_braking_full_flag->put(1);
+// 		   sh_setpoint_1->put(0);
+// 		   sh_setpoint_2->put(0);
+// 		   distance = 0;
+// 		   encoder_count = 0;
+// 		   sh_servo_setpoint -> put(3000);
+// 		   sh_servo_set_flag ->put(1);
+// 		   *p_serial << PMS ("Finished Route! ") << endl << endl;
+// 	       }
 	  }
 		 
      runs++;					// Increment the timer run counter.

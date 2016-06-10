@@ -114,11 +114,11 @@ TaskShare <uint8_t>* sh_linear_start;			// Linear route initialization flag
 
 TaskShare <uint16_t>* sh_linear_distance;		// Linear route distance
 
-TaskShare <int16_t>* sh_heading_setpoint;		// Heading setpoint for linear path control
+TaskShare <int32_t>* sh_heading_setpoint;		// Heading setpoint for linear path control
 
-TaskShare <int16_t>* sh_euler_heading;			// Euler heading
+TaskShare <int32_t>* sh_euler_heading;			// Euler heading
 
-TaskShare <int16_t>* sh_euler_heading_change;		// Euler heading change
+TaskShare <int32_t>* sh_euler_heading_change;		// Euler heading change
 
 TaskShare <uint8_t>* sh_imu_status;			// IMU status check flag
 
@@ -136,7 +136,7 @@ int main (void)
      wdt_disable ();
 
      // Configure a serial port.
-     rs232* p_ser_port = new rs232 (9600, 1);
+     rs232* p_ser_port = new rs232 (9600, 0);
      
      // Print a starting line to display program information
      *p_ser_port << clrscr << PMS ("-------- ME405 Lab 5 Starting Program --------") << endl;
@@ -206,9 +206,9 @@ int main (void)
      sh_linear_distance = new TaskShare<uint16_t> ("sh_linear_distance");
      
      //Euler heading variables
-     sh_euler_heading = new TaskShare<int16_t> ("sh_euler_heading");
-     sh_euler_heading_change = new TaskShare<int16_t> ("sh_euler_heading");
-     sh_heading_setpoint = new TaskShare <int16_t> ("sh_heading_setpoint");
+     sh_euler_heading = new TaskShare<int32_t> ("sh_euler_heading");
+     sh_euler_heading_change = new TaskShare<int32_t> ("sh_euler_heading_change");
+     sh_heading_setpoint = new TaskShare <int32_t> ("sh_heading_setpoint");
      
      // IMU status check flag
      sh_imu_status = new TaskShare<uint8_t> ("sh_imu_status");

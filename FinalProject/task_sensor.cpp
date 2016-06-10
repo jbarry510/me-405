@@ -79,7 +79,7 @@ void task_sensor::run (void)
 	  old_heading = sh_euler_heading -> get();
 	  sh_euler_heading -> put(heading);
 	  
-	  sh_euler_heading_change ->put(sh_euler_heading ->get()-old_heading);
+	  sh_euler_heading_change ->put(sh_euler_heading->get()- old_heading);
 	  
 	  runs++;					// Increment the timer run counter.
 	  delay_from_for_ms (previousTicks, 10);	// Task runs every 10 ms

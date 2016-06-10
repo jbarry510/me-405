@@ -68,27 +68,21 @@ void task_power::run (void)
 	       encoder_count_new_motor_2 = sh_encoder_count_2->get();
 	       
 	       // Sets motor speed variables using difference in encoder readings
-	       sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_new_motor_1, encoder_count_old_motor_1));
-	       sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_new_motor_2, encoder_count_old_motor_2));
+	       sh_motor_1_speed->put(encoder_driver_1->calc_motor(encoder_count_old_motor_1, encoder_count_new_motor_1));
+	       sh_motor_2_speed->put(encoder_driver_2->calc_motor(encoder_count_old_motor_2, encoder_count_new_motor_2));
+	       
 	       
 	       // Check if power variable has changed, power flag = high, if not skip
 	       if (sh_power_set_flag->get() == 1)
 	       {
-// 		    if(sh_motor_select->get() == 1)
-			 p_motor_1 -> set_power(sh_PID_1_power->get());	// Set power for motor 1
-// 		    else if(sh_motor_select->get() == 2)
-			 p_motor_2 -> set_power(sh_PID_2_power->get());	// Set power for motor 2
+		    p_motor_1 -> set_power(sh_PID_1_power->get());	// Set power for motor 1
+		    p_motor_2 -> set_power(sh_PID_2_power->get());	// Set power for motor 2
 	       
 		    sh_power_set_flag->put(0);		// Make power_set_flag low when succesful power set
 
 	       }
-// 	       else if (sh_power_set_flag->get() == 2)
-// 	       {
-// 		    p_motor_1 -> set_power(sh_power_entry->get());
-// 		    p_motor_2 -> set_power(-sh_power_entry->get());
-// 		    sh_power_set_flag -> put(0);
-// 	       }
-	       else if (sh_power_set_flag ->get() == 3)
+
+	       else if (sh_power_set_flag ->get() == 2)
 	       {
 		    p_motor_1 -> set_power(0);
 		    p_motor_2 -> set_power(0);
@@ -101,8 +95,7 @@ void task_power::run (void)
 		    p_motor_1 -> brake_full();		// Stop motor 1
 		    p_motor_2 -> brake_full();		// Stop motor 2
 			 
-		    sh_power_set_flag->put(3);	// Make power_set_flag low when successful power set
-// 		    sh_braking_set_flag->put(0);	// Make braking_set_flag low when successful braking set
+		    sh_power_set_flag->put(2);	// Make power_set_flag low when successful power set
 		    sh_braking_full_flag->put(0);	// Make braking_full_flag low when successful motor stop
 		    *p_serial << PMS ("Stopped! ") << endl << endl;
 	       }

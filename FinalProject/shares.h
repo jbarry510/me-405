@@ -103,13 +103,13 @@ extern TaskShare <uint8_t>* sh_linear_start;
 extern TaskShare <uint16_t>* sh_linear_distance;
 
 // Euler heading
-extern TaskShare<int16_t>* sh_euler_heading;
+extern TaskShare<int32_t>* sh_euler_heading;
 
 // Euler heading change
-extern TaskShare<int16_t>* sh_euler_heading_change;
+extern TaskShare<int32_t>* sh_euler_heading_change;
 
 // Euler heading setpoint
-extern TaskShare<int16_t>* sh_heading_setpoint;
+extern TaskShare<int32_t>* sh_heading_setpoint;
 
 // IMU status check flag
 extern TaskShare<uint8_t>* sh_imu_status;

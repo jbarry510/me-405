@@ -26,7 +26,10 @@
  */
 namespace routes 
 {
-	int16_t                        servo_fb(int16_t change);
+	int16_t                        servo_angle(uint16_t power);
+	uint16_t                       servo_power(int16_t angle);
+	uint16_t 		       motor_setpoint(uint16_t velocity);
+	uint16_t		       motor_velocity(uint16_t setpoint);
 } // end namespace routes
 
 #endif // ROUTES_H

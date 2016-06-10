@@ -29,10 +29,36 @@
  *  @return Sum
  */
 
-int16_t routes::servo_fb(int16_t change)
+int16_t routes::servo_angle(uint16_t power)
 {
-     int16_t coefficient = -34;
+     int16_t coefficient = 3;
+     int16_t constant = 89;
+     return (constant - (coefficient*power)/100);
+}
+
+uint16_t routes::servo_power(int16_t angle)
+{
+     int16_t coefficient = 34;
      int16_t constant = 3034;
-     int16_t servo_corr = constant + coefficient*(change/16);
-     return servo_corr;
+     
+     if (angle >= 30)
+	  angle = 30;
+     if (angle <= -30)
+	  angle = -30;
+     
+     return (constant - coefficient*angle);
+}
+uint16_t routes::motor_setpoint(uint16_t velocity)
+{
+     int16_t velocity_range = 88;
+     int16_t setpoint_range = 80;
+     
+     return ((setpoint_range/velocity_range)*velocity);
+}
+uint16_t routes::motor_velocity(uint16_t setpoint)
+{
+     int16_t velocity_range = 88;
+     int16_t setpoint_range = 80;
+     
+     return ((velocity_range/setpoint_range)*setpoint);
 }
