@@ -1,6 +1,7 @@
 //===========================================================================================================
 /** @file task_steer.h
- *  TODO This file contains the header for a task class that instatiates the servo object.
+ *  This file contains the header for a task class that instatiates the servo object and handles updating
+ *  the servo position.
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file
