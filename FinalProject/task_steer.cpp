@@ -52,9 +52,6 @@ void task_steer::run (void)
 	  steering_trim = (adc_1->read_oversampled(0,10) / 2) + -127;
 	       
 	  steer_servo->set_Pos(sh_servo_setpoint->get()+ steering_trim);
-/*	  }*/     
-	  
-	  sh_servo_set_flag->put(0);
 
 	  runs++;					// Increment the timer run counter.
 	  delay_from_for_ms (previousTicks, 10);	// Task runs every 10 ms

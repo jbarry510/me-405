@@ -1,6 +1,7 @@
 //======================================================================================
 /** @file servo_drv.h
- *    This header manages a simple servo driver.
+ *    This driver contains the configuration and position setting method for a servo on
+ *    timing channel 3. 
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file.
@@ -39,6 +40,7 @@ class servo_drv
 	
 	servo_drv (emstream* = NULL);
 	
+	/// Method that sets the PWM for changing servo position
 	void set_Pos(uint16_t pos);		// Sets servo position
 
 }; /// end of class servo_drv

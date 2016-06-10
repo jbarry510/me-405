@@ -1,6 +1,7 @@
 //===========================================================================================================
 /** @file task_sensor.h
- *  This file contains the header for a task class that creates and tests the IMU object.
+ *  This file contains the header for a task class that creates an IMU sensor object and adc objects for the
+ *  IR distance sensors. The readings are saved to a shared variables to be used by other tasks.
  *
  */
 //===========================================================================================================
@@ -36,7 +37,7 @@ protected:
 	/// No protected variables or methods for this class
   
 public:
-	/// This constructor creates a generic IMU task of which many copies can be made.
+	/// This constructor creates a generic sensor task of which many copies can be made.
 	task_sensor (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	/// This method is called by the RTOS once to run the task loop indefinetly.

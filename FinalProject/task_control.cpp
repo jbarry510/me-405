@@ -29,9 +29,10 @@ task_control::task_control (const char* a_name, unsigned portBASE_TYPE a_priorit
 }
 
 //-----------------------------------------------------------------------------------------------------------
-/** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it instatiates a
- *  new encoder object, giving the interrupt pin, 7, enabling external interrupt derived encoder data about
- *  the motor rotation.
+/** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it instantiates the
+ *  PID objects for the motors and sets the velocities of the motors based on the shared setpoint variable.
+ *  The circular and linear routing calculations are called and used here to set the proper setpoints for the
+ *  motor and servo.
  */
 
 void task_control::run (void)
@@ -42,7 +43,6 @@ void task_control::run (void)
      // Creating the PID objects for Motor 1 and Motor 2
      pid* pid_1 = new pid(p_serial);
      pid* pid_2 = new pid(p_serial);
-     pid* pid_3 = new pid(p_serial);
      
      // Motor 1 PID Constants
      int16_t Kp_1 = 1 * 1024;					// K_p Proportional gain
@@ -68,21 +68,11 @@ void task_control::run (void)
      //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
      pid_2->set_config(pid::config_t{pid::PI, Kp_2, Ki_2, 0, Kw_2, min_2, max_2});
      
-     // Servo PID Constants
-     int16_t Kp_3 = 1 * 1024;					// K_p Proportional gain
-     int16_t Kd_3 = 1 * 128;					// K_i Integral gain
-     int16_t min_3 = -10;					// Minimum saturation limit
-     int16_t max_3 = 10;					// Maximum saturation limit
-     
-     //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
-     pid_3->set_config(pid::config_t{pid::PD, Kp_3, 0, Kd_3, 0, min_2, max_2});
-     
      int16_t setpoint_1 = 0;					// Velocity set point Motor 1
      int16_t setpoint_2 = 0;					// Velocity set point Motor 2
      int32_t distance = 0;					// Linear route distance input
      uint16_t encoder_count = 0;				// Distance change from encoders
      uint16_t inch_to_ticks = 356;				// Distance unit conversion
-     int8_t  counter = 0;					// Debug counter
      int16_t new_servo_error = 0;				// Heading error
      int16_t new_servo_angle = 0;				// New calculated servo angle
      
@@ -115,7 +105,7 @@ void task_control::run (void)
 	      // Set power for motor 2
 	      setpoint_2 = -sh_setpoint_2->get();
 	      
-	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
+	      // Saturates maximum and minimum new power setting to +- 80 for Motor 2
 	      if(setpoint_2 >= -80 && setpoint_2 <= 80)
 	      {
 		  sh_PID_2_power->put(pid_2->compute(sh_motor_2_speed->get(), setpoint_2));
@@ -135,7 +125,8 @@ void task_control::run (void)
 	      }
 	      else
 		  *p_serial << PMS ("PID 2 error") << endl; // Debugs error message
-		  
+		
+	  // This logic handles the linear and circular path calculations and setpoint manipulation
 	  if (sh_PID_control->get() == 1)					// Linear Path Adherance
 	  {
 	       // Sets velocity setpoints for constant travel
@@ -152,16 +143,16 @@ void task_control::run (void)
 		    sh_setpoint_1->put(0);					// Clears motor setpoints
 		    sh_setpoint_2 ->put(0);					
 		    distance = inch_to_ticks * sh_linear_distance ->get();	// Calculates total travel
-		    sh_linear_start ->put(0);
+		    sh_linear_start ->put(0);					// Clears linear route start flag
 	       }
 	       
 	       // Main operation block
 	       if(distance >= 0)
 	       {    
 		    new_servo_error = (sh_heading_setpoint->get() - sh_euler_heading->get())/10; // Determines heading error
-		    new_servo_angle = new_servo_error;			// Calculates new servo angle
-		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));		// Sets new servo position
-		    distance -= encoder_count;							// Subtracts the encoder distance travelled from the total
+		    new_servo_angle = new_servo_error;						 // Calculates new servo angle
+		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));		 // Sets new servo position
+		    distance -= encoder_count;							 // Subtracts the encoder distance travelled from the total
 	       }
 	       else // Closing block
 	       {

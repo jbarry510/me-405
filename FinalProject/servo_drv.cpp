@@ -1,6 +1,7 @@
 //*************************************************************************************
 /** @file servo_drv.cpp
- *    This file contains the configuration and 
+ *    This driver contains the configuration and position setting method for a servo on
+ *    timing channel 3. 
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file.

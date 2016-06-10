@@ -1,21 +1,20 @@
 //***********************************************************************************************************
 /** @file task_sensor.cpp
- *  This file contains the header for a task class that creates and tests the IMU object. This task tells the
- *  controller to print out the Euler angles (heading, pitch, and roll) every two seconds.
- * 
+ *  This file contains the header for a task class that creates an IMU sensor object and adc objects for the
+ *  IR distance sensors. The readings are saved to a shared variables to be used by other tasks.
  */
 //***********************************************************************************************************
 #include "textqueue.h"                      // Header for text queue class
 #include "taskshare.h"			    // Header for thread-safe shared data
 #include "shares.h"                         // Shared inter-task communications
-#include "adc.h"
 
-#include "task_sensor.h"                       // Header for this task
+#include "adc.h"			    // Header for the adc class 
+#include "task_sensor.h"                    // Header for this task
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
- *  This constructor creates a task which creates a sensor object and has it print the system status and Euler
- *  angles for testing purposes. The main job of this constructor is to call the constructor of parent class 
+ *  This constructor creates a task which creates an IMU sensor and adc objects that give IR sensor readings.
+ *  The main job of this constructor is to call the constructor of parent class 
  *  (\c frt_task ); the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
  *  @param a_priority The priority at which this task will initially run (default: 0)
@@ -32,8 +31,7 @@ task_sensor::task_sensor (const char* a_name, unsigned portBASE_TYPE a_priority,
 
 //-----------------------------------------------------------------------------------------------------------
 /** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it instatiates a
- *  new IMU object, giving it a pointer to the serial port, and requesting to print the system status of the
- *  IMU and return the Euler angles for printing.
+ *  new IMU object and two adc objects for IR distance readings.
  */
 
 void task_sensor::run (void)
@@ -50,7 +48,6 @@ void task_sensor::run (void)
      
      /// Initializes the sensor reading variables
      int16_t heading = 0; 
-     int16_t old_heading = 0;
      int16_t side_IR_reading = 0;
      int16_t front_IR_reading = 0;
      
@@ -58,13 +55,10 @@ void task_sensor::run (void)
      for(;;)
      {
        
-	  // first paraemter is channel of ADC to read from
-	  // second parameter is number of samples to take
+	  /// First paraemter is channel of ADC to read from
+	  /// Second parameter is number of samples to take
 	  side_IR_reading = side_IR_adc->read_oversampled(1,10);
 	  front_IR_reading = front_IR_adc->read_oversampled(2,10);
-	  
-	  //*p_serial << PMS("Front IR: ") << front_IR_reading << endl;
- 	  //*p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
 	  
 	  /// Calls the system status method in the imu_drv which prints a message regarding the status
 	  if(sh_imu_status->get() == 1)
@@ -76,10 +70,8 @@ void task_sensor::run (void)
 	  /// Gets the Euler angle variables by calling the getEulerAng method in the imu_drv.
 	  heading = imu_sensor->getEulerAng(1);
 	  
-	  old_heading = sh_euler_heading -> get();
+	  /// Saves Euler heading reading to a shared variable
 	  sh_euler_heading -> put(heading);
-	  
-	  sh_euler_heading_change ->put(sh_euler_heading->get()- old_heading);
 	  
 	  runs++;					// Increment the timer run counter.
 	  delay_from_for_ms (previousTicks, 10);	// Task runs every 10 ms

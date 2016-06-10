@@ -1,8 +1,7 @@
 //===========================================================================================================
 /** @file task_control.h
- *  This file contains the header for a task class that instatiates and operates the pid object as well as
- *  the major features.
- *
+ *  This file contains the header for a task class that instatiates and operates the pid objects as well as
+ *  the routing and pid calculations.
  */
 //===========================================================================================================
 

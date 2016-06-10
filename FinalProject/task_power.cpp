@@ -94,7 +94,7 @@ void task_power::run (void)
 		    p_motor_1 -> brake_full();		// Stop motor 1
 		    p_motor_2 -> brake_full();		// Stop motor 2
 			 
-		    sh_power_set_flag->put(2);	// Make power_set_flag low when successful power set
+		    sh_power_set_flag->put(2);		// Make power_set_flag low when successful power set
 		    sh_braking_full_flag->put(0);	// Make braking_full_flag low when successful motor stop
 	       }
 	       

@@ -55,7 +55,7 @@ const TickType_t ticks_to_delay = ((configTICK_RATE_HZ / 1000) * 5);
 
 
 //-----------------------------------------------------------------------------------------------------------
-/** This constructor creates a new data acquisition task. It's main job is to call the parent class's
+/** This constructor creates a new user interface task. It's main job is to call the parent class's
  *  constructor which does most of the work.
  *  @param a_name A character string which will be the name of this task
  *  @param a_priority The priority at which this task will initially run (default: 0)
@@ -87,11 +87,8 @@ void task_user::run (void)
 
      int16_t number_entered = 0;             	// Holds a number being entered by user
      uint8_t number_state = 0;			// State of of what type of number is inputted
-     bool negative_number_entered = false;	// Flag to indicate a negative number has been inputted
+     bool negative_number_entered = false;	// Flag for handling negative number input
      uint8_t char_num_count = 0;		// Counts characters so backspace will delete accordingly
-     
-
-     sh_motor_select -> put(0);			// Motor select share
 
      // Command mode (state 1), where the user interface task can jump to successive states
      print_main_menu();
@@ -255,13 +252,13 @@ void task_user::run (void)
 				   {
 					sh_path_radius->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
-					number_state = 3;			// Clear number_state
+					number_state = 3;			// Sets to velocity entry number state
 					*p_serial << PMS ("Please enter a circular path velocity [0, 80]") << endl;		// Display error message for out of range
 					transition_to (NUMBER);
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 15 and 30, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 15 and 30, then ENTER") << endl;	// Display error message for out of range
 					number_entered = 0;
 				   }	
 			      }
@@ -272,9 +269,9 @@ void task_user::run (void)
 				   if (number_entered > 0 && number_entered <= 180)
 				   {
 					sh_linear_distance->put(number_entered);	// Set motor setpoint 1 to number_entered
-					number_entered = 0;			// Clear number_entered
-					number_state = 3;			// Clear number_state		// Display error message for out of range
-					*p_serial << endl << PMS ("Please enter a linear path velocity [0, 80]") << endl;
+					number_entered = 0;				// Clear number_entered
+					number_state = 3;				// Sets to velocity entry number state	
+					*p_serial << endl << PMS ("Please enter a linear path velocity [0, 80]") << endl; 	// Display error message for out of range
 					transition_to (NUMBER);
 				   }
 				   else
@@ -290,16 +287,19 @@ void task_user::run (void)
 			      {
 				   if (number_entered > 0 && number_entered <= 80)
 				   {
-					sh_path_velocity->put(number_entered);	// Set motor setpoint 1 to number_entered
+					sh_path_velocity->put(number_entered);	// Set path velocity setpoint to number_entered
 					number_entered = 0;			// Clear number_entered
-					number_state = 0;			// Clear number_state		// Display error message for out of range
-					sh_PID_control->put(1);
+					number_state = 0;			// Clear number_state
+					if (sh_linear_start ->get() == 1)
+					     sh_PID_control->put(1); 		// Sets linear route control enable
+					if (sh_circular_start->get() == 1)
+					     sh_PID_control->put(2);		// Sets circular route control enable
 					transition_to (ROUTES);
 				   }
 				   else
 				   {
 					*p_serial << PMS ("Please type a number between 0 to 80, then ENTER") << endl;		// Display error message for out of range
-					number_entered = 0;
+					number_entered = 0;									// Clear number_entered
 					
 				   }	   
 			      }
@@ -332,17 +332,17 @@ void task_user::run (void)
 				   // The 'l' command activates linear heading adherance
 				   case ('l'):
 					*p_serial << PMS ("Enter distance of linear path [0,180] inches") << endl;
-					sh_heading_setpoint->put(sh_euler_heading->get());
-					sh_linear_start ->put(1);
-					number_state = 2;
+					sh_heading_setpoint->put(sh_euler_heading->get());                         // Sets heading setpoint for linear path
+					sh_linear_start ->put(1);						   // Sets linear start initialization flag
+					number_state = 2; 							   // Sets number state for entering linear path distance
 					transition_to (NUMBER);
 					break;
 
 				   // The 'c' command activates circular path routing
 				   case ('c'):
 					*p_serial << PMS ("Enter radius of circular path [15,30] inches") << endl;
-					sh_PID_control->put(2);
-					number_state = 1;
+					sh_circular_start ->put(1);						   // Sets circular start initialization flag
+					number_state = 1;							   // Sets number state for entering circle radius
 					transition_to (NUMBER);
 					break;
 
@@ -377,21 +377,21 @@ void task_user::run (void)
 			 // Switch statement to respond to commands typed in by user
 			 switch (char_in)
 			 {
-			      // The 'w' command increments the motor power by 20
+			      // The 'w' command increments the motor power by 10
 			      case ('w'):
-				   sh_setpoint_1-> put(sh_setpoint_1 -> get()+10); // Saturates max power to 255
+				   sh_setpoint_1-> put(sh_setpoint_1 -> get()+10); // Saturates max power to 80
 				   if (sh_setpoint_1 -> get() >= 80)
 				     sh_setpoint_1 -> put(80);
-				   sh_setpoint_2-> put(sh_setpoint_1->get()); // Saturates max power to 255
+				   sh_setpoint_2-> put(sh_setpoint_1->get()); // Sets motor 2 to motor 1 setpoint
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_setpoint_1->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
 				   *p_serial << endl;
 				   transition_to (DRIVE);
 				   break;
 
-			      // The 's' command decrements the motor power by 20
+			      // The 's' command decrements the motor power by 10
 			      case ('s'):
-				   sh_setpoint_1-> put(sh_setpoint_1 -> get()-10); // Saturates max power to 255
+				   sh_setpoint_1-> put(sh_setpoint_1 -> get()-10); // Saturates max power to 
 				   if (sh_setpoint_1 -> get() <= -80)
 				     sh_setpoint_1 -> put(-80);
 				   sh_setpoint_2-> put(sh_setpoint_1->get()); // Saturates max power to 255
@@ -401,7 +401,7 @@ void task_user::run (void)
 				   transition_to (DRIVE);
 				   break;
 				   
-			      // The 'a' command turns steering servo to the left by -50
+			      // The 'a' command turns steering servo to the left by 100
 			      case ('a'):
 				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+100);
 				   if (sh_servo_setpoint -> get() >= 4000) // Saturates max angle to 29
@@ -412,7 +412,7 @@ void task_user::run (void)
 				   transition_to (DRIVE);
 				   break;
 				   
-			      // The 'd' command turns steering servo to the right by 50
+			      // The 'd' command turns steering servo to the right by 100
 			      case ('d'):
 				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-100); // Saturates min angle to 15
 				   if (sh_servo_setpoint -> get() <= 2000)

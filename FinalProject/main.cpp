@@ -67,13 +67,7 @@
 TextQueue* p_print_ser_queue;
 
 // Shared variables
-TaskShare<int8_t>* sh_motor_select;			// Motor selection share
-
-TaskShare<int16_t>* sh_power_entry;			// Power value share
 TaskShare<int8_t>* sh_power_set_flag;			// Flag share indicating power value has changed
-
-TaskShare<int16_t>* sh_braking_entry;			// Braking value share
-TaskShare<int8_t>* sh_braking_set_flag;			// Flag share indicating braking value has changed
 
 TaskShare<int8_t>* sh_braking_full_flag;		// Flag share indicating full braking requested
 
@@ -97,17 +91,14 @@ TaskShare<int32_t>* sh_setpoint_2;			// Motor 2
 
 TaskShare<int16_t>* sh_PID_1_power;			// Motor 1 Power values from PID control
 TaskShare<int16_t>* sh_PID_2_power;			// Motor 2 Power values from PID control
-TaskShare<int16_t>* sh_PID_3_power;			// Servo Power values from PID control
 
 TaskShare<uint8_t>* sh_PID_control;			// Flag to indicate PID control enabled
 
-TaskShare<uint16_t>* sh_adc_setpoint;			// Servo ADC potentiometer inputted setpoint
-
 TaskShare<uint16_t>* sh_servo_setpoint;			// Servo motor position setpoint
 
-TaskShare<uint8_t>* sh_servo_set_flag;			// Servo update flag
+TaskShare <uint8_t>* sh_path_radius;			// Circular path radius
 
-TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
+TaskShare <uint8_t>* sh_circular_start;			// Circular route initialization flag
 
 TaskShare <uint8_t>* sh_path_velocity;			// Route path velocity
 
@@ -118,8 +109,6 @@ TaskShare <uint16_t>* sh_linear_distance;		// Linear route distance
 TaskShare <int32_t>* sh_heading_setpoint;		// Heading setpoint for linear path control
 
 TaskShare <int32_t>* sh_euler_heading;			// Euler heading
-
-TaskShare <int32_t>* sh_euler_heading_change;		// Euler heading change
 
 TaskShare <uint8_t>* sh_imu_status;			// IMU status check flag
 
@@ -145,16 +134,8 @@ int main (void)
      // Create the queues and other shared data items here
      p_print_ser_queue = new TextQueue (32, "Print", p_ser_port, 30);
      
-     // Create a motor select share
-     sh_motor_select = new TaskShare<int8_t> ("sh_motor_select");
-     
      // Create a motor power variable share and flag to indicate a power value change
-     sh_power_entry = new TaskShare<int16_t> ("sh_power_entry");
      sh_power_set_flag = new TaskShare<int8_t> ("sh_power_set_flag");
-     
-     // Create a motor braking variable share and flag to indicate a braking value change
-     sh_braking_entry = new TaskShare<int16_t> ("sh_braking_entry");
-     sh_braking_set_flag = new TaskShare<int8_t> ("sh_braking_set_flag");
      
      // Create a flag to indicate a full braking requested
      sh_braking_full_flag = new TaskShare<int8_t> ("sh_braking_full_flag");
@@ -190,17 +171,14 @@ int main (void)
      // Flag to indicate PID control enabled
      sh_PID_control = new TaskShare<uint8_t> ("sh_PID_control");
 
-     // Active ADC channel position
-     sh_adc_setpoint = new TaskShare<uint16_t> ("sh_adc_setpoint");
-     
      // Servo motor position setpoint
      sh_servo_setpoint = new TaskShare<uint16_t> ("sh_servo_setpoint");		
-
-     // Servo set flag
-     sh_servo_set_flag = new TaskShare<uint8_t> ("sh_servo_set_flag");		
      
      // Circular path radius value
      sh_path_radius = new TaskShare<uint8_t> ("sh_path_radius");
+     
+     // Circular route initialization flag
+     sh_circular_start = new TaskShare<uint8_t> ("sh_circular_start");
      
      // Linear route initialization flag
      sh_linear_start = new TaskShare<uint8_t> ("sh_linear_start");
@@ -210,9 +188,6 @@ int main (void)
      
      // Current IMU heading (Euler coordinates)
      sh_euler_heading = new TaskShare<int32_t> ("sh_euler_heading");
-     
-     // IMU heading change (Euler coordinates)
-     sh_euler_heading_change = new TaskShare<int32_t> ("sh_euler_heading_change");
      
      // Route feature initial IMU heading (Euler coordinates)
      sh_heading_setpoint = new TaskShare <int32_t> ("sh_heading_setpoint");

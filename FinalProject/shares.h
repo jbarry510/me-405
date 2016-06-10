@@ -35,18 +35,8 @@
 /// This queue allows tasks to send characters to the user interface task for display.
 extern TextQueue* p_print_ser_queue;
 
-/// Motor selection share
-extern TaskShare<int8_t>* sh_motor_select;
-
-/// Power value share
-extern TaskShare<int16_t>* sh_power_entry;
 /// Flag share indicating power value has changed
 extern TaskShare<int8_t>* sh_power_set_flag;
-
-/// Braking value share
-extern TaskShare<int16_t>* sh_braking_entry;
-/// Flag share indicating braking value has changed
-extern TaskShare<int8_t>* sh_braking_set_flag;
 
 /// Flag share indicating full braking requested
 extern TaskShare<int8_t>* sh_braking_full_flag;
@@ -77,21 +67,18 @@ extern TaskShare<int32_t>* sh_setpoint_2;			// Motor 2
 // Power values from PID control
 extern TaskShare<int16_t>* sh_PID_1_power;			// Motor 1
 extern TaskShare<int16_t>* sh_PID_2_power;			// Motor 2
-extern TaskShare<int16_t>* sh_PID_3_power;			// Servo
 
 // Flag to indicate PID control enabled
 extern TaskShare<uint8_t>* sh_PID_control;
 
-extern TaskShare<uint16_t>* sh_adc_setpoint;
-
 // Servo motor position setpoint
 extern TaskShare<uint16_t>* sh_servo_setpoint;
 
-// Servo motor update flag
-extern TaskShare<uint8_t>* sh_servo_set_flag; 
-
 // Circular path radius
 extern TaskShare<uint8_t>* sh_path_radius;
+
+// Circular route initialization flag
+extern TaskShare<uint8_t>* sh_circular_start;
 
 // Route path velocity
 extern TaskShare<uint8_t>* sh_path_velocity;
@@ -104,9 +91,6 @@ extern TaskShare <uint16_t>* sh_linear_distance;
 
 // Euler heading
 extern TaskShare<int32_t>* sh_euler_heading;
-
-// Euler heading change
-extern TaskShare<int32_t>* sh_euler_heading_change;
 
 // Euler heading setpoint
 extern TaskShare<int32_t>* sh_heading_setpoint;
