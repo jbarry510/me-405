@@ -21,44 +21,62 @@
 #include "routes.h"
 
 //-----------------------------------------------------------------------------------------------------------
-/** \brief This function performs saturated addition
- *  \details The function performs addition of two 16-bit signed integers, saturating at either the maximal
- *	     or minimal 16-bit values
- *  @param x Augend
- *  @param y Addend
- *  @return Sum
+/** \brief This function converts servo power setpoints to a wheel steering angle
+ *  \details Servo_angle performs a linear conversion with real-world calibration values.
+ *  @param coefficient Augend
+ *  @param constant Addend
+ *  @return Linear function result
  */
-
 int16_t routes::servo_angle(uint16_t power)
 {
-     int16_t coefficient = 3;
-     int16_t constant = 89;
+     int16_t coefficient = 3;				// Linear function scalar
+     int16_t constant = 89;				// Linear function offset
      return (constant - (coefficient*power)/100);
 }
 
+/** \brief This function converts wheel steering angle to a servo power setpoint
+ *  \details Servo_power performs a linear conversion with real-world calibration values.
+ *  @param coefficient Augend
+ *  @param constant Addend
+ *  @return Linear function result
+ */
 uint16_t routes::servo_power(int16_t angle)
 {
-     int16_t coefficient = 34;
-     int16_t constant = 3034;
+     int16_t coefficient = 34;				// Linear function scalar
+     int16_t constant = 3034;				// Linear function offset
      
-     if (angle >= 30)
+     if (angle >= 30)					// Saturates the angle to +- 30
 	  angle = 30;
      if (angle <= -30)
 	  angle = -30;
      
      return (constant - coefficient*angle);
 }
+
+/** \brief This function converts a velocity (in/s) to a corresponding motor power value.
+ *  \details Motor_setpoint scales a velocity by a ratio between velocity and setpoint maximums.
+ *  @param setpoint_range Augend
+ *  @param velocity_range Dividend
+ *  @return Scalar
+ */
 uint16_t routes::motor_setpoint(uint16_t velocity)
 {
-     int16_t velocity_range = 88;
-     int16_t setpoint_range = 80;
+     int16_t velocity_range = 88;			// Max velocity input [in/s]
+     int16_t setpoint_range = 80;			// Max motor setpoint
      
      return ((setpoint_range/velocity_range)*velocity);
 }
+
+/** \brief This function converts a motor power setpoint to a corresponding velocity (in/s) value.
+ *  \details Motor_setpoint scales a setpoint by a ratio between velocity and setpoint maximums.
+ *  @param velocity_range Augend
+ *  @param setpoint_range Dividend
+ *  @return Scalar
+ */
 uint16_t routes::motor_velocity(uint16_t setpoint)
 {
-     int16_t velocity_range = 88;
-     int16_t setpoint_range = 80;
+     int16_t velocity_range = 88;			// Max velocity input [in/s]
+     int16_t setpoint_range = 80;			// Max motor setpoint
      
      return ((velocity_range/setpoint_range)*setpoint);
 }

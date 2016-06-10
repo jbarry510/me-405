@@ -59,10 +59,6 @@ class motor_drv
 	/// The brake_full method effectively stops power being supplied to the motor. It does this
 	/// by enabling the brake to Vcc operating mode of the H-bridge chip.
         void brake_full();
-	
-// 	The brake method sets PWM controlled braking for motor. It does this by enabling the brake
-// 	to GND operating mode of the H-bridge chip.
-// 	void brake(uint8_t strength);
 
 }; /// end of class motor_drv
 

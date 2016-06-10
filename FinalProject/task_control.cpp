@@ -1,7 +1,7 @@
- //***********************************************************************************************************
+//***********************************************************************************************************
 /** @file task_control.cpp
- *  TODO 
- * 
+ *  This file contains the code for a task that configures and operates the motor PID and the major route
+ *  features.
  */
 //***********************************************************************************************************
 #include "textqueue.h"				// Header for text queue class
@@ -12,8 +12,9 @@
 
 //-----------------------------------------------------------------------------------------------------------
 /** 
- *  This constructor creates a task which controls the ouput of two pid loops. The main job of this
- *  constructor is to call the constructor of parent class (\c frt_task ); the parent's constructor the work.
+ *  This constructor creates a task which controls the output of two pid loops and operates major route 
+ *  features. The main job of this constructor is to call the constructor of parent class (\c frt_task );
+ *  the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
  *  @param a_priority The priority at which this task will initially run (default: 0)
  *  @param a_stack_size The size of this task's stack in bytes (default: configMINIMAL_STACK_SIZE)
@@ -25,7 +26,6 @@ task_control::task_control (const char* a_name, unsigned portBASE_TYPE a_priorit
 			    emstream* p_ser_dev): TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. 
-        // This new task just waits for encoder_drv to share encoder data: state, direction, etc...
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -70,28 +70,28 @@ void task_control::run (void)
      
      // Servo PID Constants
      int16_t Kp_3 = 1 * 1024;					// K_p Proportional gain
-     int16_t Kd_3 = 1 * 256;					// K_i Integral gain
-     int16_t min_3 = -20;					// Minimum saturation limit
-     int16_t max_3 = 20;					// Maximum saturation limit
+     int16_t Kd_3 = 1 * 128;					// K_i Integral gain
+     int16_t min_3 = -10;					// Minimum saturation limit
+     int16_t max_3 = 10;					// Maximum saturation limit
      
      //pid::config{mode, Kp, Ki, Kd, Kw, min_satur, max_satur};
-     pid_3->set_config(pid::config_t{pid::PD, Kp_2, 0, Kd_3, 0, min_2, max_2});
+     pid_3->set_config(pid::config_t{pid::PD, Kp_3, 0, Kd_3, 0, min_2, max_2});
      
      int16_t setpoint_1 = 0;					// Velocity set point Motor 1
      int16_t setpoint_2 = 0;					// Velocity set point Motor 2
-     int32_t distance = 0;
-     uint16_t encoder_count = 0;
-     uint16_t inch_to_ticks = 356;
-     int8_t  counter = 0;
-     int16_t new_servo_error = 0;
-     int16_t new_servo_angle = 0;
+     int32_t distance = 0;					// Linear route distance input
+     uint16_t encoder_count = 0;				// Distance change from encoders
+     uint16_t inch_to_ticks = 356;				// Distance unit conversion
+     int8_t  counter = 0;					// Debug counter
+     int16_t new_servo_error = 0;				// Heading error
+     int16_t new_servo_angle = 0;				// New calculated servo angle
      
      for(;;)
      {
 	      // Set power for motor 1
 	      setpoint_1 = sh_setpoint_1->get();
 	      
-	      // Saturates maximum and minimum new power setting to +- 318 for Motor 1
+	      // Saturates maximum and minimum new power setting to +- 80 for Motor 1
 	      if(setpoint_1 >= -80 && setpoint_1 <= 80)
 	      {
 		  sh_PID_1_power->put(pid_1->compute(sh_motor_1_speed->get(), setpoint_1));
@@ -113,7 +113,6 @@ void task_control::run (void)
 		  *p_serial << PMS ("PID 1 error") << endl;
 
 	      // Set power for motor 2
-	      // [power] = [ticks] * max power / max ticks [ticks]
 	      setpoint_2 = -sh_setpoint_2->get();
 	      
 	      // Saturates maximum and minimum new power setting to +- 40 for Motor 2
@@ -137,38 +136,41 @@ void task_control::run (void)
 	      else
 		  *p_serial << PMS ("PID 2 error") << endl; // Debugs error message
 		  
-	  if (sh_PID_control->get() == 1)				// Linear Path Adherance
+	  if (sh_PID_control->get() == 1)					// Linear Path Adherance
 	  {
-	       sh_setpoint_1->put(sh_path_velocity->get());
-	       sh_setpoint_2->put(sh_setpoint_1->get());
-	       encoder_count = sh_motor_1_speed->get();
+	       // Sets velocity setpoints for constant travel
+	       sh_setpoint_1->put(sh_path_velocity->get());			// Motor 1
+	       sh_setpoint_2->put(sh_setpoint_1->get());			// Motor 2
 	       
-	       if (sh_linear_start->get() == 1)
+	       // Change in motor 1 ticks indicates distance travelled
+	       encoder_count = sh_motor_1_speed->get();		
+	       
+	       // Initialization block
+	       if (sh_linear_start->get() == 1)				
 	       {
-		    sh_servo_setpoint->put(3000);
-		    sh_setpoint_1->put(0);
-		    sh_setpoint_2 ->put(0);
-		    distance = inch_to_ticks * sh_linear_distance ->get();
+		    sh_servo_setpoint->put(3000);				// Sets neutral servo position
+		    sh_setpoint_1->put(0);					// Clears motor setpoints
+		    sh_setpoint_2 ->put(0);					
+		    distance = inch_to_ticks * sh_linear_distance ->get();	// Calculates total travel
 		    sh_linear_start ->put(0);
 	       }
 	       
+	       // Main operation block
 	       if(distance >= 0)
 	       {    
-		    new_servo_error = (sh_heading_setpoint->get() - sh_euler_heading->get())/4;
-		    new_servo_angle = new_servo_angle + new_servo_error;
-		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));
-		    distance -= encoder_count;
+		    new_servo_error = (sh_heading_setpoint->get() - sh_euler_heading->get())/10; // Determines heading error
+		    new_servo_angle = new_servo_error;			// Calculates new servo angle
+		    sh_servo_setpoint->put(routes::servo_power(new_servo_angle));		// Sets new servo position
+		    distance -= encoder_count;							// Subtracts the encoder distance travelled from the total
 	       }
-	       else
+	       else // Closing block
 	       {
-		   sh_PID_control->put(0);
-		   sh_braking_full_flag->put(1);
-		   sh_setpoint_1->put(0);
-		   sh_setpoint_2->put(0);
-		   distance = 0;
-		   encoder_count = 0;
-		   sh_servo_setpoint -> put(3000);
-		   sh_servo_set_flag ->put(1);
+		   sh_PID_control->put(0);					// Ends route operation
+		   sh_setpoint_1->put(0);					// Clears motor setpoints
+		   sh_setpoint_2->put(0);	
+		   distance = 0;						// Clears distance
+		   encoder_count = 0;						// Clears encoder_count
+		   sh_servo_setpoint -> put(3000);				// Puts servo in neutral position
 	       }
 	       
 	  }

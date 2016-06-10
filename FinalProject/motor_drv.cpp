@@ -163,31 +163,3 @@ void motor_drv::brake_full()
       PORTD |= (1<<PORTD5) | (1<<PORTD6);
     }
 }
-
-// //-------------------------------------------------------------------------------------
-// /** @brief   This method allows for the motor braking to be controlled.
-//  *  \details The H-bridge chip for the corresponding motor is set to operating mode
-//  *           brake to GND which allows for the use of the PWM signal to vary the braking
-//  *           strength.
-//  *  @param strength Variable that sets amount of motor braking (must be between -255 and 255).
-//  *  @return  None
-//  */
-// 
-// void motor_drv::brake(uint8_t strength)
-// {
-//     // If object is motor 1 then this block is used
-//     if(select == 1)
-//     {
-//       // Sets PWM controlled braking (brake to GND) for motor 1 and sets strength of braking
-//       PORTC &= ~(1<<PORTC0) | ~(1<<PORTC1);
-//       OCR1B = strength;
-//     }
-//     
-//     // If object is motor 2 then this block is used
-//     if(select == 2)
-//     {
-//       // Sets PWM controlled braking (brake to GND) for motor 2 and sets strength of braking
-//       PORTD &= ~(1<<PORTD5) | ~(1<<PORTD6);
-//       OCR1A = strength;
-//     }
-// }

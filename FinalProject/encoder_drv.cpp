@@ -39,19 +39,8 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       sh_encoder_old_state_2->put(0);		// Clears motor 2 encoder old state
       sh_encoder_new_state_2->put(0);		// Clears motor 2 encoder old state
       
-// For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
-// an interrupt request."
-
-/* Interrupt 7
-      EICRB &= ~(1<<interrupt_ch);		// Sets the 'interrupt channel passed in' bit to   zero
-      EICRB |= 1<<(interrupt_ch - 1);		// Sets the 'interrupt channel' minus one bit to one
-      EIMSK |= (1<<interrupt_ch);		// Set External Interrupt Mask Register for passed in channel
-      
-// Interrupt 6   
-      EICRB &= ~(1<<(interrupt_ch - 2));	// Sets the 'interrupt channel passed in' bit to zero
-      EICRB |= 1<<(interrupt_ch - 3);		// Sets the 'interrupt channel' minus one bit to one
-      EIMSK |= 1<<(interrupt_ch - 1);		// Set External Interrupt Mask Register for passed in channel
-      */
+     // For external interrupt channels 4->7, trigger for "Any logical change on INTn generates
+     // an interrupt request."
       
       // Interrupt 5 & 7
       EICRB &= ~(1<<interrupt_ch);        	// Sets the 'interrupt channel passed in' bit to   zero
@@ -75,14 +64,20 @@ encoder_drv::encoder_drv(emstream* p_serial_port, uint8_t interrupt_ch)
       }
 
 	    
-// Sets direction of port E bits 4 -> 7 to inputs (Direction control)
+     // Sets direction of port E bits 4 -> 7 to inputs (Direction control)
       DDRE  &= 0b00001111;			// Sets first four pins to outputs and last four to inputs
       DDRE  |= 0b00001111;
       PORTE |= 0b11110000;			// Activate pull up resistors for Port E
 }
 
 
-// Returns [mm/sec] of wheel distance
+//-----------------------------------------------------------------------------------------------------------
+/** \brief   This method finds the difference between the encoder readings (in ticks) and returns that 
+ * 	     difference.
+ *  @param old_count Old encoder count reading
+ *  @param new_count New encoder count reading
+ */
+
 uint32_t encoder_drv::calc_motor (uint16_t old_count, uint16_t new_count)
 {
      return (new_count - old_count); 	// ticks

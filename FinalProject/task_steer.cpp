@@ -46,18 +46,10 @@ void task_steer::run (void)
      sh_servo_setpoint->put(3000 + steering_trim);		// Straight position for servo at start up
      steer_servo->set_Pos(sh_servo_setpoint->get());
      
-      
      //max servo PWM = 29, 15
      for(;;) 
      {
 	  steering_trim = (adc_1->read_oversampled(0,10) / 2) + -127;
-// 	  if (sh_servo_set_flag -> get() == 1)
-// 	  {
-// 	  if (sh_servo_setpoint->get() >= 4000)
-// 	       sh_servo_setpoint -> put(4000);
-// 	       
-// 	  if (sh_servo_setpoint->get() <= 2000)
-// 	       sh_servo_setpoint->put(2000);
 	       
 	  steer_servo->set_Pos(sh_servo_setpoint->get()+ steering_trim);
 /*	  }*/     

@@ -1,10 +1,10 @@
 //***********************************************************************************************************
 /** @file task_power.cpp
- *  TODO This file contains the code for a task that sets the power of the two motors and lets them run for two
- *  seconds then brakes them, waits for two seconds, and then runs them again in the opposite direction.
+ *  This file contains the code for a task that configures and operates both of the motors and encoders.
  *
  *  Revisions:
  *    @li 04-13-2016 ME405 Group 3 original file
+ *    @li 06-10-2016 Combined task_motor and task_encoder into task_power
  *
  */
 //***********************************************************************************************************
@@ -15,7 +15,7 @@
 #include "task_power.h"                     // Header for this task
 
 //-------------------------------------------------------------------------------------
-/** This constructor creates a task which controls the ouput of two motors. The main job of this constructor
+/** This constructor creates a task which controls the ouput of two motors and two encoders. The main job of this constructor
  *  is to call the constructor of parent class (\c frt_task ); the parent's constructor the work.
  *  @param a_name A character string which will be the name of this task
  *  @param a_priority The priority at which this task will initially run (default: 0)
@@ -32,9 +32,8 @@ task_power::task_power (const char* a_name, unsigned portBASE_TYPE a_priority, s
 }
 
 //-------------------------------------------------------------------------------------
-/** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it sets the power
- *  of the two motors and lets them run for two seconds then brakes them, waits for two seconds, and then
- *  runs them again in the opposite direction.
+/** This method is called once by the RTOS scheduler. Each time around the for (;;) loop, it measures and calculates
+ *  encoder parameters and passes motor velocity changes to the motor.
  */
 
 void task_power::run (void)
@@ -81,7 +80,7 @@ void task_power::run (void)
 		    sh_power_set_flag->put(0);		// Make power_set_flag low when succesful power set
 
 	       }
-
+	       // Clears both motor powers 
 	       else if (sh_power_set_flag ->get() == 2)
 	       {
 		    p_motor_1 -> set_power(0);
@@ -97,7 +96,6 @@ void task_power::run (void)
 			 
 		    sh_power_set_flag->put(2);	// Make power_set_flag low when successful power set
 		    sh_braking_full_flag->put(0);	// Make braking_full_flag low when successful motor stop
-		    *p_serial << PMS ("Stopped! ") << endl << endl;
 	       }
 	       
 	       runs++;					// Increment the timer run counter.

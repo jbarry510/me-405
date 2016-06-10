@@ -65,7 +65,7 @@ const TickType_t ticks_to_delay = ((configTICK_RATE_HZ / 1000) * 5);
  */
 
 task_user::task_user (const char* a_name, unsigned portBASE_TYPE a_priority, size_t a_stack_size, 
-				  emstream* p_ser_dev):TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
+		      emstream* p_ser_dev):TaskBase (a_name, a_priority, a_stack_size, p_ser_dev)
 {
 	// Nothing is done in the body of this constructor. All the work is done in the
 	// call to the frt_task constructor on the line just above this one
@@ -73,11 +73,11 @@ task_user::task_user (const char* a_name, unsigned portBASE_TYPE a_priority, siz
 
 
 //-----------------------------------------------------------------------------------------------------------
-/** This task interacts with the user so that a motor may be selected, the power for that motor may be set,
- *  the intensity of braking may also be set, along with a full braking option. It includes two help
- *  messages: Initial menu to choose global options, a motor menu to select power or braking intensity.
- * TODO: Add a increment and decrement for power increase
- * 	 Add a kill button to turn everything off if necessary
+/** This task interacts with the user so that they can use the main modes of operation for the car. There is
+ *  four modes which are a manual driving mode (using WASD control) and two modes that relate to controls
+ *  tasks required by the class which are to have the car drive in a straight line for a set distance and
+ *  have the car drive in a circle of a set radius. The last task is to avoid hitting an object that is in
+ *  front of the car, which was chosen by our group. 
  */
 
 void task_user::run (void)
@@ -294,8 +294,7 @@ void task_user::run (void)
 					number_entered = 0;			// Clear number_entered
 					number_state = 0;			// Clear number_state		// Display error message for out of range
 					sh_PID_control->put(1);
-					print_main_menu();
-					transition_to (MAIN);
+					transition_to (ROUTES);
 				   }
 				   else
 				   {
@@ -325,48 +324,47 @@ void task_user::run (void)
 	       case (ROUTES):
 		    if (p_serial->check_for_char ())	// Wait for character and read
 		    {    
-			 char_in = p_serial -> getchar ();  
+			 char_in = p_serial -> getchar (); 
+			 
+			      // Switch statement to respond to commands typed in by user
+			      switch (char_in)
+			      {
+				   // The 'l' command activates linear heading adherance
+				   case ('l'):
+					*p_serial << PMS ("Enter distance of linear path [0,180] inches") << endl;
+					sh_heading_setpoint->put(sh_euler_heading->get());
+					sh_linear_start ->put(1);
+					number_state = 2;
+					transition_to (NUMBER);
+					break;
 
-			 // Switch statement to respond to commands typed in by user
-			 switch (char_in)
-			 {
-			      // The 'l' command activates linear heading adherance
-			      case ('l'):
- 				   *p_serial << PMS ("Enter distance of linear path [0,180] inches") << endl;
-				   sh_heading_setpoint->put(sh_euler_heading->get());
-				   sh_linear_start ->put(1);
-				   number_state = 2;
- 				   transition_to (NUMBER);
-				   break;
+				   // The 'c' command activates circular path routing
+				   case ('c'):
+					*p_serial << PMS ("Enter radius of circular path [15,30] inches") << endl;
+					sh_PID_control->put(2);
+					number_state = 1;
+					transition_to (NUMBER);
+					break;
 
-			      // The 'c' command activates circular path routing
-			      case ('c'):
-				   *p_serial << PMS ("Enter radius of circular path [15,30] inches") << endl;
-				   sh_PID_control->put(2);
-				   number_state = 1;
- 				   transition_to (NUMBER);
-				   break;
+				   // A control-C character causes the CPU to restart
+				   case (3):
+					*p_serial << PMS ("Resetting AVR") << endl;
+					wdt_enable (WDTO_120MS);
+					for (;;);
+					break;
+					
+				   // The 'r' command returns user to Main Menu
+				   case ('r'):
+					print_main_menu ();
+					transition_to (MAIN);
+					break;
 
-			      // A control-C character causes the CPU to restart
-			      case (3):
-				   *p_serial << PMS ("Resetting AVR") << endl;
-				   wdt_enable (WDTO_120MS);
-				   for (;;);
-				   break;
-				   
-			      // The 'r' command returns user to Main Menu
-			      case ('r'):
-				   print_main_menu ();
-				   transition_to (MAIN);
-				   break;
-
-			      // If character isn't recognized, ask What's That Function?
-			      default:
-				   *p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
-				   break;
-			 }; // End switch for characters
-		    } // End if a character was received
-
+				   // If character isn't recognized, ask What's That Function?
+				   default:
+					*p_serial << '"' << char_in << PMS ("\" ") << UNKNOWN_CHAR << endl;
+					break;
+			      }; // End switch for characters
+			 } // End if a character was received
 		    break; // End of state 4
 		    
 		    

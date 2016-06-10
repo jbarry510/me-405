@@ -1,6 +1,7 @@
 //===========================================================================================================
 /** @file task_control.h
- *  TODO This file contains the header for a task class that instatiates the pid object.
+ *  This file contains the header for a task class that instatiates and operates the pid object as well as
+ *  the major features.
  *
  */
 //===========================================================================================================
@@ -37,7 +38,7 @@ protected:
 	/// No protected variables or methods for this class
   
 public:
-	/// This constructor creates a generic pid task of which many copies can be made.
+	/// This constructor creates a generic control task of which many copies can be made.
 	task_control (const char*, unsigned portBASE_TYPE, size_t, emstream*);
  
 	/// This method is called by the RTOS once to run the task loop indefinetly.

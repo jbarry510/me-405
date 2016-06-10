@@ -1,6 +1,6 @@
 //===========================================================================================================
 /** @file encoder_drv.h
-  *    This file contains interrupt service routines appropriate to a specific motor. Also shares pertinent
+  *   This file contains interrupt service routines appropriate to a specific encoder. Also shares pertinent
  *    encoder data with task_encoder.cpp, including direction, encoder states, count, and error count.
  *
  *  Revisions:

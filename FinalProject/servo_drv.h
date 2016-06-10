@@ -1,6 +1,6 @@
 //======================================================================================
 /** @file servo_drv.h
- *    TODO This file contains a simple servo motor driver.
+ *    This header manages a simple servo driver.
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file.
@@ -22,7 +22,7 @@
 //-------------------------------------------------------------------------------------
 /** @brief   This class will enable a servo to be used with the ME 405 board.
  *       
- *  @details TODO The class has two protected variables...
+ *  @details The driver contains a function to set servo position.
  */
 
 class servo_drv
@@ -39,7 +39,7 @@ class servo_drv
 	
 	servo_drv (emstream* = NULL);
 	
-	void set_Pos(uint16_t pos);
+	void set_Pos(uint16_t pos);		// Sets servo position
 
 }; /// end of class servo_drv
 

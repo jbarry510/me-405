@@ -56,8 +56,8 @@ adc::adc (emstream* p_serial_port)
 	ADMUX |= 1<<REFS0;
 	ADMUX &= ~(1<<REFS1);
 
-	// Print a handy debugging message
-	//DBG (ptr_to_serial, "A/D constructor OK" << endl);
+// 	Print a handy debugging message
+	DBG (ptr_to_serial, "A/D constructor OK" << endl);
 }
 
 

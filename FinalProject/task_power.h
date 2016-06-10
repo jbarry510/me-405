@@ -1,11 +1,10 @@
 //======================================================================================
 /** @file task_power.h
- *  TODO This file contains the header for a task class that sets the power of the two motors 
- *  and lets them run for two seconds then brakes them, waits for two seconds, and then 
- *  runs them again in the opposite direction.
- *
+ *  This file contains the header for a task class that configures and operates the motors
+ *  and encoders.
  *  Revisions:
  *    @li 04-13-2016 ME405 Group 3 original file
+ *    @li 06-10-2016 Combined task_encoder and task_motor into task_power
  *
  */
 //======================================================================================

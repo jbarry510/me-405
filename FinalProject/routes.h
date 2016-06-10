@@ -22,7 +22,8 @@
 
 
 //-----------------------------------------------------------------------------------------------------------
-/** \brief This namespace includes several functions 
+/** \brief This namespace includes several functions converting between real world inputs (angle and velocity)
+ *         and software functional variables.
  */
 namespace routes 
 {

@@ -63,6 +63,7 @@
  *  "<<" operator and they'll come out the other end as a stream of characters. It's used by tasks that send
  *  things to the user interface task to be printed. 
  */
+
 TextQueue* p_print_ser_queue;
 
 // Shared variables
@@ -189,9 +190,11 @@ int main (void)
      // Flag to indicate PID control enabled
      sh_PID_control = new TaskShare<uint8_t> ("sh_PID_control");
 
+     // Active ADC channel position
      sh_adc_setpoint = new TaskShare<uint16_t> ("sh_adc_setpoint");
      
-     sh_servo_setpoint = new TaskShare<uint16_t> ("sh_servo_setpoint");		// Servo motor position setpoint
+     // Servo motor position setpoint
+     sh_servo_setpoint = new TaskShare<uint16_t> ("sh_servo_setpoint");		
 
      // Servo set flag
      sh_servo_set_flag = new TaskShare<uint8_t> ("sh_servo_set_flag");		
@@ -205,28 +208,31 @@ int main (void)
      // Linear route distance
      sh_linear_distance = new TaskShare<uint16_t> ("sh_linear_distance");
      
-     //Euler heading variables
+     // Current IMU heading (Euler coordinates)
      sh_euler_heading = new TaskShare<int32_t> ("sh_euler_heading");
+     
+     // IMU heading change (Euler coordinates)
      sh_euler_heading_change = new TaskShare<int32_t> ("sh_euler_heading_change");
+     
+     // Route feature initial IMU heading (Euler coordinates)
      sh_heading_setpoint = new TaskShare <int32_t> ("sh_heading_setpoint");
      
      // IMU status check flag
      sh_imu_status = new TaskShare<uint8_t> ("sh_imu_status");
 
-     // The user interface is at low priority; it could have been run in the idle task
-     // but it is desired to exercise the RTOS more thoroughly in this test program
+     // Creating a task that operates the serial user interface and accepts feature inputs
      new task_user    ("UserInterface", task_priority(1), 280, p_ser_port);
      
-     // Creating a task that operates the motor and runs a defined program
+     // Creating a task that operates the motors and encoders 
      new task_power   ("Power        ", task_priority(4), 280, p_ser_port);
      
-     // Creating a tastk that operates the PID and runs a defined program
+     // Creating a task that operates motor PID and feature computation/execution
      new task_control ("Control      ", task_priority(3), 350, p_ser_port);
      
-     // Creating a task that sets up the IMU sensor and reads the Euler angles
+     // Creating a task that configures and operates the IMU and both IR sensors 
      new task_sensor  ("Sensor       ", task_priority(2), 280, p_ser_port);
      
-     // Creating a task that sets up ther servo steering motor and runs a defined program
+     // Creating a task that configures and operate  the servo-powered motor
      new task_steer   ("Steering     ", task_priority(4), 280, p_ser_port);
 
      // The RTOS scheduler, ran indefinetly:

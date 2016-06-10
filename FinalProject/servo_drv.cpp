@@ -1,6 +1,6 @@
 //*************************************************************************************
 /** @file servo_drv.cpp
- *    TODO This file contains the servo driver.
+ *    This file contains the configuration and 
  *
  *  Revisions:
  *    @li May 19, 2016 -- BKK Created file.
@@ -16,16 +16,16 @@
 
 //-------------------------------------------------------------------------------------
 /** \brief This constructor sets up the servo object.
- *  \details TODO Servo needs a works with a 20 ms period pulse (50 Hz) and the range of
- *           positions go from neutral (90 deg) at 1.5ms pulse width to a min (0 deg)
- *           at 1ms pulse width and max (180 deg) at 2ms pulse width. Timer channel 0A
- *           is used to generate the PWM signal (pin B7).
+ *  \details Our servo operates at a 20 ms period pulse (50 Hz) in the range of
+ *           positions from neutral (90 deg) at a 1.5 ms pulse width to a min (45 deg)
+ *           at a 1 ms pulse width and max (135 deg) at a 2 ms pulse width. Timer channel 3A
+ *           is used to generate the PWM signal (Pin E3 on our microcontroller).
  *  @param p_serial_port A pointer to the serial port which writes debugging info.
  */
 
 servo_drv::servo_drv(emstream* p_serial_port)
 {
-     // Timing channel 3 setup (Fast PWM, Clock prescaler of 8) 
+     // Timing channel 3 setup (Fast PWM setting 14, Clock prescaler of 8) 
      TCCR3A |= (1 << WGM31) | (1 << COM3A1);
      TCCR3A &= ~(1 << WGM30) | ~(1 << COM3A0);
      TCCR3B |= (1 << WGM32) | (1 << WGM33) | (1 << CS31);
@@ -41,10 +41,10 @@ servo_drv::servo_drv(emstream* p_serial_port)
 
 //-------------------------------------------------------------------------------------
 /** @brief   This method a position input and sets the servo to that position.
- *  \details TODO The input is set to the output compare register used for the PWM signal to
- *           the servo (Timer 0A, Pin B7). The range of inputs allowed is 20 to 30
+ *  \details The input is set to the output compare register used for the PWM signal to
+ *           the servo (Timer 3A, Pin E3). The range of allowable inputs runs 2000 to 4000
  *           which correspond to the max right turning angle and max left turning angle
- *           respectively. A input of 25 will set the servo to its neutral position.
+ *           respectively. An input of 3000 will set the servo to its neutral position.
  *  @param   pos Input that sets the position of the servo
  *  @return  None
  */
