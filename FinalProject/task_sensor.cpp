@@ -38,17 +38,17 @@ task_sensor::task_sensor (const char* a_name, unsigned portBASE_TYPE a_priority,
 
 void task_sensor::run (void)
 {
-  
-     //adc* pot_adc = new adc(p_serial);
+     /// Make a variable which will hold times to use for precise task scheduling
+     TickType_t previousTicks = xTaskGetTickCount ();
      
+     /// Creates adc objects for IR distance sensors
      adc* side_IR_adc = new adc(p_serial);
-     
      adc* front_IR_adc = new adc(p_serial);
      
      /// Creates a new IMU object
      imu_drv* imu_sensor = new imu_drv(p_serial);
      
-     /// Initializes the Euler angle variables
+     /// Initializes the sensor reading variables
      int16_t heading = 0; 
      int16_t pitch = 0; 
      int16_t roll = 0;
@@ -63,20 +63,16 @@ void task_sensor::run (void)
 	  // first paraemter is channel of ADC to read from
 	  // second parameter is number of samples to take
 	  side_IR_reading = side_IR_adc->read_oversampled(1,10);
-     
 	  front_IR_reading = front_IR_adc->read_oversampled(2,10);
 	  
 	  //*p_serial << PMS("Front IR: ") << front_IR_reading << endl;
  	  //*p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
-	  
 	  
 	  /// Calls the system status method in the imu_drv which prints a message regarding the status
 	  imu_sensor->getSysStatus();
 	  
 	  /// Gets the Euler angle variables by calling the getEulerAng method in the imu_drv.
 	  heading = imu_sensor->getEulerAng(1);
-	  roll = imu_sensor->getEulerAng(2);
-	  pitch = imu_sensor->getEulerAng(3);
 	  
 	  old_heading = sh_euler_heading -> get();
 	  sh_euler_heading -> put(heading);
@@ -88,7 +84,7 @@ void task_sensor::run (void)
 // 	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
 // 	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
 	  
-	  // Time that the task waits before looping
-	  delay_ms(20);
+	  runs++;					// Increment the timer run counter.
+	  delay_from_for_ms (previousTicks, 10);	// Task runs every 10 ms
      }
 }

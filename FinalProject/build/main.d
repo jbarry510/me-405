@@ -10,9 +10,9 @@ build/main.o: main.cpp ../lib/freertos/FreeRTOS.h \
  ../lib/misc/mechutil.h ../lib/frtcpp/textqueue.h \
  ../lib/frtcpp/baseshare.h ../lib/frtcpp/taskqueue.h \
  ../lib/frtcpp/taskshare.h shares.h task_user.h adc.h \
- ../lib/freertos/semphr.h ../lib/freertos/queue.h task_motor.h \
- motor_drv.h task_encoder.h encoder_drv.h task_pid.h task_sensor.h \
- imu_drv.h i2c_master.h task_servo.h servo_drv.h
+ ../lib/freertos/semphr.h ../lib/freertos/queue.h task_power.h \
+ motor_drv.h encoder_drv.h task_control.h pid.h satmath.h routes.h \
+ task_sensor.h imu_drv.h i2c_master.h task_steer.h servo_drv.h
 
 ../lib/freertos/FreeRTOS.h:
 
@@ -68,15 +68,19 @@ adc.h:
 
 ../lib/freertos/queue.h:
 
-task_motor.h:
+task_power.h:
 
 motor_drv.h:
 
-task_encoder.h:
-
 encoder_drv.h:
 
-task_pid.h:
+task_control.h:
+
+pid.h:
+
+satmath.h:
+
+routes.h:
 
 task_sensor.h:
 
@@ -84,6 +88,6 @@ imu_drv.h:
 
 i2c_master.h:
 
-task_servo.h:
+task_steer.h:
 
 servo_drv.h:

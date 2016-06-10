@@ -96,10 +96,19 @@ extern TaskShare<uint8_t>* sh_path_radius;
 // Route path velocity
 extern TaskShare<uint8_t>* sh_path_velocity;
 
+// Linear Route Initialization Flag
+extern TaskShare <uint8_t>* sh_linear_start;
+
+// Linear Route Distance
+extern TaskShare <uint16_t>* sh_linear_distance;
+
 // Euler heading
-extern TaskShare<uint8_t>* sh_euler_heading;
+extern TaskShare<uint16_t>* sh_euler_heading;
 
 // Euler heading change
-extern TaskShare<uint8_t>* sh_euler_heading_change;
+extern TaskShare<uint16_t>* sh_euler_heading_change;
+
+// Euler heading setpoint
+extern TaskShare<uint16_t>* sh_heading_setpoint;
 
 #endif /// _SHARES_H_

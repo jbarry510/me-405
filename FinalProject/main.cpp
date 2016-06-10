@@ -48,11 +48,10 @@
 #include "shares.h"                         // Global ('extern') queue declarations
 
 #include "task_user.h"                      // Header for user interface task
-#include "task_motor.h"                     // Include header for motor task
-#include "task_encoder.h"		    // Include header for encoder task
-#include "task_pid.h"			    // Include header for pid task
-#include "task_sensor.h"			    // Include header for imu task
-#include "task_servo.h"			    // Include header for servo task
+#include "task_power.h"                     // Include header for motor task
+#include "task_control.h"		    // Include header for pid task
+#include "task_sensor.h"		    // Include header for imu task
+#include "task_steer.h"			    // Include header for servo task
 
 // Declare the queues which are used by tasks to communicate with each other here. Each queue must also be
 // declared 'extern' in a header file which will be read by every task that needs to use that queue. The
@@ -111,9 +110,15 @@ TaskShare <uint8_t>* sh_path_radius;			// Circular path sh_path_radius
 
 TaskShare <uint8_t>* sh_path_velocity;			// Route path velocity
 
-TaskShare <uint8_t>* sh_euler_heading;			// Euler heading
+TaskShare <uint8_t>* sh_linear_start;			// Linear route initialization flag
 
-TaskShare <uint8_t>* sh_euler_heading_change;		// Euler heading change
+TaskShare <uint16_t>* sh_linear_distance;		// Linear route distance
+
+TaskShare <uint16_t>* sh_heading_setpoint;		// Heading setpoint for linear path control
+
+TaskShare <uint16_t>* sh_euler_heading;			// Euler heading
+
+TaskShare <uint16_t>* sh_euler_heading_change;		// Euler heading change
 
 
 //===========================================================================================================
@@ -188,25 +193,33 @@ int main (void)
 
      // Circular path radius value
      sh_path_radius = new TaskShare<uint8_t> ("sh_path_radius");
+     
+     // Linear route initialization flag
+     sh_linear_start = new TaskShare<uint8_t> ("sh_linear_start");
+     
+     // Linear route distance
+     sh_linear_distance = new TaskShare<uint16_t> ("sh_linear_distance");
+     
+     //Euler heading variables
+     sh_euler_heading = new TaskShare<uint16_t> ("sh_euler_heading");
+     sh_euler_heading_change = new TaskShare<uint16_t> ("sh_euler_heading");
+     sh_heading_setpoint = new TaskShare <uint16_t> ("sh_heading_setpoint");
 
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
      new task_user    ("UserInterface", task_priority(1), 280, p_ser_port);
      
      // Creating a task that operates the motor and runs a defined program
-     new task_motor   ("Motor        ", task_priority(2), 280, p_ser_port);
-     
-     // Creating a task that operates the encoder and runs a defined program
-     new task_encoder ("Encoder      ", task_priority(4), 280, p_ser_port);
+     new task_power   ("Power        ", task_priority(4), 280, p_ser_port);
      
      // Creating a tastk that operates the PID and runs a defined program
-     new task_pid     ("Pid          ", task_priority(3), 280, p_ser_port);
+     new task_control ("Control      ", task_priority(3), 280, p_ser_port);
      
      // Creating a task that sets up the IMU sensor and reads the Euler angles
-     new task_sensor  ("IMU          ", task_priority(3), 280, p_ser_port);
+     new task_sensor  ("Sensor       ", task_priority(2), 280, p_ser_port);
      
      // Creating a task that sets up ther servo steering motor and runs a defined program
-     new task_servo   ("Servo Motor  ", task_priority(4), 280, p_ser_port);
+     new task_steer   ("Steering     ", task_priority(4), 280, p_ser_port);
 
      // The RTOS scheduler, ran indefinetly:
      vTaskStartScheduler ();

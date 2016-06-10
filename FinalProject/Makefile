@@ -30,7 +30,7 @@ PROJECT_NAME = Final Project
 
 # A list of the source (.c, .cc, .cpp) files in the project. Files in library 
 # subdirectories do not go in this list; they're included automatically
-SOURCES = task_user.cpp task_motor.cpp task_encoder.cpp task_pid.cpp task_sensor.cpp task_servo.cpp motor_drv.cpp encoder_drv.cpp imu_drv.cpp servo_drv.cpp adc.cpp pid.cpp main.cpp satmath.cpp i2c_master.cpp 
+SOURCES = task_user.cpp task_power.cpp task_control.cpp task_sensor.cpp task_steer.cpp motor_drv.cpp encoder_drv.cpp imu_drv.cpp servo_drv.cpp adc.cpp pid.cpp main.cpp satmath.cpp i2c_master.cpp routes.cpp 
 
 # Clock frequency of the CPU, in Hz. This number should be an unsigned long integer.
 # For example, 16 MHz would be represented as 16000000UL. 
