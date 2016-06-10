@@ -257,12 +257,12 @@ void task_user::run (void)
 					sh_path_radius->put(number_entered);	// Set servo position to number_entered
 					number_entered = 0;			// Clear number_entered
 					number_state = 3;			// Clear number_state
-					*p_serial << PMS ("Please enter a circular path velocity [0,318]") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please enter a circular path velocity [0, 80]") << endl;		// Display error message for out of range
 					transition_to (NUMBER);
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 255, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 0 to 1600, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;
 				   }	
 			      }
@@ -275,7 +275,7 @@ void task_user::run (void)
 					sh_linear_distance->put(number_entered);	// Set motor setpoint 1 to number_entered
 					number_entered = 0;			// Clear number_entered
 					number_state = 3;			// Clear number_state		// Display error message for out of range
-					*p_serial << PMS ("Please enter a linear path velocity [0, 80]") << endl;
+					*p_serial << endl << PMS ("Please enter a linear path velocity [0, 80]") << endl;
 					transition_to (NUMBER);
 				   }
 				   else
@@ -409,7 +409,6 @@ void task_user::run (void)
 				   sh_servo_setpoint -> put(sh_servo_setpoint->get()+100);
 				   if (sh_servo_setpoint -> get() >= 4000) // Saturates max angle to 29
 				     sh_servo_setpoint -> put(4000);
-				   sh_servo_set_flag -> put(1);
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_setpoint_1->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
 				   *p_serial << endl;
@@ -421,7 +420,6 @@ void task_user::run (void)
 				   sh_servo_setpoint -> put(sh_servo_setpoint->get()-100); // Saturates min angle to 15
 				   if (sh_servo_setpoint -> get() <= 2000)
 				     sh_servo_setpoint -> put(2000);
-				   sh_servo_set_flag -> put(1);
 				   *p_serial << PMS ("Current Motor Velocities: ") << sh_setpoint_1->get() << endl;
 				   *p_serial << PMS ("Current Servo Position: ") << sh_servo_setpoint->get() << endl;
 				   *p_serial << endl;

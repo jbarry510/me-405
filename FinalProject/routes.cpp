@@ -29,9 +29,10 @@
  *  @return Sum
  */
 
-uint16_t routes::servo_angle(uint16_t old_pos, uint16_t first_pos, uint16_t current_pos)
+int16_t routes::servo_fb(int16_t change)
 {
-     uint16_t coefficient = -34;
-     uint16_t constant = 3034;
-     return old_pos + (constant + ((coefficient)*(first_pos - current_pos)));
+     int16_t coefficient = -34;
+     int16_t constant = 3034;
+     int16_t servo_corr = constant + coefficient*(change/16);
+     return servo_corr;
 }

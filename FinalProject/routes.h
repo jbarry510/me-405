@@ -26,7 +26,7 @@
  */
 namespace routes 
 {
-	uint16_t                        servo_angle(uint16_t old_pos, uint16_t first_pos, uint16_t current_pos);
+	int16_t                        servo_fb(int16_t change);
 } // end namespace routes
 
 #endif // ROUTES_H
