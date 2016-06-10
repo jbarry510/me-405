@@ -272,7 +272,7 @@ int16_t pid::compute()
 	int16_t temp = 0;
 	
 	// Compute Error
-	error = input - setpoint;
+	error = setpoint - input;
 	
 	// Integrate the error and subtract the current saturation value multiplied by the anti-windup gain.
 	esum  = sssub(ssadd(esum,error), ssdiv(ssmul(config.Kw,saturation),1024));

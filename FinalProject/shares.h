@@ -111,4 +111,7 @@ extern TaskShare<uint16_t>* sh_euler_heading_change;
 // Euler heading setpoint
 extern TaskShare<uint16_t>* sh_heading_setpoint;
 
+// IMU status check flag
+extern TaskShare<uint8_t>* sh_imu_status;
+
 #endif /// _SHARES_H_

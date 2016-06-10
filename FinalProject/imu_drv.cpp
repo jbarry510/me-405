@@ -134,16 +134,16 @@ void imu_drv::getSysStatus()
   uint8_t test_status = i2c_comm->read(IMU_ADDRESS, BNO055_SELFTEST_RESULT_ADDR);
  
   // Prints out the system status register contents
-//   *p_serial << PMS ("IMU system status: ") << sys_status << endl;
+  *p_serial << PMS ("IMU system status: ") << sys_status << endl;
   
   // If there is an error state then print out the error code
   if(sys_status == 1)
   {
-//     *p_serial << PMS ("Error Code: ") << i2c_comm->read(IMU_ADDRESS, BNO055_SYS_ERR_ADDR) << endl;
+     *p_serial << PMS ("Error Code: ") << i2c_comm->read(IMU_ADDRESS, BNO055_SYS_ERR_ADDR) << endl;
   }
   
   // Prints out the system self test register contents
-//   *p_serial << PMS ("IMU system self test status: ") << test_status << endl << endl;
+  *p_serial << PMS ("IMU system self test status: ") << test_status << endl << endl;
   
 }
 

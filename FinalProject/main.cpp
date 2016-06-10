@@ -120,6 +120,8 @@ TaskShare <uint16_t>* sh_euler_heading;			// Euler heading
 
 TaskShare <uint16_t>* sh_euler_heading_change;		// Euler heading change
 
+TaskShare <uint8_t>* sh_imu_status;			// IMU status check flag
+
 
 //===========================================================================================================
 /** The main function sets up the RTOS.  Some test tasks are created. Then the scheduler is started up; the
@@ -204,6 +206,9 @@ int main (void)
      sh_euler_heading = new TaskShare<uint16_t> ("sh_euler_heading");
      sh_euler_heading_change = new TaskShare<uint16_t> ("sh_euler_heading");
      sh_heading_setpoint = new TaskShare <uint16_t> ("sh_heading_setpoint");
+     
+     // IMU status check flag
+     sh_imu_status = new TaskShare<uint8_t> ("sh_imu_status");
 
      // The user interface is at low priority; it could have been run in the idle task
      // but it is desired to exercise the RTOS more thoroughly in this test program
@@ -213,7 +218,7 @@ int main (void)
      new task_power   ("Power        ", task_priority(4), 280, p_ser_port);
      
      // Creating a tastk that operates the PID and runs a defined program
-     new task_control ("Control      ", task_priority(3), 280, p_ser_port);
+     new task_control ("Control      ", task_priority(3), 350, p_ser_port);
      
      // Creating a task that sets up the IMU sensor and reads the Euler angles
      new task_sensor  ("Sensor       ", task_priority(2), 280, p_ser_port);

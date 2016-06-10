@@ -50,8 +50,6 @@ void task_sensor::run (void)
      
      /// Initializes the sensor reading variables
      int16_t heading = 0; 
-     int16_t pitch = 0; 
-     int16_t roll = 0;
      int16_t old_heading = 0;
      int16_t side_IR_reading = 0;
      int16_t front_IR_reading = 0;
@@ -69,7 +67,11 @@ void task_sensor::run (void)
  	  //*p_serial << PMS("Side  IR: ")    << side_IR_reading << endl << endl;
 	  
 	  /// Calls the system status method in the imu_drv which prints a message regarding the status
-	  imu_sensor->getSysStatus();
+	  if(sh_imu_status->get() == 1)
+	  {
+	       imu_sensor->getSysStatus();
+	       sh_imu_status->put(0);
+	  }
 	  
 	  /// Gets the Euler angle variables by calling the getEulerAng method in the imu_drv.
 	  heading = imu_sensor->getEulerAng(1);
@@ -78,11 +80,6 @@ void task_sensor::run (void)
 	  sh_euler_heading -> put(heading);
 	  
 	  sh_euler_heading_change ->put(sh_euler_heading ->get()-old_heading);
-	  
-	  /// Prints the Euler angle variables to the serial port
-// 	  *p_serial << PMS("Euler Heading: ") << heading << endl;
-// 	  *p_serial << PMS("Euler Roll: ")    << roll    << endl;
-// 	  *p_serial << PMS("Euler Pitch: ")   << pitch   << endl << endl;
 	  
 	  runs++;					// Increment the timer run counter.
 	  delay_from_for_ms (previousTicks, 10);	// Task runs every 10 ms
