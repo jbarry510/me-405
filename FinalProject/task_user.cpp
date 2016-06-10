@@ -275,7 +275,7 @@ void task_user::run (void)
 					sh_linear_distance->put(number_entered);	// Set motor setpoint 1 to number_entered
 					number_entered = 0;			// Clear number_entered
 					number_state = 3;			// Clear number_state		// Display error message for out of range
-					*p_serial << PMS ("Please enter a linear path velocity [0, 318]") << endl;
+					*p_serial << PMS ("Please enter a linear path velocity [0, 80]") << endl;
 					transition_to (NUMBER);
 				   }
 				   else
@@ -300,7 +300,7 @@ void task_user::run (void)
 				   }
 				   else
 				   {
-					*p_serial << PMS ("Please type a number between 0 to 318, then ENTER") << endl;		// Display error message for out of range
+					*p_serial << PMS ("Please type a number between 0 to 80, then ENTER") << endl;		// Display error message for out of range
 					number_entered = 0;
 					
 				   }	   
