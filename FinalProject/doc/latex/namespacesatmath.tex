@@ -1,0 +1,162 @@
+\hypertarget{namespacesatmath}{\section{satmath Namespace Reference}
+\label{namespacesatmath}\index{satmath@{satmath}}
+}
+
+
+This namespace includes several functions to do saturated 16-\/bit signed math.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int16\-\_\-t \hyperlink{namespacesatmath_a18492afde0ef3b9937ca54c69139f93a}{signed\-\_\-saturated\-\_\-add} (int16\-\_\-t x, int16\-\_\-t y)
+\begin{DoxyCompactList}\small\item\em This function performs saturated addition. \end{DoxyCompactList}\item 
+int16\-\_\-t \hyperlink{namespacesatmath_adcfbde52256a183d24c532674d609384}{signed\-\_\-saturated\-\_\-sub} (int16\-\_\-t x, int16\-\_\-t y)
+\begin{DoxyCompactList}\small\item\em This function performs saturated subtraction. \end{DoxyCompactList}\item 
+int16\-\_\-t \hyperlink{namespacesatmath_aa1edc644596ce763e0463ab7197687b3}{saturated\-\_\-abs} (int16\-\_\-t x)
+\begin{DoxyCompactList}\small\item\em This function performs a saturated absolute value. \end{DoxyCompactList}\item 
+int32\-\_\-t \hyperlink{namespacesatmath_a74a833d78f719a042a91a752fb599dcc}{signed\-\_\-saturated\-\_\-mul} (int16\-\_\-t x, int16\-\_\-t y)
+\begin{DoxyCompactList}\small\item\em This function performs saturated multiplication. \end{DoxyCompactList}\item 
+int16\-\_\-t \hyperlink{namespacesatmath_ab23f0cef1977e2a1e7880a0ed4d5d61d}{signed\-\_\-saturated\-\_\-div} (int32\-\_\-t x, int16\-\_\-t y)
+\begin{DoxyCompactList}\small\item\em This function performs saturated division. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This namespace includes several functions to do saturated 16-\/bit signed math. 
+
+\subsection{Function Documentation}
+\hypertarget{namespacesatmath_aa1edc644596ce763e0463ab7197687b3}{\index{satmath@{satmath}!saturated\-\_\-abs@{saturated\-\_\-abs}}
+\index{saturated\-\_\-abs@{saturated\-\_\-abs}!satmath@{satmath}}
+\subsubsection[{saturated\-\_\-abs}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t satmath\-::saturated\-\_\-abs (
+\begin{DoxyParamCaption}
+\item[{int16\-\_\-t}]{x}
+\end{DoxyParamCaption}
+)}}\label{namespacesatmath_aa1edc644596ce763e0463ab7197687b3}
+
+
+This function performs a saturated absolute value. 
+
+The function corrects for the undefined behavior when using abs() on a minimally saturated 16-\/bit number by returning a maximally saturated 16-\/bit number 
+\begin{DoxyParams}{Parameters}
+{\em x} & Signed value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Absolute value 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file satmath.\-cpp.
+
+\hypertarget{namespacesatmath_a18492afde0ef3b9937ca54c69139f93a}{\index{satmath@{satmath}!signed\-\_\-saturated\-\_\-add@{signed\-\_\-saturated\-\_\-add}}
+\index{signed\-\_\-saturated\-\_\-add@{signed\-\_\-saturated\-\_\-add}!satmath@{satmath}}
+\subsubsection[{signed\-\_\-saturated\-\_\-add}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t satmath\-::signed\-\_\-saturated\-\_\-add (
+\begin{DoxyParamCaption}
+\item[{int16\-\_\-t}]{x, }
+\item[{int16\-\_\-t}]{y}
+\end{DoxyParamCaption}
+)}}\label{namespacesatmath_a18492afde0ef3b9937ca54c69139f93a}
+
+
+This function performs saturated addition. 
+
+The function performs addition of two 16-\/bit signed integers, saturating at either the maximal or minimal 16-\/bit values 
+\begin{DoxyParams}{Parameters}
+{\em x} & Augend \\
+\hline
+{\em y} & Addend \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Sum 
+\end{DoxyReturn}
+
+
+Definition at line 34 of file satmath.\-cpp.
+
+
+
+Referenced by signed\-\_\-saturated\-\_\-sub().
+
+\hypertarget{namespacesatmath_ab23f0cef1977e2a1e7880a0ed4d5d61d}{\index{satmath@{satmath}!signed\-\_\-saturated\-\_\-div@{signed\-\_\-saturated\-\_\-div}}
+\index{signed\-\_\-saturated\-\_\-div@{signed\-\_\-saturated\-\_\-div}!satmath@{satmath}}
+\subsubsection[{signed\-\_\-saturated\-\_\-div}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t satmath\-::signed\-\_\-saturated\-\_\-div (
+\begin{DoxyParamCaption}
+\item[{int32\-\_\-t}]{x, }
+\item[{int16\-\_\-t}]{y}
+\end{DoxyParamCaption}
+)}}\label{namespacesatmath_ab23f0cef1977e2a1e7880a0ed4d5d61d}
+
+
+This function performs saturated division. 
+
+The function performs division of a 32-\/bit integer by a 16-\/bit signed integer. The result is saturated to the minimal or maximal 16-\/bit value 
+\begin{DoxyParams}{Parameters}
+{\em x} & Dividend \\
+\hline
+{\em y} & Divisor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Quotient 
+\end{DoxyReturn}
+
+
+Definition at line 99 of file satmath.\-cpp.
+
+\hypertarget{namespacesatmath_a74a833d78f719a042a91a752fb599dcc}{\index{satmath@{satmath}!signed\-\_\-saturated\-\_\-mul@{signed\-\_\-saturated\-\_\-mul}}
+\index{signed\-\_\-saturated\-\_\-mul@{signed\-\_\-saturated\-\_\-mul}!satmath@{satmath}}
+\subsubsection[{signed\-\_\-saturated\-\_\-mul}]{\setlength{\rightskip}{0pt plus 5cm}int32\-\_\-t satmath\-::signed\-\_\-saturated\-\_\-mul (
+\begin{DoxyParamCaption}
+\item[{int16\-\_\-t}]{x, }
+\item[{int16\-\_\-t}]{y}
+\end{DoxyParamCaption}
+)}}\label{namespacesatmath_a74a833d78f719a042a91a752fb599dcc}
+
+
+This function performs saturated multiplication. 
+
+The function performs multiplication of two 16-\/bit signed integers ensuring a 32-\/bit result 
+\begin{DoxyParams}{Parameters}
+{\em x} & Multiplicand \\
+\hline
+{\em y} & Multiplier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Product 
+\end{DoxyReturn}
+
+
+Definition at line 85 of file satmath.\-cpp.
+
+\hypertarget{namespacesatmath_adcfbde52256a183d24c532674d609384}{\index{satmath@{satmath}!signed\-\_\-saturated\-\_\-sub@{signed\-\_\-saturated\-\_\-sub}}
+\index{signed\-\_\-saturated\-\_\-sub@{signed\-\_\-saturated\-\_\-sub}!satmath@{satmath}}
+\subsubsection[{signed\-\_\-saturated\-\_\-sub}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t satmath\-::signed\-\_\-saturated\-\_\-sub (
+\begin{DoxyParamCaption}
+\item[{int16\-\_\-t}]{x, }
+\item[{int16\-\_\-t}]{y}
+\end{DoxyParamCaption}
+)}}\label{namespacesatmath_adcfbde52256a183d24c532674d609384}
+
+
+This function performs saturated subtraction. 
+
+The function performs subtraction of two 16-\/bit signed integers, saturating at either the maximal or minimal 16-\/bit values 
+\begin{DoxyParams}{Parameters}
+{\em x} & Minuend \\
+\hline
+{\em y} & Subtrahend \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Difference 
+\end{DoxyReturn}
+
+
+Definition at line 56 of file satmath.\-cpp.
+
+
+
+References signed\-\_\-saturated\-\_\-add().
+

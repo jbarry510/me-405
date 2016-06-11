@@ -1,0 +1,45 @@
+\hypertarget{i2c__master_8h}{\section{i2c\-\_\-master.\-h File Reference}
+\label{i2c__master_8h}\index{i2c\-\_\-master.\-h@{i2c\-\_\-master.\-h}}
+}
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}Free\-R\-T\-O\-S.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}semphr.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}emstream.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classi2c__master}{i2c\-\_\-master}
+\begin{DoxyCompactList}\small\item\em Driver class for an I2\-C (also known as T\-W\-I) bus on an A\-V\-R processor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{i2c__master_8h_afc53663507dcbb1496269cc8f33385c2}{\#define \hyperlink{i2c__master_8h_afc53663507dcbb1496269cc8f33385c2}{I2\-C\-\_\-\-B\-I\-T\-R\-A\-T\-E}~100000\-L}\label{i2c__master_8h_afc53663507dcbb1496269cc8f33385c2}
+
+\begin{DoxyCompactList}\small\item\em The desired bit rate for the I2\-C interface in bits per second. \end{DoxyCompactList}\item 
+\hypertarget{i2c__master_8h_af95e277e3d69546e3811a957891a58ba}{\#define \hyperlink{i2c__master_8h_af95e277e3d69546e3811a957891a58ba}{I2\-C\-\_\-\-D\-B\-G}(x)~if (p\-\_\-serial) $\ast$p\-\_\-serial $<$$<$ x}\label{i2c__master_8h_af95e277e3d69546e3811a957891a58ba}
+
+\begin{DoxyCompactList}\small\item\em Macro to print I2\-C interface debugging information if needed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{i2c__master_8h_a70860186137da5ce558ef38a4d336352}{const uint8\-\_\-t \hyperlink{i2c__master_8h_a70860186137da5ce558ef38a4d336352}{I2\-C\-\_\-\-T\-W\-B\-R\-\_\-\-V\-A\-L\-U\-E} = (((F\-\_\-\-C\-P\-U / \hyperlink{i2c__master_8h_afc53663507dcbb1496269cc8f33385c2}{I2\-C\-\_\-\-B\-I\-T\-R\-A\-T\-E}) -\/ 16) / 2)}\label{i2c__master_8h_a70860186137da5ce558ef38a4d336352}
+
+\begin{DoxyCompactList}\small\item\em This value is put in the T\-W\-B\-R register to set the desired bitrate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains a base class for classes that use the I2\-C (also known as T\-W\-I) interface on an A\-V\-R. The terms \char`\"{}\-I2\-C\char`\"{} (the two means squared) and \char`\"{}\-T\-W\-I\char`\"{} are essentially equivalent; Philips has trademarked the former, and Atmel doesn't pay them a license fee, so Atmel chips that meet exactly the same specification are not allowed to use the \char`\"{}\-I2\-C\char`\"{} name, even though everything works the same.
+
+Note\-: The terms \char`\"{}master\char`\"{} and \char`\"{}slave\char`\"{} are standard terminology used in the electronics industry to describe interactions between electronic components only. The use of such terms in this documentation is made only for the purpose of usefully documenting electronic hardware and software, and such use must not be misconstrued as diminishing our revulsion at the socially diseased human behavior which is described using the same terms, nor implying any insensitivity toward people from any background who have been affected by such behavior.
+
+Revised\-:
+\begin{DoxyItemize}
+\item 12-\/24-\/2012 J\-R\-R Original file, as a standalone H\-M\-C6352 compass driver
+\item 12-\/28-\/2012 J\-R\-R I2\-C driver split off into a base class for optimal reusability
+\item 05-\/03-\/2015 J\-R\-R Added {\ttfamily ping()} and {\ttfamily scan()} methods to check for devices
+\end{DoxyItemize}
+
+License\-: This file is copyright 2012-\/2015 by J\-R Ridgely and released under the Lesser G\-N\-U Public License, version 2. It is intended for educational use only, but its use is not limited thereto. 
+
+Definition in file \hyperlink{i2c__master_8h_source}{i2c\-\_\-master.\-h}.
+

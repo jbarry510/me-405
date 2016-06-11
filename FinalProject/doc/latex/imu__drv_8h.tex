@@ -1,0 +1,34 @@
+\hypertarget{imu__drv_8h}{\section{imu\-\_\-drv.\-h File Reference}
+\label{imu__drv_8h}\index{imu\-\_\-drv.\-h@{imu\-\_\-drv.\-h}}
+}
+{\ttfamily \#include \char`\"{}emstream.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Free\-R\-T\-O\-S.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}task.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}queue.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}semphr.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}i2c\-\_\-master.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classimu__drv}{imu\-\_\-drv}
+\begin{DoxyCompactList}\small\item\em This class will enable the 9 D\-O\-F I\-M\-U breakout board with the M\-E 405 board. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{imu__drv_8h_a4e82ca2ba13b27956bb88419bda25e65}{\#define \hyperlink{imu__drv_8h_a4e82ca2ba13b27956bb88419bda25e65}{I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S}~(0x50)}\label{imu__drv_8h_a4e82ca2ba13b27956bb88419bda25e65}
+
+\begin{DoxyCompactList}\small\item\em This define prevents this .H file from being included multiple times in a .C\-P\-P file. \end{DoxyCompactList}\item 
+\hypertarget{imu__drv_8h_a5d61e3776e3b3017ed5e2d84ed9ec578}{\#define {\bfseries B\-N\-O055\-\_\-\-I\-D}~(0x\-A0)}\label{imu__drv_8h_a5d61e3776e3b3017ed5e2d84ed9ec578}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the driver for the 9 D\-O\-F I\-M\-U breakout board (B\-N\-O055). Most of the code used was copied and modifed from the Adafruit B\-N\-O055 driver files (\href{https://github.com/adafruit/Adafruit_BNO055/blob/master/Adafruit_BNO055.h}{\tt https\-://github.\-com/adafruit/\-Adafruit\-\_\-\-B\-N\-O055/blob/master/\-Adafruit\-\_\-\-B\-N\-O055.\-h}).
+
+Revisions\-: \begin{DoxyItemize}
+\item 05-\/14-\/2016 M\-E405 Group 3 original file \end{DoxyItemize}
+
+
+Definition in file \hyperlink{imu__drv_8h_source}{imu\-\_\-drv.\-h}.
+

@@ -1,0 +1,451 @@
+\hypertarget{classimu__drv}{\section{imu\-\_\-drv Class Reference}
+\label{classimu__drv}\index{imu\-\_\-drv@{imu\-\_\-drv}}
+}
+
+
+This class will enable the 9 D\-O\-F I\-M\-U breakout board with the M\-E 405 board.  
+
+
+
+
+{\ttfamily \#include $<$imu\-\_\-drv.\-h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classimu__drv_ae3b2e2b681ec835e7686c7b333a53cb9}{imu\-\_\-reg} \{ \\*
+{\bfseries B\-N\-O055\-\_\-\-P\-A\-G\-E\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0\-X07, 
+{\bfseries B\-N\-O055\-\_\-\-C\-H\-I\-P\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0x00, 
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0x01, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0x02, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0x03, 
+{\bfseries B\-N\-O055\-\_\-\-S\-W\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0x04, 
+{\bfseries B\-N\-O055\-\_\-\-S\-W\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0x05, 
+{\bfseries B\-N\-O055\-\_\-\-B\-L\-\_\-\-R\-E\-V\-\_\-\-I\-D\-\_\-\-A\-D\-D\-R} = 0\-X06, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X08, 
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X09, 
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-A, 
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-B, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-C, 
+{\bfseries B\-N\-O055\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-D, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-E, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X0\-F, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X10, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X11, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X12, 
+{\bfseries B\-N\-O055\-\_\-\-M\-A\-G\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X13, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X14, 
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X15, 
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X16, 
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X17, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X18, 
+{\bfseries B\-N\-O055\-\_\-\-G\-Y\-R\-O\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X19, 
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-H\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-A, 
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-H\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-B, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-R\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-C, 
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-R\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-D, 
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-P\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-E, 
+{\bfseries B\-N\-O055\-\_\-\-E\-U\-L\-E\-R\-\_\-\-P\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X1\-F, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-W\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X20, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-W\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X21, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X22, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X23, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X24, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X25, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X26, 
+{\bfseries B\-N\-O055\-\_\-\-Q\-U\-A\-T\-E\-R\-N\-I\-O\-N\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X27, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X28, 
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X29, 
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-A, 
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-B, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-C, 
+{\bfseries B\-N\-O055\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-C\-C\-E\-L\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-D, 
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-E, 
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X2\-F, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X30, 
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X31, 
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X32, 
+{\bfseries B\-N\-O055\-\_\-\-G\-R\-A\-V\-I\-T\-Y\-\_\-\-D\-A\-T\-A\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X33, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-T\-E\-M\-P\-\_\-\-A\-D\-D\-R} = 0\-X34, 
+{\bfseries B\-N\-O055\-\_\-\-C\-A\-L\-I\-B\-\_\-\-S\-T\-A\-T\-\_\-\-A\-D\-D\-R} = 0\-X35, 
+{\bfseries B\-N\-O055\-\_\-\-S\-E\-L\-F\-T\-E\-S\-T\-\_\-\-R\-E\-S\-U\-L\-T\-\_\-\-A\-D\-D\-R} = 0\-X36, 
+{\bfseries B\-N\-O055\-\_\-\-I\-N\-T\-R\-\_\-\-S\-T\-A\-T\-\_\-\-A\-D\-D\-R} = 0\-X37, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-Y\-S\-\_\-\-C\-L\-K\-\_\-\-S\-T\-A\-T\-\_\-\-A\-D\-D\-R} = 0\-X38, 
+{\bfseries B\-N\-O055\-\_\-\-S\-Y\-S\-\_\-\-S\-T\-A\-T\-\_\-\-A\-D\-D\-R} = 0\-X39, 
+{\bfseries B\-N\-O055\-\_\-\-S\-Y\-S\-\_\-\-E\-R\-R\-\_\-\-A\-D\-D\-R} = 0\-X3\-A, 
+{\bfseries B\-N\-O055\-\_\-\-U\-N\-I\-T\-\_\-\-S\-E\-L\-\_\-\-A\-D\-D\-R} = 0\-X3\-B, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-D\-A\-T\-A\-\_\-\-S\-E\-L\-E\-C\-T\-\_\-\-A\-D\-D\-R} = 0\-X3\-C, 
+{\bfseries B\-N\-O055\-\_\-\-O\-P\-R\-\_\-\-M\-O\-D\-E\-\_\-\-A\-D\-D\-R} = 0\-X3\-D, 
+{\bfseries B\-N\-O055\-\_\-\-P\-W\-R\-\_\-\-M\-O\-D\-E\-\_\-\-A\-D\-D\-R} = 0\-X3\-E, 
+{\bfseries B\-N\-O055\-\_\-\-S\-Y\-S\-\_\-\-T\-R\-I\-G\-G\-E\-R\-\_\-\-A\-D\-D\-R} = 0\-X3\-F, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-T\-E\-M\-P\-\_\-\-S\-O\-U\-R\-C\-E\-\_\-\-A\-D\-D\-R} = 0\-X40, 
+{\bfseries B\-N\-O055\-\_\-\-A\-X\-I\-S\-\_\-\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-A\-D\-D\-R} = 0\-X41, 
+{\bfseries B\-N\-O055\-\_\-\-A\-X\-I\-S\-\_\-\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-A\-D\-D\-R} = 0\-X42, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-0\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X43, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-0\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X44, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-1\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X45, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-1\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X46, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-2\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X47, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-2\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X48, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-3\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X49, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-3\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-A, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-4\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-B, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-4\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-C, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-5\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-D, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-5\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-E, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-6\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X4\-F, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-6\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X50, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-7\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X51, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-7\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X52, 
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-8\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X53, 
+\\*
+{\bfseries B\-N\-O055\-\_\-\-S\-I\-C\-\_\-\-M\-A\-T\-R\-I\-X\-\_\-8\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X54, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X55, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X56, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X57, 
+\\*
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X58, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X59, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-A, 
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-B, 
+\\*
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-C, 
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-D, 
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-E, 
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X5\-F, 
+\\*
+{\bfseries M\-A\-G\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X60, 
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X61, 
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-X\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X62, 
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X63, 
+\\*
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Y\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X64, 
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X65, 
+{\bfseries G\-Y\-R\-O\-\_\-\-O\-F\-F\-S\-E\-T\-\_\-\-Z\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X66, 
+{\bfseries A\-C\-C\-E\-L\-\_\-\-R\-A\-D\-I\-U\-S\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X67, 
+\\*
+{\bfseries A\-C\-C\-E\-L\-\_\-\-R\-A\-D\-I\-U\-S\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X68, 
+{\bfseries M\-A\-G\-\_\-\-R\-A\-D\-I\-U\-S\-\_\-\-L\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X69, 
+{\bfseries M\-A\-G\-\_\-\-R\-A\-D\-I\-U\-S\-\_\-\-M\-S\-B\-\_\-\-A\-D\-D\-R} = 0\-X6\-A
+ \}
+\item 
+enum {\bfseries imu\-\_\-powermode\-\_\-t} \{ {\bfseries P\-O\-W\-E\-R\-\_\-\-M\-O\-D\-E\-\_\-\-N\-O\-R\-M\-A\-L} = 0\-X00, 
+{\bfseries P\-O\-W\-E\-R\-\_\-\-M\-O\-D\-E\-\_\-\-L\-O\-W\-P\-O\-W\-E\-R} = 0\-X01, 
+{\bfseries P\-O\-W\-E\-R\-\_\-\-M\-O\-D\-E\-\_\-\-S\-U\-S\-P\-E\-N\-D} = 0\-X02
+ \}
+\item 
+enum {\bfseries imu\-\_\-opmode\-\_\-t} \{ \\*
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-C\-O\-N\-F\-I\-G} = 0\-X00, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-A\-C\-C\-O\-N\-L\-Y} = 0\-X01, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-M\-A\-G\-O\-N\-L\-Y} = 0\-X02, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-G\-Y\-R\-O\-N\-L\-Y} = 0\-X03, 
+\\*
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-A\-C\-C\-M\-A\-G} = 0\-X04, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-A\-C\-C\-G\-Y\-R\-O} = 0\-X05, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-M\-A\-G\-G\-Y\-R\-O} = 0\-X06, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-A\-M\-G} = 0\-X07, 
+\\*
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-I\-M\-U\-P\-L\-U\-S} = 0\-X08, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-C\-O\-M\-P\-A\-S\-S} = 0\-X09, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-M4\-G} = 0\-X0\-A, 
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-N\-D\-O\-F\-\_\-\-F\-M\-C\-\_\-\-O\-F\-F} = 0\-X0\-B, 
+\\*
+{\bfseries O\-P\-E\-R\-A\-T\-I\-O\-N\-\_\-\-M\-O\-D\-E\-\_\-\-N\-D\-O\-F} = 0\-X0\-C
+ \}
+\item 
+enum {\bfseries imu\-\_\-axis\-\_\-remap\-\_\-config} \{ \\*
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P0} = 0x21, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P1} = 0x24, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P2} = 0x24, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P3} = 0x21, 
+\\*
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P4} = 0x24, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P5} = 0x21, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P6} = 0x21, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-P7} = 0x24
+ \}
+\item 
+enum {\bfseries imu\-\_\-axis\-\_\-remap\-\_\-sign} \{ \\*
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P0} = 0x04, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P1} = 0x00, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P2} = 0x06, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P3} = 0x02, 
+\\*
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P4} = 0x03, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P5} = 0x01, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P6} = 0x07, 
+{\bfseries R\-E\-M\-A\-P\-\_\-\-S\-I\-G\-N\-\_\-\-P7} = 0x05
+ \}
+\item 
+typedef enum \hyperlink{classimu__drv_ae3b2e2b681ec835e7686c7b333a53cb9}{imu\-\_\-drv\-::imu\-\_\-reg} \hyperlink{classimu__drv_a5af10b56ac161eafe231540cbc22f680}{imu\-\_\-reg\-\_\-t}
+\item 
+\hypertarget{classimu__drv_ad04cf1aae57aa9c2e18f43143b691d45}{typedef enum \\*
+imu\-\_\-drv\-::imu\-\_\-axis\-\_\-remap\-\_\-config {\bfseries imu\-\_\-axis\-\_\-remap\-\_\-config\-\_\-t}}\label{classimu__drv_ad04cf1aae57aa9c2e18f43143b691d45}
+
+\item 
+\hypertarget{classimu__drv_a8d8b3c2cd085ef728c6b7da27d04b6d3}{typedef enum \\*
+imu\-\_\-drv\-::imu\-\_\-axis\-\_\-remap\-\_\-sign {\bfseries imu\-\_\-axis\-\_\-remap\-\_\-sign\-\_\-t}}\label{classimu__drv_a8d8b3c2cd085ef728c6b7da27d04b6d3}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classimu__drv_a9b97840e6d0ee2a9543cdff67697df09}{imu\-\_\-drv} (emstream $\ast$=N\-U\-L\-L)
+\begin{DoxyCompactList}\small\item\em This constructor sets up the 9 D\-O\-F I\-M\-U object. \end{DoxyCompactList}\item 
+void \hyperlink{classimu__drv_a8bbc49938744a5d414ec82e5a80e8bcb}{set\-Op\-Mode} (imu\-\_\-opmode\-\_\-t mode)
+\begin{DoxyCompactList}\small\item\em Setter Methods. \end{DoxyCompactList}\item 
+void \hyperlink{classimu__drv_a3e4f164746a37af9cc2f4964140df71e}{set\-Pwr\-Mode} (imu\-\_\-powermode\-\_\-t mode)
+\begin{DoxyCompactList}\small\item\em Sets power mode of I\-M\-U. \end{DoxyCompactList}\item 
+void \hyperlink{classimu__drv_a481dd40cd689e1e9ca579bd8fd9224fc}{set\-Units} ()
+\begin{DoxyCompactList}\small\item\em Sets units selection mode of I\-M\-U. \end{DoxyCompactList}\item 
+void \hyperlink{classimu__drv_ab64eedbc7b14cfe209c384c767cdf54b}{get\-Sys\-Status} ()
+\begin{DoxyCompactList}\small\item\em Getter methods. \end{DoxyCompactList}\item 
+int16\-\_\-t \hyperlink{classimu__drv_a5f39425d0876c45c9f166eef7ff169cc}{get\-Euler\-Ang} (uint8\-\_\-t data\-\_\-sel)
+\begin{DoxyCompactList}\small\item\em Reads Euler angle registers and returns selected value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+emstream $\ast$ \hyperlink{classimu__drv_af7914a964b1f1fc98f0c7f505fc6d062}{p\-\_\-serial}
+\item 
+\hypertarget{classimu__drv_ad901d6b16ce55906dc13b615b5c68925}{\hyperlink{classi2c__master}{i2c\-\_\-master} $\ast$ {\bfseries i2c\-\_\-comm}}\label{classimu__drv_ad901d6b16ce55906dc13b615b5c68925}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class will enable the 9 D\-O\-F I\-M\-U breakout board with the M\-E 405 board. 
+
+This header file defines many of the useful register addresses and some settings assosciated with those registers. 
+
+Definition at line 33 of file imu\-\_\-drv.\-h.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classimu__drv_a5af10b56ac161eafe231540cbc22f680}{\index{imu\-\_\-drv@{imu\-\_\-drv}!imu\-\_\-reg\-\_\-t@{imu\-\_\-reg\-\_\-t}}
+\index{imu\-\_\-reg\-\_\-t@{imu\-\_\-reg\-\_\-t}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{imu\-\_\-reg\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef enum {\bf imu\-\_\-drv\-::imu\-\_\-reg}  {\bf imu\-\_\-drv\-::imu\-\_\-reg\-\_\-t}}}\label{classimu__drv_a5af10b56ac161eafe231540cbc22f680}
+The constructor sets up the I\-M\-U driver for use. The \char`\"{}= N\-U\-L\-L\char`\"{} part is a default parameter, meaning that if that parameter isn't given on the line where this constructor is called, the compiler will just fill in \char`\"{}\-N\-U\-L\-L\char`\"{}. In this case that has the effect of turning off diagnostic printouts. 
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classimu__drv_ae3b2e2b681ec835e7686c7b333a53cb9}{\index{imu\-\_\-drv@{imu\-\_\-drv}!imu\-\_\-reg@{imu\-\_\-reg}}
+\index{imu\-\_\-reg@{imu\-\_\-reg}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{imu\-\_\-reg}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf imu\-\_\-drv\-::imu\-\_\-reg}}}\label{classimu__drv_ae3b2e2b681ec835e7686c7b333a53cb9}
+The constructor sets up the I\-M\-U driver for use. The \char`\"{}= N\-U\-L\-L\char`\"{} part is a default parameter, meaning that if that parameter isn't given on the line where this constructor is called, the compiler will just fill in \char`\"{}\-N\-U\-L\-L\char`\"{}. In this case that has the effect of turning off diagnostic printouts. 
+
+Definition at line 46 of file imu\-\_\-drv.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classimu__drv_a9b97840e6d0ee2a9543cdff67697df09}{\index{imu\-\_\-drv@{imu\-\_\-drv}!imu\-\_\-drv@{imu\-\_\-drv}}
+\index{imu\-\_\-drv@{imu\-\_\-drv}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{imu\-\_\-drv}]{\setlength{\rightskip}{0pt plus 5cm}imu\-\_\-drv\-::imu\-\_\-drv (
+\begin{DoxyParamCaption}
+\item[{emstream $\ast$}]{p\-\_\-serial\-\_\-port = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_a9b97840e6d0ee2a9543cdff67697df09}
+
+
+This constructor sets up the 9 D\-O\-F I\-M\-U object. 
+
+The constructor creates a p\-\_\-serial object for printing to the serial port and creates a i2c\-\_\-comm object which allows for communication between the sensor and M\-E 405 board. The constructor also checks that the i2c\-\_\-comm object can communicate with the I\-M\-U and verifies the address of the I\-M\-U. Lastly the constructor sets the default settings of the imu which are n\-D\-O\-F mode, metric units, and normal power mode. 
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-serial\-\_\-port} & A pointer to the serial port which writes debugging info. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 29 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, i2c\-\_\-master\-::read(), set\-Op\-Mode(), set\-Pwr\-Mode(), and set\-Units().
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classimu__drv_a5f39425d0876c45c9f166eef7ff169cc}{\index{imu\-\_\-drv@{imu\-\_\-drv}!get\-Euler\-Ang@{get\-Euler\-Ang}}
+\index{get\-Euler\-Ang@{get\-Euler\-Ang}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{get\-Euler\-Ang}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t imu\-\_\-drv\-::get\-Euler\-Ang (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{data\-\_\-sel}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_a5f39425d0876c45c9f166eef7ff169cc}
+
+
+Reads Euler angle registers and returns selected value. 
+
+This method returns the Euler angle value desired based on the data select input. An input of 1 returns the heading value, an input of 2 returns the roll value, and an input of 3 returns the pitch value. The values read are 16x the value in degrees. 
+\begin{DoxyParams}{Parameters}
+{\em data\-\_\-sel} & Variable used to pick which Euler angle value (heading, roll, or pitch) is desired. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 158 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, and i2c\-\_\-master\-::read().
+
+
+
+Referenced by task\-\_\-sensor\-::run().
+
+\hypertarget{classimu__drv_ab64eedbc7b14cfe209c384c767cdf54b}{\index{imu\-\_\-drv@{imu\-\_\-drv}!get\-Sys\-Status@{get\-Sys\-Status}}
+\index{get\-Sys\-Status@{get\-Sys\-Status}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{get\-Sys\-Status}]{\setlength{\rightskip}{0pt plus 5cm}void imu\-\_\-drv\-::get\-Sys\-Status (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_ab64eedbc7b14cfe209c384c767cdf54b}
+
+
+Getter methods. 
+
+Reads system status register of the I\-M\-U
+
+Prints out the system status of the I\-M\-U (numbers correspond to values listed in comments). If an error status is determined then the error message is also printed (numbers correspond to values listed in commments). 
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 109 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, and i2c\-\_\-master\-::read().
+
+
+
+Referenced by task\-\_\-sensor\-::run().
+
+\hypertarget{classimu__drv_a8bbc49938744a5d414ec82e5a80e8bcb}{\index{imu\-\_\-drv@{imu\-\_\-drv}!set\-Op\-Mode@{set\-Op\-Mode}}
+\index{set\-Op\-Mode@{set\-Op\-Mode}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{set\-Op\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void imu\-\_\-drv\-::set\-Op\-Mode (
+\begin{DoxyParamCaption}
+\item[{imu\-\_\-opmode\-\_\-t}]{mode}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_a8bbc49938744a5d414ec82e5a80e8bcb}
+
+
+Setter Methods. 
+
+Sets operation mode of I\-M\-U
+
+Changes the operation mode to one of the operation mode values defineed in the header file and prints a confirmation message. 
+\begin{DoxyParams}{Parameters}
+{\em mode} & Variable of imu\-\_\-opmode type as defined in the header file. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 64 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, and i2c\-\_\-master\-::write().
+
+
+
+Referenced by imu\-\_\-drv().
+
+\hypertarget{classimu__drv_a3e4f164746a37af9cc2f4964140df71e}{\index{imu\-\_\-drv@{imu\-\_\-drv}!set\-Pwr\-Mode@{set\-Pwr\-Mode}}
+\index{set\-Pwr\-Mode@{set\-Pwr\-Mode}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{set\-Pwr\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void imu\-\_\-drv\-::set\-Pwr\-Mode (
+\begin{DoxyParamCaption}
+\item[{imu\-\_\-powermode\-\_\-t}]{mode}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_a3e4f164746a37af9cc2f4964140df71e}
+
+
+Sets power mode of I\-M\-U. 
+
+Changes the power mode to one of the operation mode values defineed in the header file and prints a confirmation message. 
+\begin{DoxyParams}{Parameters}
+{\em mode} & Variable of imu\-\_\-powermode type as defined in the header file. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 76 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, and i2c\-\_\-master\-::write().
+
+
+
+Referenced by imu\-\_\-drv().
+
+\hypertarget{classimu__drv_a481dd40cd689e1e9ca579bd8fd9224fc}{\index{imu\-\_\-drv@{imu\-\_\-drv}!set\-Units@{set\-Units}}
+\index{set\-Units@{set\-Units}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{set\-Units}]{\setlength{\rightskip}{0pt plus 5cm}void imu\-\_\-drv\-::set\-Units (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classimu__drv_a481dd40cd689e1e9ca579bd8fd9224fc}
+
+
+Sets units selection mode of I\-M\-U. 
+
+Sets the units for the acceleration, linear acceleration, and gravity vector to m/s$^\wedge$2. Sets the units for the angular rate to deg/sec. Sets the units for the Euler Angles to degrees and the units for the temperature to deg\-C. 
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 89 of file imu\-\_\-drv.\-cpp.
+
+
+
+References I\-M\-U\-\_\-\-A\-D\-D\-R\-E\-S\-S, p\-\_\-serial, and i2c\-\_\-master\-::write().
+
+
+
+Referenced by imu\-\_\-drv().
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classimu__drv_af7914a964b1f1fc98f0c7f505fc6d062}{\index{imu\-\_\-drv@{imu\-\_\-drv}!p\-\_\-serial@{p\-\_\-serial}}
+\index{p\-\_\-serial@{p\-\_\-serial}!imu_drv@{imu\-\_\-drv}}
+\subsubsection[{p\-\_\-serial}]{\setlength{\rightskip}{0pt plus 5cm}emstream$\ast$ imu\-\_\-drv\-::p\-\_\-serial\hspace{0.3cm}{\ttfamily [protected]}}}\label{classimu__drv_af7914a964b1f1fc98f0c7f505fc6d062}
+The imu class uses this pointer to print debug messages via the serial port and I2\-C communcations with the sensor. 
+
+Definition at line 38 of file imu\-\_\-drv.\-h.
+
+
+
+Referenced by get\-Euler\-Ang(), get\-Sys\-Status(), imu\-\_\-drv(), set\-Op\-Mode(), set\-Pwr\-Mode(), and set\-Units().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{imu__drv_8h}{imu\-\_\-drv.\-h}\item 
+\hyperlink{imu__drv_8cpp}{imu\-\_\-drv.\-cpp}\end{DoxyCompactItemize}

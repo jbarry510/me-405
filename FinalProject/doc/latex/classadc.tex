@@ -1,0 +1,141 @@
+\hypertarget{classadc}{\section{adc Class Reference}
+\label{classadc}\index{adc@{adc}}
+}
+
+
+This define prevents this .H file from being included multiple times in a .C\-P\-P file.  
+
+
+
+
+{\ttfamily \#include $<$adc.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classadc_af3b8262c08f5fc5ae325a20622883424}{adc} (emstream $\ast$=N\-U\-L\-L)
+\begin{DoxyCompactList}\small\item\em This constructor sets up an A/\-D converter. \end{DoxyCompactList}\item 
+uint16\-\_\-t \hyperlink{classadc_a2190a59696a7093e1ea605e998ccf97e}{read\-\_\-once} (uint8\-\_\-t)
+\begin{DoxyCompactList}\small\item\em This method takes one A/\-D reading from the given channel and returns it. \end{DoxyCompactList}\item 
+uint16\-\_\-t \hyperlink{classadc_a58f1030fe64d3dea4ccd8a2687dd6fce}{read\-\_\-oversampled} (uint8\-\_\-t, uint8\-\_\-t)
+\begin{DoxyCompactList}\small\item\em This method takes a set number of A/\-D readings from a given channel and averages them. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classadc_a14680b48b723bf1adddd2741ebb18a3e}{emstream $\ast$ \hyperlink{classadc_a14680b48b723bf1adddd2741ebb18a3e}{ptr\-\_\-to\-\_\-serial}}\label{classadc_a14680b48b723bf1adddd2741ebb18a3e}
+
+\begin{DoxyCompactList}\small\item\em The A\-D\-C class uses this pointer to the serial port to say hello. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This define prevents this .H file from being included multiple times in a .C\-P\-P file. 
+
+This class {\bfseries will} run the A/\-D converter on an A\-V\-R processor.
+
+This class contains a pointer to the serial port, the constructor declaration for the A/\-D, a method that reads one sample of a A/\-D channel, and a method that reads a defined number of samples of a A/\-D channel. 
+
+Definition at line 47 of file adc.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classadc_af3b8262c08f5fc5ae325a20622883424}{\index{adc@{adc}!adc@{adc}}
+\index{adc@{adc}!adc@{adc}}
+\subsubsection[{adc}]{\setlength{\rightskip}{0pt plus 5cm}adc\-::adc (
+\begin{DoxyParamCaption}
+\item[{emstream $\ast$}]{p\-\_\-serial\-\_\-port = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{classadc_af3b8262c08f5fc5ae325a20622883424}
+
+
+This constructor sets up an A/\-D converter. 
+
+The constructor sets up the A/\-D converter for use. The \char`\"{}= N\-U\-L\-L\char`\"{} part is a default parameter, meaning that if that parameter isn't given on the line where this constructor is called, the compiler will just fill in \char`\"{}\-N\-U\-L\-L\char`\"{}. In this case that has the effect of turning off diagnostic printouts
+
+The A/\-D is made ready so that when a method such as {\ttfamily \hyperlink{classadc_a2190a59696a7093e1ea605e998ccf97e}{read\-\_\-once()}} is called, correct A/\-D conversions can be performed. Enables the A/\-D converter, sets the clock prescaler to a divsion factor of 32, and selects reference voltage source as A\-V\-C\-C with external capactitor at A\-R\-E\-F pin. 
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-serial\-\_\-port} & A pointer to the serial port which writes debugging info. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 42 of file adc.\-cpp.
+
+
+
+References ptr\-\_\-to\-\_\-serial.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classadc_a2190a59696a7093e1ea605e998ccf97e}{\index{adc@{adc}!read\-\_\-once@{read\-\_\-once}}
+\index{read\-\_\-once@{read\-\_\-once}!adc@{adc}}
+\subsubsection[{read\-\_\-once}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t adc\-::read\-\_\-once (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{ch}
+\end{DoxyParamCaption}
+)}}\label{classadc_a2190a59696a7093e1ea605e998ccf97e}
+
+
+This method takes one A/\-D reading from the given channel and returns it. 
+
+This function reads one channel once, returning the result as an unsigned integer; it should be called from within a normal task, not an I\-S\-R
+
+Forces the inputted channel to be a number from 0 to 7 then sets the A\-D\-M\-U\-X register to the correct channel. Next it starts the conversion and waits until it is finished. Finally it stores the result and returns it. 
+\begin{DoxyParams}{Parameters}
+{\em ch} & The A/\-D channel which is being read must be from 0 to 7 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the A/\-D conversion 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file adc.\-cpp.
+
+
+
+Referenced by operator$<$$<$(), and read\-\_\-oversampled().
+
+\hypertarget{classadc_a58f1030fe64d3dea4ccd8a2687dd6fce}{\index{adc@{adc}!read\-\_\-oversampled@{read\-\_\-oversampled}}
+\index{read\-\_\-oversampled@{read\-\_\-oversampled}!adc@{adc}}
+\subsubsection[{read\-\_\-oversampled}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t adc\-::read\-\_\-oversampled (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{channel, }
+\item[{uint8\-\_\-t}]{samples}
+\end{DoxyParamCaption}
+)}}\label{classadc_a58f1030fe64d3dea4ccd8a2687dd6fce}
+
+
+This method takes a set number of A/\-D readings from a given channel and averages them. 
+
+This function reads the A/\-D lots of times and returns the average. Doing so implements a crude sort of low-\/pass filtering that can help reduce noise
+
+Checks to see if number of samples inputted is above a threshold values then it takes samples and adds them up. Finally it returns the average of samples taken. 
+\begin{DoxyParams}{Parameters}
+{\em channel} & The A/\-D channel which is being read \\
+\hline
+{\em samples} & Number of samples to take for averaging reading \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Averaged result of A/\-D readings 
+\end{DoxyReturn}
+
+
+Definition at line 106 of file adc.\-cpp.
+
+
+
+References read\-\_\-once().
+
+
+
+Referenced by task\-\_\-sensor\-::run(), and task\-\_\-steer\-::run().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{adc_8h}{adc.\-h}\item 
+\hyperlink{adc_8cpp}{adc.\-cpp}\end{DoxyCompactItemize}

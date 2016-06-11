@@ -1,0 +1,482 @@
+\hypertarget{classi2c__master}{\section{i2c\-\_\-master Class Reference}
+\label{classi2c__master}\index{i2c\-\_\-master@{i2c\-\_\-master}}
+}
+
+
+Driver class for an I2\-C (also known as T\-W\-I) bus on an A\-V\-R processor.  
+
+
+
+
+{\ttfamily \#include $<$i2c\-\_\-master.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classi2c__master_a843928a7894ad896d1feace7fe734ad1}{i2c\-\_\-master} (emstream $\ast$=N\-U\-L\-L)
+\begin{DoxyCompactList}\small\item\em This constructor creates an I2\-C driver object. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_ad69a2ec3ea33a2add78dcc07e7adce00}{start} (void)
+\begin{DoxyCompactList}\small\item\em Cause a start condition on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_a96d66784592f1e026dc42b29f21cdb64}{restart} (void)
+\begin{DoxyCompactList}\small\item\em Cause a repeated start condition on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_a3263bda1b2d48a751b9b798559600fe0}{stop} (void)
+\begin{DoxyCompactList}\small\item\em Cause a stop condition on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_ac73dfa0d112fb71ed34f42a222c4ecec}{write} (uint8\-\_\-t address, uint8\-\_\-t reg, uint8\-\_\-t data)
+\begin{DoxyCompactList}\small\item\em Write one byte to a slave device on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_af0fa22c49a5c72c53e8132930cd701e5}{write} (uint8\-\_\-t address, uint8\-\_\-t reg, uint8\-\_\-t $\ast$p\-\_\-buf, uint8\-\_\-t count)
+\begin{DoxyCompactList}\small\item\em Write a bunch of bytes to a slave device on the I2\-C bus. \end{DoxyCompactList}\item 
+uint8\-\_\-t \hyperlink{classi2c__master_a3e1513222d835e893e05009bd49038c1}{read} (uint8\-\_\-t address, uint8\-\_\-t reg)
+\begin{DoxyCompactList}\small\item\em Read one byte from a slave device on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_aebc041e481c0516a4c0fa7158c4f1fc0}{read} (uint8\-\_\-t address, uint8\-\_\-t reg, uint8\-\_\-t $\ast$p\-\_\-buffer, uint8\-\_\-t count)
+\begin{DoxyCompactList}\small\item\em Read multiple bytes from a slave device on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_aaf14a54e71e000366a963d1180aa9cfb}{write\-\_\-byte} (uint8\-\_\-t byte)
+\begin{DoxyCompactList}\small\item\em Send a byte to a device on the I2\-C bus. \end{DoxyCompactList}\item 
+uint8\-\_\-t \hyperlink{classi2c__master_aeec5f20ac4b77ff82811a44d6c9f0273}{read\-\_\-byte} (bool ack)
+\begin{DoxyCompactList}\small\item\em Receive a byte from a device on the I2\-C bus. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_a45f502f0e44b3eecea3f9069b5039295}{check\-\_\-\-S\-D\-A} (void)
+\begin{DoxyCompactList}\small\item\em Check the status of the S\-D\-A line. \end{DoxyCompactList}\item 
+bool \hyperlink{classi2c__master_a336d8879f371ebcba91d2a83509d517f}{ping} (uint8\-\_\-t address)
+\begin{DoxyCompactList}\small\item\em Check if a device is located at the given address. \end{DoxyCompactList}\item 
+void \hyperlink{classi2c__master_abec7ac7b06f563c195a13ae51b076b0a}{scan} (emstream $\ast$p\-\_\-ser)
+\begin{DoxyCompactList}\small\item\em Scan the I2\-C bus, pinging each address, and print the results. \end{DoxyCompactList}\item 
+void \hyperlink{classi2c__master_aa9afe624ce1825efb79c147093ad8ad3}{take\-\_\-mutex} (void)
+\begin{DoxyCompactList}\small\item\em Take the mutex associated with this I2\-C bus. \end{DoxyCompactList}\item 
+void \hyperlink{classi2c__master_a49ea221508ef4f0310bc61030773bd58}{give\-\_\-mutex} (void)
+\begin{DoxyCompactList}\small\item\em Give back the mutex associated with this I2\-C bus. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classi2c__master_a862f9d4025a9b98dbc6491b3430840a0}{emstream $\ast$ \hyperlink{classi2c__master_a862f9d4025a9b98dbc6491b3430840a0}{p\-\_\-serial}}\label{classi2c__master_a862f9d4025a9b98dbc6491b3430840a0}
+
+\begin{DoxyCompactList}\small\item\em This is a pointer to a serial port object which is used for debugging the code. \end{DoxyCompactList}\item 
+\hypertarget{classi2c__master_a94b87e4fe5ef8e2fdfbcfec893c885ef}{Semaphore\-Handle\-\_\-t \hyperlink{classi2c__master_a94b87e4fe5ef8e2fdfbcfec893c885ef}{mutex}}\label{classi2c__master_a94b87e4fe5ef8e2fdfbcfec893c885ef}
+
+\begin{DoxyCompactList}\small\item\em Mutex used to prevent simultaneous uses of the I2\-C port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Driver class for an I2\-C (also known as T\-W\-I) bus on an A\-V\-R processor. 
+
+It encapsulates basic I2\-C functionality such as the ability to send and receive bytes through the T\-W\-I bus. Currently only operation of the A\-V\-R as an I2\-C bus master is supported; this is what's needed for the A\-V\-R to interface with most I2\-C based sensors. 
+
+Definition at line 94 of file i2c\-\_\-master.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classi2c__master_a843928a7894ad896d1feace7fe734ad1}{\index{i2c\-\_\-master@{i2c\-\_\-master}!i2c\-\_\-master@{i2c\-\_\-master}}
+\index{i2c\-\_\-master@{i2c\-\_\-master}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{i2c\-\_\-master}]{\setlength{\rightskip}{0pt plus 5cm}i2c\-\_\-master\-::i2c\-\_\-master (
+\begin{DoxyParamCaption}
+\item[{emstream $\ast$}]{p\-\_\-debug\-\_\-port = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_a843928a7894ad896d1feace7fe734ad1}
+
+
+This constructor creates an I2\-C driver object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-debug\-\_\-port} & A serial port, often R\-S-\/232, for debugging text (default\-: {\ttfamily N\-U\-L\-L}) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 49 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G, I2\-C\-\_\-\-T\-W\-B\-R\-\_\-\-V\-A\-L\-U\-E, mutex, and p\-\_\-serial.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classi2c__master_a45f502f0e44b3eecea3f9069b5039295}{\index{i2c\-\_\-master@{i2c\-\_\-master}!check\-\_\-\-S\-D\-A@{check\-\_\-\-S\-D\-A}}
+\index{check\-\_\-\-S\-D\-A@{check\-\_\-\-S\-D\-A}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{check\-\_\-\-S\-D\-A}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::check\-\_\-\-S\-D\-A (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_a45f502f0e44b3eecea3f9069b5039295}
+
+
+Check the status of the S\-D\-A line. 
+
+This method just finds whether the S\-D\-A line is currently high or low. This method may be needed when some sensors may need to wait for the S\-D\-A line to be directly manipulated by the sensor to indicate that data is available. \begin{DoxyReturn}{Returns}
+{\ttfamily true} if the S\-D\-A line is high, {\ttfamily false} if it is low 
+\end{DoxyReturn}
+
+
+Definition at line 378 of file i2c\-\_\-master.\-cpp.
+
+\hypertarget{classi2c__master_a49ea221508ef4f0310bc61030773bd58}{\index{i2c\-\_\-master@{i2c\-\_\-master}!give\-\_\-mutex@{give\-\_\-mutex}}
+\index{give\-\_\-mutex@{give\-\_\-mutex}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{give\-\_\-mutex}]{\setlength{\rightskip}{0pt plus 5cm}void i2c\-\_\-master\-::give\-\_\-mutex (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classi2c__master_a49ea221508ef4f0310bc61030773bd58}
+
+
+Give back the mutex associated with this I2\-C bus. 
+
+This method gives the mutex which controls access to this I2\-C bus. It's a complement for the {\ttfamily \hyperlink{classi2c__master_aa9afe624ce1825efb79c147093ad8ad3}{take\-\_\-mutex()}} method. 
+
+Definition at line 168 of file i2c\-\_\-master.\-h.
+
+
+
+References mutex.
+
+\hypertarget{classi2c__master_a336d8879f371ebcba91d2a83509d517f}{\index{i2c\-\_\-master@{i2c\-\_\-master}!ping@{ping}}
+\index{ping@{ping}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{ping}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::ping (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{address}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_a336d8879f371ebcba91d2a83509d517f}
+
+
+Check if a device is located at the given address. 
+
+This method causes an I2\-C start, then sends the given address and checks for an acknowledgement. After that, it just sends a stop condition. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The I2\-C address for the device. The address should already have been shifted so that it fills the 7 {\bfseries most} significant bits of the byte. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if a device acknowledged the given address, {\ttfamily false} if not 
+\end{DoxyReturn}
+
+
+Definition at line 400 of file i2c\-\_\-master.\-cpp.
+
+
+
+References mutex, start(), stop(), and write\-\_\-byte().
+
+
+
+Referenced by scan().
+
+\hypertarget{classi2c__master_a3e1513222d835e893e05009bd49038c1}{\index{i2c\-\_\-master@{i2c\-\_\-master}!read@{read}}
+\index{read@{read}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{read}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t i2c\-\_\-master\-::read (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{address, }
+\item[{uint8\-\_\-t}]{reg}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_a3e1513222d835e893e05009bd49038c1}
+
+
+Read one byte from a slave device on the I2\-C bus. 
+
+This method reads a single byte from the device on the I2\-C bus at the given address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The I2\-C address for the device. The address must already have been shifted so that it fills the 7 {\bfseries most} significant bits of the byte. \\
+\hline
+{\em reg} & The register address within the device from which to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The byte which was read from the device 
+\end{DoxyReturn}
+
+
+Definition at line 223 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G, mutex, read\-\_\-byte(), start(), stop(), and write\-\_\-byte().
+
+
+
+Referenced by imu\-\_\-drv\-::get\-Euler\-Ang(), imu\-\_\-drv\-::get\-Sys\-Status(), and imu\-\_\-drv\-::imu\-\_\-drv().
+
+\hypertarget{classi2c__master_aebc041e481c0516a4c0fa7158c4f1fc0}{\index{i2c\-\_\-master@{i2c\-\_\-master}!read@{read}}
+\index{read@{read}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{read}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::read (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{address, }
+\item[{uint8\-\_\-t}]{reg, }
+\item[{uint8\-\_\-t $\ast$}]{p\-\_\-buffer, }
+\item[{uint8\-\_\-t}]{count}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_aebc041e481c0516a4c0fa7158c4f1fc0}
+
+
+Read multiple bytes from a slave device on the I2\-C bus. 
+
+This method reads multiple bytes from the device on the I2\-C bus at the given address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The I2\-C address for the device. The address should already have been shifted so that it fills the 7 {\bfseries most} significant bits of the byte. \\
+\hline
+{\em reg} & The register address within the device from which to read \\
+\hline
+{\em p\-\_\-buffer} & A pointer to a buffer in which the received bytes will be stored \\
+\hline
+{\em count} & The number of bytes to read from the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if a problem occurred during reading, {\ttfamily false} if things went O\-K 
+\end{DoxyReturn}
+
+
+Definition at line 264 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G, mutex, read\-\_\-byte(), start(), stop(), and write\-\_\-byte().
+
+\hypertarget{classi2c__master_aeec5f20ac4b77ff82811a44d6c9f0273}{\index{i2c\-\_\-master@{i2c\-\_\-master}!read\-\_\-byte@{read\-\_\-byte}}
+\index{read\-\_\-byte@{read\-\_\-byte}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{read\-\_\-byte}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t i2c\-\_\-master\-::read\-\_\-byte (
+\begin{DoxyParamCaption}
+\item[{bool}]{ack}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_aeec5f20ac4b77ff82811a44d6c9f0273}
+
+
+Receive a byte from a device on the I2\-C bus. 
+
+This method receives a byte from the I2\-C bus. Other code must have already run the {\ttfamily \hyperlink{classi2c__master_ad69a2ec3ea33a2add78dcc07e7adce00}{start()}} command and sent and address byte which got the other device's attention. 
+\begin{DoxyParams}{Parameters}
+{\em ack} & {\ttfamily true} if we are to end our data request with A\-C\-K, telling the slave that we want more data after this; false if we end our data request with N\-A\-C\-K, telling the slave that we don't want more data after this \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The byte which was received from the remote device or {\ttfamily 0x\-F\-F} for an error 
+\end{DoxyReturn}
+
+
+Definition at line 180 of file i2c\-\_\-master.\-cpp.
+
+
+
+Referenced by read().
+
+\hypertarget{classi2c__master_a96d66784592f1e026dc42b29f21cdb64}{\index{i2c\-\_\-master@{i2c\-\_\-master}!restart@{restart}}
+\index{restart@{restart}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{restart}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::restart (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_a96d66784592f1e026dc42b29f21cdb64}
+
+
+Cause a repeated start condition on the I2\-C bus. 
+
+This method causes a repeated start condition on the I2\-C bus. This is similar to a regular start condition, except that it occurs during an already running conversation, and a different return code is expected if things go as they should. \begin{DoxyReturn}{Returns}
+{\ttfamily true} if there was an error, {\ttfamily false} if the I2\-C restart was successful 
+\end{DoxyReturn}
+
+
+Definition at line 105 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G.
+
+\hypertarget{classi2c__master_abec7ac7b06f563c195a13ae51b076b0a}{\index{i2c\-\_\-master@{i2c\-\_\-master}!scan@{scan}}
+\index{scan@{scan}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{scan}]{\setlength{\rightskip}{0pt plus 5cm}void i2c\-\_\-master\-::scan (
+\begin{DoxyParamCaption}
+\item[{emstream $\ast$}]{p\-\_\-ser}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_abec7ac7b06f563c195a13ae51b076b0a}
+
+
+Scan the I2\-C bus, pinging each address, and print the results. 
+
+This handy dandy utility function scans each address on the I2\-C bus and prints a display showing the addresses at which devices responded to a \char`\"{}ping\char`\"{} with acknowledgement. 
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-ser} & A pointer to a serial device on which the scan results are printed \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 422 of file i2c\-\_\-master.\-cpp.
+
+
+
+References ping().
+
+\hypertarget{classi2c__master_ad69a2ec3ea33a2add78dcc07e7adce00}{\index{i2c\-\_\-master@{i2c\-\_\-master}!start@{start}}
+\index{start@{start}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::start (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_ad69a2ec3ea33a2add78dcc07e7adce00}
+
+
+Cause a start condition on the I2\-C bus. 
+
+This method causes a start condition on the I2\-C bus. In hardware, a start condition means that the S\-D\-A line is dropped while the S\-C\-L line stays high. This gets the attention of all the other devices on the bus so that they will listen for their addresses. \begin{DoxyReturn}{Returns}
+{\ttfamily true} if there was an error, {\ttfamily false} if the I2\-C start was successful 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file i2c\-\_\-master.\-cpp.
+
+
+
+Referenced by ping(), read(), and write().
+
+\hypertarget{classi2c__master_a3263bda1b2d48a751b9b798559600fe0}{\index{i2c\-\_\-master@{i2c\-\_\-master}!stop@{stop}}
+\index{stop@{stop}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{stop}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::stop (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classi2c__master_a3263bda1b2d48a751b9b798559600fe0}
+
+
+Cause a stop condition on the I2\-C bus. 
+
+This method causes a stop condition on the I2\-C bus. It's inline because causing a stop condition is a one-\/liner (in C++ and even in assembly). \begin{DoxyReturn}{Returns}
+{\ttfamily false} meaning O\-K because there's no test to show an error 
+\end{DoxyReturn}
+
+
+Definition at line 119 of file i2c\-\_\-master.\-h.
+
+
+
+Referenced by ping(), read(), and write().
+
+\hypertarget{classi2c__master_aa9afe624ce1825efb79c147093ad8ad3}{\index{i2c\-\_\-master@{i2c\-\_\-master}!take\-\_\-mutex@{take\-\_\-mutex}}
+\index{take\-\_\-mutex@{take\-\_\-mutex}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{take\-\_\-mutex}]{\setlength{\rightskip}{0pt plus 5cm}void i2c\-\_\-master\-::take\-\_\-mutex (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classi2c__master_aa9afe624ce1825efb79c147093ad8ad3}
+
+
+Take the mutex associated with this I2\-C bus. 
+
+This method takes the mutex which controls access to this I2\-C bus. The mutex is automatically taken by the {\ttfamily \hyperlink{classi2c__master_a3e1513222d835e893e05009bd49038c1}{read()}} and {\ttfamily \hyperlink{classi2c__master_ac73dfa0d112fb71ed34f42a222c4ecec}{write()}} commands, but when a device driver needs to use the {\ttfamily \hyperlink{classi2c__master_aeec5f20ac4b77ff82811a44d6c9f0273}{read\-\_\-byte()}} and {\ttfamily \hyperlink{classi2c__master_aaf14a54e71e000366a963d1180aa9cfb}{write\-\_\-byte()}} commands directly, that driver needs to handle the mutex with this command and the {\ttfamily \hyperlink{classi2c__master_a49ea221508ef4f0310bc61030773bd58}{give\-\_\-mutex()}} command. 
+
+Definition at line 159 of file i2c\-\_\-master.\-h.
+
+
+
+References mutex.
+
+\hypertarget{classi2c__master_ac73dfa0d112fb71ed34f42a222c4ecec}{\index{i2c\-\_\-master@{i2c\-\_\-master}!write@{write}}
+\index{write@{write}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{write}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::write (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{address, }
+\item[{uint8\-\_\-t}]{reg, }
+\item[{uint8\-\_\-t}]{data}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_ac73dfa0d112fb71ed34f42a222c4ecec}
+
+
+Write one byte to a slave device on the I2\-C bus. 
+
+This method writes a single byte to the device on the I2\-C bus at the given address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The I2\-C address for the device. The address should already have been shifted so that it fills the 7 {\bfseries most} significant bits of the byte. \\
+\hline
+{\em reg} & The register address within the device to which to write \\
+\hline
+{\em data} & The byte of data to be written to the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if there were problems or {\ttfamily false} if everything worked O\-K 
+\end{DoxyReturn}
+
+
+Definition at line 310 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G, mutex, start(), stop(), and write\-\_\-byte().
+
+
+
+Referenced by imu\-\_\-drv\-::set\-Op\-Mode(), imu\-\_\-drv\-::set\-Pwr\-Mode(), and imu\-\_\-drv\-::set\-Units().
+
+\hypertarget{classi2c__master_af0fa22c49a5c72c53e8132930cd701e5}{\index{i2c\-\_\-master@{i2c\-\_\-master}!write@{write}}
+\index{write@{write}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{write}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::write (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{address, }
+\item[{uint8\-\_\-t}]{reg, }
+\item[{uint8\-\_\-t $\ast$}]{p\-\_\-buf, }
+\item[{uint8\-\_\-t}]{count}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_af0fa22c49a5c72c53e8132930cd701e5}
+
+
+Write a bunch of bytes to a slave device on the I2\-C bus. 
+
+This method writes a number of bytes to the device on the I2\-C bus at the given address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The I2\-C address for the device. The address should already have been shifted so that it fills the 7 {\bfseries most} significant bits of the byte. \\
+\hline
+{\em reg} & The register address within the device to which to write \\
+\hline
+{\em p\-\_\-buf} & Pointer to a memory address at which is found the bytes of data to be written to the device \\
+\hline
+{\em count} & The number of bytes to be written from the buffer to the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if there were problems or {\ttfamily false} if everything worked O\-K 
+\end{DoxyReturn}
+
+
+Definition at line 342 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G, mutex, start(), stop(), and write\-\_\-byte().
+
+\hypertarget{classi2c__master_aaf14a54e71e000366a963d1180aa9cfb}{\index{i2c\-\_\-master@{i2c\-\_\-master}!write\-\_\-byte@{write\-\_\-byte}}
+\index{write\-\_\-byte@{write\-\_\-byte}!i2c_master@{i2c\-\_\-master}}
+\subsubsection[{write\-\_\-byte}]{\setlength{\rightskip}{0pt plus 5cm}bool i2c\-\_\-master\-::write\-\_\-byte (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{byte}
+\end{DoxyParamCaption}
+)}}\label{classi2c__master_aaf14a54e71e000366a963d1180aa9cfb}
+
+
+Send a byte to a device on the I2\-C bus. 
+
+This method performs an I2\-C send to transfer a byte to a remote device. The expected response code varies depending on what is being sent at what time; some examples of expected responses are as follows\-:
+\begin{DoxyItemize}
+\item {\ttfamily 0x18} -\/ When one has sent S\-L\-A+\-W, a slave address for a write command, and a good A\-C\-K has been received
+\item {\ttfamily 0x40} -\/ When one has sent S\-L\-A+\-R, a slave address for a read command, and a good A\-C\-K has been received
+\item {\ttfamily 0x28} -\/ When one has transmitted a data byte and received a good A\-C\-K 
+\begin{DoxyParams}{Parameters}
+{\em byte} & The byte which is being sent to the remote device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if an acknowledge bit was detected, {\ttfamily false} if none was seen 
+\end{DoxyReturn}
+
+\end{DoxyItemize}
+
+Definition at line 143 of file i2c\-\_\-master.\-cpp.
+
+
+
+References I2\-C\-\_\-\-D\-B\-G.
+
+
+
+Referenced by ping(), read(), and write().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{i2c__master_8h}{i2c\-\_\-master.\-h}\item 
+\hyperlink{i2c__master_8cpp}{i2c\-\_\-master.\-cpp}\end{DoxyCompactItemize}

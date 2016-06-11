@@ -1,0 +1,94 @@
+\hypertarget{classtask__control}{\section{task\-\_\-control Class Reference}
+\label{classtask__control}\index{task\-\_\-control@{task\-\_\-control}}
+}
+
+
+This define prevents this .H file from being included multiple times in a .C\-P\-P file.  
+
+
+
+
+{\ttfamily \#include $<$task\-\_\-control.\-h$>$}
+
+Inheritance diagram for task\-\_\-control\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtask__control}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtask__control_ad5b95fef0925c84303b5459fdde3b06c}{task\-\_\-control} (const char $\ast$, unsigned port\-B\-A\-S\-E\-\_\-\-T\-Y\-P\-E, size\-\_\-t, emstream $\ast$)
+\begin{DoxyCompactList}\small\item\em No private variables or methods for this class. \end{DoxyCompactList}\item 
+void \hyperlink{classtask__control_aae84f350fe4cf1de440d2f37e544612c}{run} (void)
+\begin{DoxyCompactList}\small\item\em This method is called by the R\-T\-O\-S once to run the task loop indefinetly. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This define prevents this .H file from being included multiple times in a .C\-P\-P file. 
+
+Definition at line 31 of file task\-\_\-control.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtask__control_ad5b95fef0925c84303b5459fdde3b06c}{\index{task\-\_\-control@{task\-\_\-control}!task\-\_\-control@{task\-\_\-control}}
+\index{task\-\_\-control@{task\-\_\-control}!task_control@{task\-\_\-control}}
+\subsubsection[{task\-\_\-control}]{\setlength{\rightskip}{0pt plus 5cm}task\-\_\-control\-::task\-\_\-control (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{a\-\_\-name, }
+\item[{unsigned port\-B\-A\-S\-E\-\_\-\-T\-Y\-P\-E}]{a\-\_\-priority, }
+\item[{size\-\_\-t}]{a\-\_\-stack\-\_\-size, }
+\item[{emstream $\ast$}]{p\-\_\-ser\-\_\-dev}
+\end{DoxyParamCaption}
+)}}\label{classtask__control_ad5b95fef0925c84303b5459fdde3b06c}
+
+
+No private variables or methods for this class. 
+
+No protected variables or methods for this class This constructor creates a generic control task of which many copies can be made.
+
+This constructor creates a task which controls the output of two pid loops and operates major route features. The main job of this constructor is to call the constructor of parent class ({\ttfamily frt\-\_\-task} ); the parent's constructor the work. 
+\begin{DoxyParams}{Parameters}
+{\em a\-\_\-name} & A character string which will be the name of this task \\
+\hline
+{\em a\-\_\-priority} & The priority at which this task will initially run (default\-: 0) \\
+\hline
+{\em a\-\_\-stack\-\_\-size} & The size of this task's stack in bytes (default\-: config\-M\-I\-N\-I\-M\-A\-L\-\_\-\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E) \\
+\hline
+{\em p\-\_\-ser\-\_\-dev} & Pointer to a serial device (port, radio, S\-D card, etc.) which can be used by this task to communicate (default\-: N\-U\-L\-L) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 25 of file task\-\_\-control.\-cpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtask__control_aae84f350fe4cf1de440d2f37e544612c}{\index{task\-\_\-control@{task\-\_\-control}!run@{run}}
+\index{run@{run}!task_control@{task\-\_\-control}}
+\subsubsection[{run}]{\setlength{\rightskip}{0pt plus 5cm}void task\-\_\-control\-::run (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classtask__control_aae84f350fe4cf1de440d2f37e544612c}
+
+
+This method is called by the R\-T\-O\-S once to run the task loop indefinetly. 
+
+This method is called once by the R\-T\-O\-S scheduler. Each time around the for (;;) loop, it instantiates the P\-I\-D objects for the motors and sets the velocities of the motors based on the shared setpoint variable. The circular and linear routing calculations are called and used here to set the proper setpoints for the motor and servo. 
+
+Definition at line 38 of file task\-\_\-control.\-cpp.
+
+
+
+References pid\-::compute(), pid\-::\-P\-I, routes\-::servo\-\_\-power(), pid\-::set\-\_\-config(), sh\-\_\-motor\-\_\-1\-\_\-speed, sh\-\_\-motor\-\_\-2\-\_\-speed, and sh\-\_\-power\-\_\-set\-\_\-flag.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{task__control_8h}{task\-\_\-control.\-h}\item 
+\hyperlink{task__control_8cpp}{task\-\_\-control.\-cpp}\end{DoxyCompactItemize}
