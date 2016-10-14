@@ -10,4 +10,4 @@
 
 ### Who do I talk to? ###
 
-* John Barry (jbarry510@gmail.com)
+* John Barry
