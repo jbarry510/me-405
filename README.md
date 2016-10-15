@@ -7,7 +7,3 @@
 ### How do I get set up? ###
 
 * Get an old ME405 board and build a car thing
-
-### Who do I talk to? ###
-
-* John Barry
